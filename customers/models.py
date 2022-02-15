@@ -16,15 +16,25 @@ class Customer(User):
         (1, 'Male'),
         (2, 'Female'),
         (3, 'Other'),
-    ])
+    ],verbose_name='Gender')
+
+    class Meta:
+        verbose_name = 'Customer'
+        verbose_name_plural = 'Customers'
 
 
 class Address(BaseModel):
     """
         A class used to implement customers
     """
-    state = models.CharField(max_length=50)
-    city = models.CharField(max_length=50)
-    zip_code = models.PositiveIntegerField(max_length=10,verbose_name='Zip Code')
-    extra_detail = models.TextField()
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='addresses')
+    state = models.CharField(max_length=50, verbose_name='State')
+    city = models.CharField(max_length=50, verbose_name='City')
+    zip_code = models.PositiveIntegerField(unique=True,verbose_name='Zip Code')
+    extra_detail = models.TextField(verbose_name='Address detail')
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='addresses',verbose_name='Customer')
+
+    class Meta:
+        index_together = ["city", "zip_code"]
+        unique_together = ["city", "zip_code"]
+        verbose_name = 'Address'
+        verbose_name_plural = 'Addresses'
