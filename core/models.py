@@ -73,5 +73,7 @@ class BaseDiscount(BaseModel):
 
     # Override the clean method for validating value in percent types
     def clean(self):
-        if self.type == 'PR' and not 0 <= self.value <= 100:
-            raise ValidationError('Your value number must be between 0 and 100')
+        if self.type == 'PE' and not 0 <= self.value <= 100:
+            raise ValidationError({'value':'Your value number must be between 0 and 100'})
+        if self.type == 'PR' and self.max_price:
+            raise ValidationError({'max_price':'In price type Should not have max price'})
