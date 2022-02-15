@@ -20,8 +20,8 @@ class CartTest(TestCase):
         self.category2 = Category.objects.create(name='mobil', root=self.category1)
 
         # discounts
-        self.discount1 = Discount.objects.create(value=2000, type='PRI')
-        self.discount2 = Discount.objects.create(value=35, type='PER')
+        self.discount1 = Discount.objects.create(value=2000, type='PR')
+        self.discount2 = Discount.objects.create(value=35, type='PE')
 
         # products
         self.product1 = Product.objects.create(name='TV', price=100000, description='some text', inventory=5,
