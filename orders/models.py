@@ -51,7 +51,8 @@ class OffCode(BaseDiscount):
     """
     valid_from = models.DateTimeField(verbose_name='Valid from date',help_text='Start date allowed to use')
     valid_to = models.DateTimeField(verbose_name='Valid to date',help_text='End date allowed to use')
-    code = models.CharField(max_length=50, verbose_name='off code',help_text='The code ')
+    code = models.CharField(max_length=50, verbose_name='off code',
+                            help_text='The code that the customer must enter to use the discount')
 
     def __str__(self):
         return f"Off Code {self.value}"
