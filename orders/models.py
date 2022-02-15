@@ -1,7 +1,7 @@
 from core.models import BaseModel, BaseDiscount
 from django.db import models
 from customers.models import Customer
-from product.models import Product
+from products.models import Product
 
 
 class Cart(BaseModel):
@@ -10,8 +10,9 @@ class Cart(BaseModel):
     """
     total_price = models.PositiveIntegerField(default=0, verbose_name='Total Price')
     final_price = models.PositiveIntegerField(default=0, verbose_name='Final Price')
-    off_code = models.ForeignKey('OffCode', on_delete=models.CASCADE, related_name='carts', null=True, blank=True)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='carts')
+    off_code = models.ForeignKey('OffCode', on_delete=models.CASCADE, related_name='carts', null=True, blank=True,
+                                 verbose_name='Off Code')
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='carts',verbose_name='Customer')
 
     def total_worth(self):
         """ 
@@ -36,9 +37,9 @@ class CartItem(BaseModel):
         A class used to implement cart items
     """
 
-    count = models.PositiveIntegerField(default=1)
-    cart = models.ForeignKey('Cart', on_delete=models.CASCADE, related_name='items')
-    product = models.OneToOneField(Product, on_delete=models.CASCADE)
+    count = models.PositiveIntegerField(default=1,verbose_name='Count')
+    cart = models.ForeignKey('Cart', on_delete=models.CASCADE, related_name='items',verbose_name='Cart')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE,verbose_name='Product')
 
     def __str__(self):
         return f'{self.count} of {self.product}'
@@ -48,9 +49,9 @@ class OffCode(BaseDiscount):
     """
         A class to implement off codes
     """
-    valid_from = models.DateTimeField()
-    valid_to = models.DateTimeField()
-    code = models.CharField(max_length=50, verbose_name='off code')
+    valid_from = models.DateTimeField(verbose_name='Valid from date',help_text='Start date allowed to use')
+    valid_to = models.DateTimeField(verbose_name='Valid to date',help_text='End date allowed to use')
+    code = models.CharField(max_length=50, verbose_name='off code',help_text='The code ')
 
     def __str__(self):
         return f"Off Code {self.value}"
