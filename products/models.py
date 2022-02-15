@@ -1,5 +1,22 @@
 from django.db import models
+from django.db.models import Max
+
 from core.models import BaseModel, BaseDiscount
+
+
+class Category(BaseModel):
+    """
+        implement categories
+    """
+    name = models.CharField(max_length=100, verbose_name='Name')
+    root = models.ForeignKey('self', on_delete=models.CASCADE, default=None, null=True, blank=True)
+    discount = models.ForeignKey('Discount', on_delete=models.CASCADE, blank=True, null=True)
+
+    class Meta:
+        verbose_name_plural = "categories"
+
+    def __str__(self):
+        return self.name
 
 
 class Product(BaseModel):
@@ -18,6 +35,23 @@ class Product(BaseModel):
 
     class Meta:
         ordering = ['-created']
+
+    @classmethod
+    def filter_by_category(cls, category: Category):
+        """
+        Filter all Products by a Category
+        :param category: (object of a product record)
+        :return: all products that consist of this category
+        """
+        return cls.objects.filter(category=category)
+
+    @classmethod
+    def max_price(cls):
+        """
+
+        :return: all products that consist of this category
+        """
+        return cls.objects.get(price=cls.objects.aggregate(max_price=Max('price')).get('max_price'))
 
     @property
     def is_available(self):
@@ -41,21 +75,6 @@ class Brand(BaseModel):
     """
     name = models.CharField(max_length=50, verbose_name='Name')
     country = models.CharField(max_length=50, verbose_name='Country')
-
-    def __str__(self):
-        return self.name
-
-
-class Category(BaseModel):
-    """
-        implement categories
-    """
-    name = models.CharField(max_length=100, verbose_name='Name')
-    root = models.ForeignKey('self', on_delete=models.CASCADE, default=None, null=True, blank=True)
-    discount = models.ForeignKey('Discount', on_delete=models.CASCADE, blank=True, null=True)
-
-    class Meta:
-        verbose_name_plural = "categories"
 
     def __str__(self):
         return self.name
