@@ -45,3 +45,27 @@ class BaseModel(models.Model):
     def activate(self):
         self.is_active = True
         self.save()
+
+
+class BaseDiscount(BaseModel):
+    """
+        Implement base discount
+    """
+    value = models.PositiveIntegerField(null=False)
+    type = models.CharField(max_length=2, choices=[('PR', 'Price'), ('PE', 'Percent')], null=False)
+    max_price = models.PositiveIntegerField(null=True, blank=True)
+
+    def profit_value(self, price: int):
+        """
+        Calculate and Return the profit of the discount
+        :param price: int (item value)
+        :return: profit
+        """
+        if self.type == 'PR':
+            return min(self.value, price)
+        else:  # percent
+            raw_profit = int((self.value / 100) * price)
+            return int(min(raw_profit, int(self.max_price))) if self.max_price else raw_profit
+
+    class Meta:
+        abstract = True
