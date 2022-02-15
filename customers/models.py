@@ -13,7 +13,7 @@ class Customer(User):
     # email = models.EmailField(verbose_name='Email')
     phone_number = models.CharField(max_length=32, verbose_name='Phone Number')
     gender = models.IntegerField(choices=[
-        (1, 'Male'),
+        (1, _('Male')),
         (2, 'Female'),
         (3, 'Other'),
     ],verbose_name='Gender')
