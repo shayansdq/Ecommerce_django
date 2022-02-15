@@ -2,8 +2,8 @@ from django.utils import timezone
 
 from core.models import BaseModel, BaseDiscount
 from django.db import models
-from customers.models import Customer
-from products.models import Product
+from customers.models import Customer, Address
+from products.models import Product, Category
 from django.core.validators import MinValueValidator, MinLengthValidator
 
 
@@ -16,6 +16,8 @@ class Cart(BaseModel):
     off_code = models.ForeignKey('OffCode', on_delete=models.CASCADE, related_name='carts', null=True, blank=True,
                                  verbose_name='Off Code')
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='carts', verbose_name='Customer')
+
+    # address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='carts', verbose_name='Address')
 
     def total_worth(self):
         """ 
@@ -52,6 +54,15 @@ class CartItem(BaseModel):
         :return: all cart items that have this product
         """
         return cls.objects.filter(product=product)
+
+    @classmethod
+    def filter_by_product_category(cls, category: Category):
+        """
+         Filter all of Cart Items that their product consist of this category
+        :param category: (object of a category record)
+        :return: all cart items that their product consist of this category
+        """
+        return cls.objects.filter(product__category=category)
 
     def __str__(self):
         return f'{self.count} of {self.product}'
