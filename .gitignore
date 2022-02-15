@@ -124,6 +124,14 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
-
+STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static'
+]
 # Pyre type checker
 .pyre/
+
+#pycharm
+.idea/
+venv/
+*.xml
