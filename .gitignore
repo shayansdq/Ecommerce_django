@@ -132,4 +132,7 @@ dmypy.json
 #pycharm
 .idea/
 *.xml
+
+#django
 *initial.py
+00*
