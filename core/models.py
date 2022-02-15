@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -69,3 +70,8 @@ class BaseDiscount(BaseModel):
 
     class Meta:
         abstract = True
+
+    # Override the clean method for validating value in percent types
+    def clean(self):
+        if self.type == 'PR' and not 0 <= self.value <= 100:
+            raise ValidationError('Your value number must be between 0 and 100')
