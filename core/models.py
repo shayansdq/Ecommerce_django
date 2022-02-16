@@ -9,9 +9,9 @@ class BaseModel(models.Model):
     """
         This model mixin usable for logical delete and logical activate status datas.
     """
-    created = models.DateTimeField(auto_now_add=True, editable=False, )
-    last_updated = models.DateTimeField(auto_now=True, editable=False)
-    delete_timestamp = models.DateTimeField(null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True, editable=False,verbose_name=_('Created'))
+    last_updated = models.DateTimeField(auto_now=True, editable=False,verbose_name=_('Last updated'))
+    delete_timestamp = models.DateTimeField(null=True, blank=True,verbose_name=_('Deleted timestamp'))
     deleted_at = models.DateTimeField(
         null=True, blank=True,
         verbose_name=_("Deleted Datetime"),
@@ -52,9 +52,10 @@ class BaseDiscount(BaseModel):
     """
         Implement base discount
     """
-    value = models.PositiveIntegerField(null=False)
-    type = models.CharField(max_length=2, choices=[('PR', 'Price'), ('PE', 'Percent')], null=False)
-    max_price = models.PositiveIntegerField(null=True, blank=True)
+    value = models.PositiveIntegerField(null=False,verbose_name=_('Value'))
+    type = models.CharField(max_length=2, choices=[('PR', _('Price')), ('PE', _('Percent'))], null=False,
+                            verbose_name=_('Type'))
+    max_price = models.PositiveIntegerField(null=True, blank=True,verbose_name=_('Max price'))
 
     def profit_value(self, price: int):
         """
@@ -74,6 +75,6 @@ class BaseDiscount(BaseModel):
     # Override the clean method for validating value in percent types
     def clean(self):
         if self.type == 'PE' and not 0 <= self.value <= 100:
-            raise ValidationError({'value':'Your value number must be between 0 and 100'})
+            raise ValidationError({'value':_('Your value number must be between 0 and 100')})
         if self.type == 'PR' and self.max_price:
-            raise ValidationError({'max_price':'In price type Should not have max price'})
+            raise ValidationError({'max_price':_('In price type Should not have max price')})
