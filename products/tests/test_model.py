@@ -9,8 +9,8 @@ from django.test import TestCase
 
 class ProductTest(TestCase):
     def setUp(self) -> None:
-        self.customer1 = Customer.objects.create_user('test1', 'test1@email.com', 'test1', gender=1,
-                                                      phone_number='09224023292')
+        self.customer1 = Customer.objects.create_user('shayan', 'shayan@gmail.com', 'shayan', gender=1,
+                                                      phone_number='09216791779')
         # self.off_code1 = OffCode.objects.create(value=10000, type='PRI', code='abcd123465')
         self.cart1 = Cart.objects.create(customer=self.customer1)
 
