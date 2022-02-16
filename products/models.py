@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models import Max
-
+from django.utils.translation import gettext_lazy as _
 from core.models import BaseModel, BaseDiscount
 
 
@@ -13,10 +13,11 @@ class Category(BaseModel):
     discount = models.ForeignKey('Discount', on_delete=models.CASCADE, blank=True, null=True)
 
     class Meta:
-        verbose_name_plural = "categories"
+        verbose_name = _("category")
+        verbose_name_plural = _("categories")
 
     def __str__(self):
-        return self.name
+        return _(f"{self.name} from {self.root.name}" if self.root else f"{self.name}")
 
 
 class Product(BaseModel):
@@ -25,16 +26,18 @@ class Product(BaseModel):
     """
     name = models.CharField(max_length=100, verbose_name='Name')
     price = models.PositiveIntegerField(default=0, verbose_name='Price')
-    description = models.TextField()
-    picture = models.FileField(verbose_name='product image', null=True, blank=True)
-    inventory = models.PositiveIntegerField()
-    slug = models.SlugField(max_length=30, help_text='a short label for product')
-    brand = models.ForeignKey('Brand', on_delete=models.CASCADE)
-    discount = models.ForeignKey('Discount', on_delete=models.CASCADE, blank=True, null=True)
-    category = models.ForeignKey('Category', on_delete=models.CASCADE)
+    description = models.TextField(verbose_name='Des')
+    image = models.FileField(verbose_name='Product image', null=True, blank=True)
+    inventory = models.PositiveIntegerField(verbose_name='Inventory')
+    slug = models.SlugField(max_length=30, help_text='a short label for product', verbose_name='Slug')
+    brand = models.ForeignKey('Brand', on_delete=models.CASCADE, verbose_name='Brand')
+    discount = models.ForeignKey('Discount', on_delete=models.CASCADE, blank=True, null=True, verbose_name='Discount')
+    category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name='Category')
 
     class Meta:
         ordering = ['-created']
+        verbose_name = _("Product")
+        verbose_name_plural = _("Products")
 
     @classmethod
     def filter_by_category(cls, category: Category):
@@ -55,7 +58,8 @@ class Product(BaseModel):
 
     @property
     def is_available(self):
-        return self.inventory > 0
+        self.is_active = self.inventory > 0
+        return self.is_active
 
     @property
     def final_price(self):
@@ -66,18 +70,23 @@ class Product(BaseModel):
         return self.price - self.discount.profit_value(self.price) if self.discount else self.price
 
     def __str__(self):
-        return f'{self.name}'
+        return _(f'{self.name}')
 
 
 class Brand(BaseModel):
     """
         implement brands
     """
-    name = models.CharField(max_length=50, verbose_name='Name')
-    country = models.CharField(max_length=50, verbose_name='Country')
+    name = models.CharField(max_length=50, verbose_name=_('Name'))
+    country = models.CharField(max_length=50, verbose_name=_('Country'))
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = _("Brand")
+        verbose_name_plural = _("Brands")
 
     def __str__(self):
-        return self.name
+        return _(f"{self.name} from {self.country}")
 
 
 class Discount(BaseDiscount):
@@ -85,5 +94,10 @@ class Discount(BaseDiscount):
         Implement discounts
     """
 
+    class Meta:
+        ordering = ['-value']
+        verbose_name = _("Discount")
+        verbose_name_plural = _("Discounts")
+
     def __str__(self):
-        return f'Discount {self.value}'
+        return _(f'Discount value: {self.value}')
