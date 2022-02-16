@@ -50,6 +50,7 @@ class ProductInline(admin.TabularInline):
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
+    ordering = ['name']
     list_filter = ('name',)
     inlines = (ProductInline,)
     exclude = ('delete_timestamp', 'deleted_at', 'is_deleted', 'is_active')
