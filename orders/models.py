@@ -1,5 +1,5 @@
 from django.utils import timezone
-
+from django.utils.translation import gettext_lazy as _
 from core.models import BaseModel, BaseDiscount
 from django.db import models
 from customers.models import Customer, Address
@@ -11,11 +11,11 @@ class Cart(BaseModel):
     """
         A class used to implement carts
     """
-    total_price = models.PositiveIntegerField(default=0, verbose_name='Total Price')
-    final_price = models.PositiveIntegerField(default=0, verbose_name='Final Price')
+    total_price = models.PositiveIntegerField(default=0, verbose_name=_('Total Price'))
+    final_price = models.PositiveIntegerField(default=0, verbose_name=_('Final Price'))
     off_code = models.ForeignKey('OffCode', on_delete=models.CASCADE, related_name='carts', null=True, blank=True,
-                                 verbose_name='Off Code')
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='carts', verbose_name='Customer')
+                                 verbose_name=_('Off Code'))
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='carts', verbose_name=_('Customer'))
 
     # address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='carts', verbose_name='Address')
 
@@ -36,15 +36,23 @@ class Cart(BaseModel):
         self.final_price = total - self.off_code.profit_value(total) if self.off_code else total
         return self.final_price
 
+    class Meta:
+        index_together = ('customer','created')
+        verbose_name = _('Cart')
+        verbose_name_plural = _('Carts')
+
+    def __str__(self):
+        return _(f"{self.customer.username} - {self.final_price}")
+
 
 class CartItem(BaseModel):
     """
         A class used to implement cart items
     """
 
-    count = models.PositiveIntegerField(default=1, verbose_name='Count')
-    cart = models.ForeignKey('Cart', on_delete=models.CASCADE, related_name='items', verbose_name='Cart')
-    product = models.OneToOneField(Product, on_delete=models.CASCADE, verbose_name='Product')
+    count = models.PositiveIntegerField(default=1, verbose_name=_('Count'))
+    cart = models.ForeignKey('Cart', on_delete=models.CASCADE, related_name='items', verbose_name=_('Cart'))
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, verbose_name=_('Product'))
 
     @classmethod
     def filter_by_product(cls, product: Product):
@@ -64,20 +72,28 @@ class CartItem(BaseModel):
         """
         return cls.objects.filter(product__category=category)
 
+    class Meta:
+        verbose_name = _('Cart Item')
+        verbose_name_plural = _('Cart Items')
+
     def __str__(self):
-        return f'{self.count} of {self.product}'
+        return _(f'{self.count} of {self.product}')
 
 
 class OffCode(BaseDiscount):
     """
         A class to implement off codes
     """
-    valid_from = models.DateTimeField(verbose_name='Valid from date', help_text='Start date allowed to use',
-                                      validators=[MinValueValidator(timezone.now(), 'Must be greater than now')])
-    valid_to = models.DateTimeField(verbose_name='Valid to date', help_text='End date allowed to use')
-    code = models.CharField(max_length=10, verbose_name='off code',
-                            help_text='The code that the customer must enter to use the discount',
-                            validators=[MinLengthValidator(10, 'Your code lengths should have exactly 10 chars')])
+    valid_from = models.DateTimeField(verbose_name=_('Valid from date'), help_text=_('Start date allowed to use'),
+                                      validators=[MinValueValidator(timezone.now(), _('Must be greater than now'))])
+    valid_to = models.DateTimeField(verbose_name=_('Valid to date'), help_text=_('End date allowed to use'))
+    code = models.CharField(max_length=10, verbose_name=_('off code'),
+                            help_text=_('The code that the customer must enter to use the discount'),
+                            validators=[MinLengthValidator(10, _('Your code lengths should have exactly 10 chars'))])
+
+    class Meta:
+        verbose_name = _('Off code')
+        verbose_name_plural = _('Off codes')
 
     def __str__(self):
-        return f"Off Code {self.value}"
+        return _(f"Off Code {self.value}")
