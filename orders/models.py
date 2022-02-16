@@ -5,6 +5,7 @@ from django.db import models
 from customers.models import Customer, Address
 from products.models import Product, Category
 from django.core.validators import MinValueValidator, MinLengthValidator
+from django.utils.text import slugify
 
 
 class Cart(BaseModel):
@@ -37,7 +38,7 @@ class Cart(BaseModel):
         return self.final_price
 
     class Meta:
-        index_together = ('customer','created')
+        index_together = ('customer', 'created')
         verbose_name = _('Cart')
         verbose_name_plural = _('Carts')
 
