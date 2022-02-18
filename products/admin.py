@@ -14,7 +14,7 @@ class ProductAdmin(admin.ModelAdmin):
         ('information',
          {'fields': ['name', 'price', 'description', 'brand', 'category']}),
         ('Specifications',
-         {'fields': ['discount', 'inventory', 'slug', 'picture']})
+         {'fields': ['discount', 'inventory', 'slug', 'image']})
     )
     prepopulated_fields = {'slug': ('name',)}
     exclude = ('delete_timestamp', 'deleted_at', 'is_deleted', 'is_active')
