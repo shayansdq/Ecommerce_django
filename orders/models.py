@@ -16,9 +16,8 @@ class Cart(BaseModel):
     final_price = models.PositiveIntegerField(default=0, verbose_name=_('Final Price'))
     off_code = models.ForeignKey('OffCode', on_delete=models.CASCADE, related_name='carts', null=True, blank=True,
                                  verbose_name=_('Off Code'))
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='carts', verbose_name=_('Customer'))
-
-    # address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='carts', verbose_name='Address')
+    customer = models.ForeignKey(Customer, on_delete=models.RESTRICT, related_name='ccarts', verbose_name=_('Customer'))
+    address = models.ForeignKey(to=Address, on_delete=models.RESTRICT, related_name='acarts',verbose_name=_('Address'))
 
     def total_worth(self):
         """ 
@@ -38,12 +37,13 @@ class Cart(BaseModel):
         return self.final_price
 
     class Meta:
-        index_together = ('customer', 'created')
+        index_together = [('customer', 'created'),
+                          ('off_code', 'customer')]
         verbose_name = _('Cart')
         verbose_name_plural = _('Carts')
 
     def __str__(self):
-        return _(f"{self.customer.username} - {self.final_price}")
+        return f"{self.customer.user.phone} - {self.final_price}"
 
 
 class CartItem(BaseModel):
@@ -78,7 +78,7 @@ class CartItem(BaseModel):
         verbose_name_plural = _('Cart Items')
 
     def __str__(self):
-        return _(f'{self.count} of {self.product}')
+        return f'{self.count} of {self.product}'
 
 
 class OffCode(BaseDiscount):
@@ -97,4 +97,4 @@ class OffCode(BaseDiscount):
         verbose_name_plural = _('Off codes')
 
     def __str__(self):
-        return _(f"Off Code {self.value}")
+        return f"Off Code {self.value}"
