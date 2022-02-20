@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import Product, Brand, Category, Discount, Comment
+
+from comments.models import Comment
+from .models import Product, Brand, Category, Discount
 
 
 @admin.register(Product)
@@ -12,7 +14,7 @@ class ProductAdmin(admin.ModelAdmin):
     raw_id_fields = ('brand', 'discount', 'category')
     fieldsets = (
         ('information',
-         {'fields': ['name', 'price', 'description', 'brand', 'category']}),
+         {'fields': ['name', 'price', 'final_price', 'description', 'brand', 'category']}),
         ('Specifications',
          {'fields': ['discount', 'inventory', 'slug', 'image']})
     )
@@ -55,6 +57,7 @@ class CategoryAdmin(admin.ModelAdmin):
     inlines = (ProductInline,)
     exclude = ('delete_timestamp', 'deleted_at', 'is_deleted', 'is_active')
     raw_id_fields = ('root',)
+    prepopulated_fields = {'slug': ('description',)}
 
 
 @admin.register(Discount)
