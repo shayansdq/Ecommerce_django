@@ -21,6 +21,7 @@ class OffCodeAdmin(admin.ModelAdmin):
     list_display = ('value', 'type',)
     search_fields = ('value', 'type')
     list_filter = ('created',)
+    exclude = ('delete_timestamp', 'deleted_at')
 
 
 @admin.register(CartItem)
