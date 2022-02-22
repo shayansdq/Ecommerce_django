@@ -13,7 +13,7 @@
                 <div class="col-sm-12 col-md-6 col-xl-3">
                     <div class="card" tabindex="0">
                         <div class="card-image">
-                            <img src="https://assets.codepen.io/772926/card-img-one.png" alt="">
+                            <img src="{{ category.image.url }}" alt="">
                         </div>
                         <div class="card-content">
                             <p class="kicker">{{ category.name }}</p>
@@ -21,7 +21,7 @@
 
                         </div>
                         <div class="card-footer">
-                            <a href="#" role="button">
+                            <a href="{% url 'products:products_list' %}" role="button">
                                 <span>See all products</span>
                             </a>
                             <svg class="icon" viewBox="0 0 16 16">
