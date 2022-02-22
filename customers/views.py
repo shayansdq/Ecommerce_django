@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin, messages
 from django.shortcuts import render, redirect
-
+from django.contrib.auth import views as auth_views
 # Create your views here.
 from django.urls import reverse_lazy
 from django.views import View
@@ -103,7 +103,27 @@ class LoginPostView(View):
 
 class UserLogoutView(LoginRequiredMixin, View):
     """user logout view"""
+
     def get(self, request):
         logout(request)
         messages.success(request, 'You successfully logged out', 'success_login')
         return redirect('products:products_list')
+
+
+class UserPasswordResetView(auth_views.PasswordResetView):
+    template_name = 'customers/password_reset_form.html'
+    success_url = reverse_lazy('customers:password_reset_done')
+    email_template_name = 'customers/password_reset_email.html'
+
+
+class UserPasswordResetDoneView(auth_views.PasswordResetDoneView):
+    template_name = 'customers/password_reset_done.html'
+
+
+class UserPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
+    template_name = 'customers/password_reset_confirm.html'
+    success_url = reverse_lazy('customers:password_reset_complete')
+
+
+class UserPasswordResetCompleteView(auth_views.PasswordResetCompleteView):
+    template_name = 'customers/password_reset_complete.html'
