@@ -3,7 +3,9 @@ from django.shortcuts import render
 from django.views import View
 from rest_framework.response import Response
 from rest_framework import generics
-from .models import Product
+
+from .forms import PostSearchForm
+from .models import Product, Category
 from .serializers import ProductSerializer
 
 
@@ -40,3 +42,17 @@ from .serializers import ProductSerializer
 class ProductListView(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'products/products_list.html')
+
+
+class CategoryListView(View):
+    form_class = PostSearchForm
+
+    def get(self, request, *args, **kwargs):
+        categories = Category.objects.all()
+        if request.GET.get('search'):
+            categories = categories.filter(name__contains=request.GET['search'])
+        context = {
+            'categories': categories,
+            'search_form':self.form_class,
+        }
+        return render(request, 'products/categories_list.html', context)
