@@ -1,3 +1,4 @@
+from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import UserManager, AbstractUser
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -60,11 +61,20 @@ class MyUserManager(UserManager):
         username = extra_fields['phone']
         return super().create_user(username, email, password, **extra_fields)
 
+    def _create_user(self, username, email, password, **extra_fields):
+        username = extra_fields['phone']
+        return super()._create_user(username, email, password, **extra_fields)
+
 
 class User(AbstractUser):
-    phone = models.CharField(max_length=13, unique=True)
+    phone = models.CharField(max_length=13, unique=True,verbose_name=_('Phone Number'),
+                             help_text=_('Phone number used as username'))
     USERNAME_FIELD = 'phone'
     objects = MyUserManager()
+
+    class Meta:
+        verbose_name = _('User')
+        verbose_name_plural = _('Users')
 
     def __str__(self):
         return f"Phone: {self.phone}"
