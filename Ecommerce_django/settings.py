@@ -31,16 +31,21 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'rosetta',
+    # 'jazzmin',
+    'admin_volt.apps.AdminVoltConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'core.apps.CoreConfig',
     'customers.apps.CustomersConfig',
     'orders.apps.OrdersConfig',
     'products.apps.ProductsConfig',
+    'comments.apps.CommentsConfig',
 ]
 
 MIDDLEWARE = [
@@ -118,6 +123,7 @@ LOCALE_PATHS = (BASE_DIR / 'locale/',)
 
 TIME_ZONE = 'UTC'
 
+
 USE_I18N = True
 
 USE_TZ = True
@@ -132,7 +138,7 @@ STATICFILES_DIRS = [
 ]
 
 # Media Configuration
-MEDIA_URL = '/media/'
+MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 
@@ -142,6 +148,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/customer/login/'
+
+AUTH_USER_MODEL = 'core.User'
 
 # Google account
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
