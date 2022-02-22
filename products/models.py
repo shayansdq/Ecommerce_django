@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Max
 from django.utils.translation import gettext_lazy as _
@@ -11,8 +12,8 @@ class Category(BaseModel):
     """
         implement categories
     """
-    name = models.CharField(max_length=100, verbose_name='Name')
-    slug = models.SlugField(max_length=50, unique=True,
+    name = models.CharField(max_length=100, verbose_name='Name', unique=True)
+    slug = models.SlugField(max_length=50, unique=True, blank=True,
                             help_text=_('Unique value for product page URL, created from name.'))
     root = models.ForeignKey('self', on_delete=models.CASCADE, default=None, null=True, blank=True)
     description = models.TextField()
@@ -35,28 +36,34 @@ class Category(BaseModel):
         # return reverse('home:post_detail', args=(self.id, self.slug))
 
     def __str__(self):
-        return _(f"{self.name} from {self.root.name}" if self.root else f"{self.name}")
+        return f"{self.name} from {self.root.name}" if self.root else f"{self.name}"
 
 
 class Product(BaseModel):
     """
         A class used to implement products
     """
-    name = models.CharField(max_length=100, verbose_name='Name')
-    price = models.PositiveIntegerField(default=0, verbose_name='Price')
+    name = models.CharField(max_length=100, verbose_name=_('Name'), unique=True)
+    price = models.PositiveIntegerField(default=0, verbose_name=_('Price'))
+    final_price = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Final Price'))
     description = models.TextField(verbose_name='Des')
-    image = models.FileField(verbose_name='Product image', null=True, blank=True)
-    inventory = models.PositiveIntegerField(verbose_name='Inventory')
-    slug = models.SlugField(max_length=30, verbose_name='Slug',
-                            help_text='Unique value for product page URL, created from name.')
-    brand = models.ForeignKey('Brand', on_delete=models.CASCADE, verbose_name='Brand')
-    discount = models.ForeignKey('Discount', on_delete=models.CASCADE, blank=True, null=True, verbose_name='Discount')
-    category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name='Category')
+    image = models.FileField(verbose_name=_('Product image'), null=True, blank=True)
+    inventory = models.PositiveIntegerField(verbose_name=_('Inventory'))
+    slug = models.SlugField(max_length=30, verbose_name=_('Slug'),
+                            help_text=_('Unique value for product page URL, created from name.'))
+    brand = models.ForeignKey('Brand', on_delete=models.CASCADE, verbose_name=_('Brand'))
+    discount = models.ForeignKey('Discount', on_delete=models.CASCADE, blank=True, null=True,
+                                 verbose_name=_('Discount'))
+    category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name=_('Category'))
 
     class Meta:
         ordering = ['-created']
         verbose_name = _("Product")
         verbose_name_plural = _("Products")
+
+    @classmethod
+    def has_discount(cls):
+        return cls.objects.filter(discount__value__in=range(0, 50))
 
     @classmethod
     def filter_by_category(cls, category: Category):
@@ -67,10 +74,13 @@ class Product(BaseModel):
         """
         return cls.objects.filter(category=category)
 
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        self.final_worth()
+        super().save(force_insert, force_update, using, update_fields)
+
     @classmethod
     def max_price(cls):
         """
-
         :return: all products that consist of this category
         """
         return cls.objects.get(price=cls.objects.aggregate(max_price=Max('price')).get('max_price'))
@@ -80,20 +90,19 @@ class Product(BaseModel):
         self.is_active = self.inventory > 0
         return self.is_active
 
-    @property
-    def final_price(self):
+    def final_worth(self):
         """
         calculate price with discounts
         :return:
         """
-        return self.price - self.discount.profit_value(self.price) if self.discount else self.price
+        self.final_price = self.price - self.discount.profit_value(self.price) if self.discount else self.price
 
     def get_absolute_url(self):
         pass
         # return reverse('home:post_detail', args=(self.id, self.slug))
 
     def __str__(self):
-        return _(f'{self.name}')
+        return f'{self.name}'
 
 
 class Brand(BaseModel):
@@ -109,7 +118,7 @@ class Brand(BaseModel):
         verbose_name_plural = _("Brands")
 
     def __str__(self):
-        return _(f"{self.name} from {self.country}")
+        return f"{self.name} from {self.country}"
 
 
 class Discount(BaseDiscount):
@@ -123,23 +132,4 @@ class Discount(BaseDiscount):
         verbose_name_plural = _("Discounts")
 
     def __str__(self):
-        return _(f'Discount value: {self.value}')
-
-
-class Comment(BaseModel):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='ccomments',
-                                 verbose_name=_('Customer'))
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='pcomments',verbose_name=_('Product'))
-    reply = models.ForeignKey('self', on_delete=models.CASCADE, related_name='rcomments', null=True, blank=True,
-                              verbose_name=_('Reply'))
-    is_reply = models.BooleanField(default=False,verbose_name=_('Is reply'),
-                                   help_text=_('Selected if this comment is a reply message from another customer'))
-    body = models.TextField(max_length=400,verbose_name=_('Body'))
-
-    class Meta:
-        ordering = ['-created']
-        verbose_name = _("Comment")
-        verbose_name_plural = _("Comments")
-
-    def __str__(self):
-        return _(f"{self.customer} - {self.body[:30]}")
+        return f'Discount value: {self.value}'
