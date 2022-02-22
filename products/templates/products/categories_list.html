@@ -1,0 +1,37 @@
+{% extends 'layouts/__base.html' %}
+{% load static %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+{% block extra_head %}
+    <link rel="stylesheet" href="">
+{% endblock %}
+{% block body_content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-6 col-xl-3">
+                <div class="card" tabindex="0">
+                    <div class="card-image">
+                        <img src="https://assets.codepen.io/772926/card-img-one.png" alt="">
+                    </div>
+                    <div class="card-content">
+                        <p class="kicker">Technology</p>
+                        <h2>Using Banner Stands To Increase Trade Show Traffic</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" role="button">
+                            <span>Read More</span>
+                        </a>
+                        <svg class="icon" viewBox="0 0 16 16">
+                            <g fill="none" stroke-width="1" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10">
+                                <line x1="0.5" y1="8.5" x2="15.5" y2="8.5"></line>
+                                <polyline points="10.5,3.5 15.5,8.5 10.5,13.5 "></polyline>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
