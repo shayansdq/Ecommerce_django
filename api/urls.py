@@ -1,6 +1,8 @@
 from django.urls import path
 from .views import *
 
+
+app_name = 'api'
 urlpatterns = [
     path('list_products/',ProductList.as_view(), name='products_list'),
     # path('list_agents/',AgentsList, name='agents_list'),
