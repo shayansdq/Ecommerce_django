@@ -1,8 +1,3 @@
-
-
-
-
-
 const productDetails = [
 {
   name: "Airpods Pro",
@@ -67,12 +62,12 @@ function addItem(event) {
   getElementsByClassName("product-price")[0].
   innerText.replace("₹ ", ""));
 
-  let image = btnClicked.getElementsByClassName("product-img")[0].src;
+  let imgSrc = btnClicked.getElementsByClassName("product-img")[0].src;
   SwitchBtns(btnClicked);
   let cartItem = {
     name,
     final_price,
-    image,
+    imgSrc,
     qty: 1 };
 
   CartItems(cartItem);
@@ -232,7 +227,7 @@ function Product(product = {}) {
     <em class="stocks">In Stock</em>
   </div>
   <div class='img-container'>
-    <img class='product-img' src='${image.url}' alt='' />
+    <img class='product-img' src='${image}' alt='' />
     <div class='out-of-stock-cover'><span>Out Of Stock</span></div>
   </div>
   <div class='details'>
@@ -241,7 +236,7 @@ function Product(product = {}) {
       <button onclick='this.classList.toggle("fav")' class='heart'><i class='fas fa-heart'></i></button>
     </div>
     <div class='wrapper'>
-
+  
       <p>${description}</p>
     </div>
     <div class='purchase'>
@@ -253,11 +248,11 @@ function Product(product = {}) {
 }
 
 function CartItems(cartItem = {}) {
-  let { name, final_price, image, qty } = cartItem;
+  let { name, final_price, imgSrc, qty } = cartItem;
   return `
 <div class='cart-item'>
   <div class='cart-img'>
-    <img src='${image}' alt='' />
+    <img src='${imgSrc}' alt='' />
   </div>
   <strong class='name'>${name}</strong>
   <span class='qty-change'>${QtyBtn(qty)}</span>
@@ -269,17 +264,17 @@ function CartItems(cartItem = {}) {
 function Banner() {
   return `
 <div class='banner'>
-<!--  <ul class="box-area">-->
-<!--  <li></li>-->
-<!--  <li></li>-->
-<!--  <li></li>-->
-<!--  <li></li>-->
-<!--  <li></li>-->
-<!--  <li></li>-->
-<!--  </ul>-->
+  <ul class="box-area">
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  </ul>
   <div class='main-cart'>${DisplayProducts()}</div>
 
-
+ 
   <div onclick='sideNav(0)' class='cover'></div>
   <div class='cover purchase-cover'></div>
   <div class='cart'>${CartSideNav()}</div>
@@ -295,10 +290,10 @@ function CartSideNav() {
   return `
 <div class='side-nav'>
   <button onclick='sideNav(0)'><i class='fas fa-times'></i></button>
-  <h2 style="color: white;">Cart</h2>
+  <h2>Cart</h2>
   <div class='cart-items'></div>
   <div class='final'>
-    <strong style="color: white;">Total: <span class='total'>0</span>Tomans</strong>
+    <strong>Total: ₹ <span class='total'>0</span>.00/-</strong>
     <div class='action'>
       <button onclick='buy(1)' class='btn buy'>Purchase <i class='fas fa-credit-card' style='color:#6665dd;'></i></button>
       <button onclick='clearCart()' class='btn clear'>Clear Cart <i class='fas fa-trash' style='color:#bb342f;'></i></button>
@@ -454,7 +449,7 @@ function App() {
   ${Banner()}
 </div>`;
 }
-// }
+//}
 
 // injects the rendered component's html
 document.getElementById("app").innerHTML = App();
