@@ -8,290 +8,313 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-16 10:44+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2022-02-19 15:41+0000\n"
+"PO-Revision-Date: 2022-02-19 16:06+0000\n"
+"Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Translated-Using: django-rosetta 0.9.8\n"
 
-#: core/models.py:12
-msgid "Created"
-msgstr "تاریخ ساخت"
-
-#: core/models.py:13
-msgid "Last updated"
-msgstr "تاریخ آخرین تغییر"
-
-#: core/models.py:14
-#| msgid "Deleted Datetime"
-msgid "Deleted timestamp"
-msgstr " تاریخ حذف"
-
-#: core/models.py:17
-msgid "Deleted Datetime"
-msgstr " تاریخ حذف"
-
-#: core/models.py:18
-msgid "This is deleted datetime"
-msgstr "این تاریخ حذف است"
-
-#: core/models.py:22
-msgid "Deleted status"
-msgstr "وضعیت حذف"
-
-#: core/models.py:23
-msgid "This is deleted status"
-msgstr "این وضعیت حذف است"
-
-#: core/models.py:27
-msgid "Active status"
-msgstr "وضعیت فعال بودن"
-
-#: core/models.py:28
-msgid "This is active status"
-msgstr "این وضعیت فعال بودن است"
-
-#: core/models.py:55
-msgid "Value"
-msgstr "مقدار"
-
-#: core/models.py:56
-#| msgid "Total Price"
-msgid "Price"
-msgstr "قیمتی"
-
-#: core/models.py:56
-msgid "Percent"
-msgstr "تخفیفی"
-
-#: core/models.py:57
-msgid "Type"
-msgstr "نوع"
-
-#: core/models.py:58
-#| msgid "Total Price"
-msgid "Max price"
-msgstr "بیشترین قیمت تخفیف"
-
-#: core/models.py:78
-msgid "Your value number must be between 0 and 100"
-msgstr "عدد مقدار شما باید بین 0 تا 100 باشد"
-
-#: core/models.py:80
-msgid "In price type Should not have max price"
-msgstr "در نوع قیمت ویژگی حداکثر قیمت باید خالی باشد"
-
-#: customers/models.py:14
-msgid "Phone Number"
-msgstr "شماره موبایل"
-
-#: customers/models.py:16
-msgid "Male"
-msgstr "مرد"
-
-#: customers/models.py:17
-msgid "Female"
-msgstr "زن"
-
-#: customers/models.py:18
-msgid "Other"
-msgstr "غیره"
-
-#: customers/models.py:19
-msgid "Gender"
-msgstr "جنسیت"
-
-#: customers/models.py:22 customers/models.py:35 orders/models.py:18
+#: comments/models.py:15 customers/models.py:13 customers/models.py:29
+#: orders/models.py:19
 msgid "Customer"
 msgstr "مشتری"
 
-#: customers/models.py:23
-#| msgid "Customer"
-msgid "Customers"
-msgstr "مشتری ها"
-
-#: customers/models.py:30
-msgid "State"
-msgstr "استان/ایالت"
-
-#: customers/models.py:31
-msgid "City"
-msgstr "شهر"
-
-#: customers/models.py:32
-#| msgid "Off Code"
-msgid "Zip Code"
-msgstr "کد پستی"
-
-#: customers/models.py:33
-msgid "Address detail"
-msgstr "جزئیات آدرس"
-
-#: customers/models.py:40
-msgid "Address"
-msgstr "آدرس"
-
-#: customers/models.py:41
-msgid "Addresses"
-msgstr "آدرس ها"
-
-#: orders/models.py:14
-msgid "Total Price"
-msgstr "جمع قیمت ها"
-
-#: orders/models.py:15
-msgid "Final Price"
-msgstr "قیمت نهایی"
-
-#: orders/models.py:17
-msgid "Off Code"
-msgstr "کد تخفیف"
-
-#: orders/models.py:41 orders/models.py:54
-msgid "Cart"
-msgstr "سبد خرید"
-
-#: orders/models.py:42
-#| msgid "Cart"
-msgid "Carts"
-msgstr "سبد های خرید"
-
-#: orders/models.py:45
-#, python-brace-format
-msgid "{self.customer.username} - {self.final_price}"
-msgstr "{self.customer.username} - {self.final_price}"
-
-#: orders/models.py:53
-#| msgid "Discount"
-msgid "Count"
-msgstr "تعداد"
-
-#: orders/models.py:55 products/models.py:39
+#: comments/models.py:16 orders/models.py:56 products/models.py:61
 msgid "Product"
 msgstr "محصول"
 
-#: orders/models.py:76
-#| msgid "Cart"
+#: comments/models.py:18
+msgid "Reply"
+msgstr "پاسخ"
+
+#: comments/models.py:19
+msgid "Is reply"
+msgstr "وضعیت پاسخ"
+
+#: comments/models.py:20
+msgid "Selected if this comment is a reply message from another customer"
+msgstr "اگر این نظر یک پیام پاسخ از طرف مشتری دیگر باشد، انتخاب شده است"
+
+#: comments/models.py:21
+msgid "Body"
+msgstr "متن"
+
+#: comments/models.py:25
+msgid "Comment"
+msgstr "نظر"
+
+#: comments/models.py:26
+msgid "Comments"
+msgstr "نظرات"
+
+#: comments/models.py:30 comments/models.py:32
+msgid "This field should not be full if this comment isn't reply"
+msgstr ""
+
+#: comments/models.py:35
+msgid "{self.customer} - {self.body[:30]}"
+msgstr "{self.count} of {self.product}"
+
+#: core/constants/values.py:5 products/models.py:47
+msgid "Price"
+msgstr "قیمتی"
+
+#: core/constants/values.py:6
+msgid "Percent"
+msgstr "تخفیفی"
+
+#: core/models.py:14
+msgid "Created"
+msgstr "تاریخ ساخت"
+
+#: core/models.py:15
+msgid "Last updated"
+msgstr "تاریخ آخرین تغییر"
+
+#: core/models.py:16
+msgid "Deleted timestamp"
+msgstr " تاریخ حذف"
+
+#: core/models.py:19
+msgid "Deleted Datetime"
+msgstr " تاریخ حذف"
+
+#: core/models.py:20
+msgid "This is deleted datetime"
+msgstr "این تاریخ حذف است"
+
+#: core/models.py:24
+msgid "Deleted status"
+msgstr "وضعیت حذف"
+
+#: core/models.py:25
+msgid "This is deleted status"
+msgstr "این وضعیت حذف است"
+
+#: core/models.py:29
+msgid "Active status"
+msgstr "وضعیت فعال بودن"
+
+#: core/models.py:30
+msgid "This is active status"
+msgstr "این وضعیت فعال بودن است"
+
+#: core/models.py:77
+msgid "Value"
+msgstr "مقدار"
+
+#: core/models.py:79
+msgid "Type"
+msgstr "نوع"
+
+#: core/models.py:80
+msgid "Max price"
+msgstr "بیشترین قیمت تخفیف"
+
+#: core/models.py:100
+msgid "Your value number must be between 0 and 100"
+msgstr "عدد مقدار شما باید بین 0 تا 100 باشد"
+
+#: core/models.py:102
+msgid "In price type Should not have max price"
+msgstr "در نوع قیمت ویژگی حداکثر قیمت باید خالی باشد"
+
+#: customers/constants/values.py:5
+msgid "Male"
+msgstr "مرد"
+
+#: customers/constants/values.py:6
+msgid "Female"
+msgstr "زن"
+
+#: customers/constants/values.py:7
+msgid "Other"
+msgstr "غیره"
+
+#: customers/models.py:9
+msgid "User"
+msgstr "کاربر"
+
+#: customers/models.py:10
+msgid "Gender"
+msgstr "جنسیت"
+
+#: customers/models.py:14
+msgid "Customers"
+msgstr "مشتری ها"
+
+#: customers/models.py:24
+msgid "State"
+msgstr "استان/ایالت"
+
+#: customers/models.py:25
+msgid "City"
+msgstr "شهر"
+
+#: customers/models.py:26
+msgid "Zip Code"
+msgstr "کد پستی"
+
+#: customers/models.py:27
+msgid "Address detail"
+msgstr "جزئیات آدرس"
+
+#: customers/models.py:34 orders/models.py:20
+msgid "Address"
+msgstr "آدرس"
+
+#: customers/models.py:35
+msgid "Addresses"
+msgstr "آدرس ها"
+
+#: customers/views.py:37
+msgid "Contact us"
+msgstr "ارتباط با ما"
+
+#: orders/models.py:15
+msgid "Total Price"
+msgstr "جمع قیمت ها"
+
+#: orders/models.py:16 products/models.py:48
+msgid "Final Price"
+msgstr "قیمت نهایی"
+
+#: orders/models.py:18
+msgid "Off Code"
+msgstr "کد تخفیف"
+
+#: orders/models.py:42 orders/models.py:55
+msgid "Cart"
+msgstr "سبد خرید"
+
+#: orders/models.py:43
+msgid "Carts"
+msgstr "سبد های خرید"
+
+#: orders/models.py:54
+msgid "Count"
+msgstr "تعداد"
+
+#: orders/models.py:77
 msgid "Cart Item"
 msgstr "سفارش"
 
-#: orders/models.py:77
+#: orders/models.py:78
 msgid "Cart Items"
 msgstr "سفارش ها"
 
-#: orders/models.py:80
-#, python-brace-format
-msgid "{self.count} of {self.product}"
-msgstr "{self.count} of {self.product}"
-
-#: orders/models.py:87
+#: orders/models.py:88
 msgid "Valid from date"
 msgstr "قابل استفاده از تاریخ"
 
-#: orders/models.py:87
+#: orders/models.py:88
 msgid "Start date allowed to use"
 msgstr "تاریخ شروع فعال شدن کد تخفیف"
 
-#: orders/models.py:88
+#: orders/models.py:89
 msgid "Must be greater than now"
 msgstr "باید از تاریخ الان بیشتر باشد"
 
-#: orders/models.py:89
+#: orders/models.py:90
 msgid "Valid to date"
 msgstr "قابل استفاده تا تاریخ"
 
-#: orders/models.py:89
+#: orders/models.py:90
 msgid "End date allowed to use"
 msgstr "تاریخ پایان فعال بودن کد تخفیف"
 
-#: orders/models.py:90
+#: orders/models.py:91
 msgid "off code"
 msgstr "کد تخفیف"
 
-#: orders/models.py:91
+#: orders/models.py:92
 msgid "The code that the customer must enter to use the discount"
 msgstr "کدی که مشتری برای استفاده از تخفیف باید وارد کند"
 
-#: orders/models.py:92
+#: orders/models.py:93
 msgid "Your code lengths should have exactly 10 chars"
 msgstr "طول کد شما باید دقیقا 10 کاراکتر باشد"
 
-#: orders/models.py:95
-#| msgid "off code"
+#: orders/models.py:96
 msgid "Off code"
 msgstr "کد تخفیف"
 
-#: orders/models.py:96
-#| msgid "off code"
+#: orders/models.py:97
 msgid "Off codes"
 msgstr "کد های تخفیف"
 
-#: orders/models.py:99
-#, python-brace-format
-msgid "Off Code {self.value}"
-msgstr "مقدار کد تخفیف : {self.value}"
+#: products/models.py:17 products/models.py:53
+msgid "Unique value for product page URL, created from name."
+msgstr ""
 
-#: products/models.py:16
+#: products/models.py:21
+msgid "Comma-delimited set of SEO keywords for meta tag"
+msgstr ""
+
+#: products/models.py:23
+msgid "Content for description meta tag"
+msgstr ""
+
+#: products/models.py:28
 msgid "category"
 msgstr "دسته بندی"
 
-#: products/models.py:17
+#: products/models.py:29
 msgid "categories"
 msgstr "دسته بندی ها"
 
-#: products/models.py:20
-#, python-brace-format
-msgid "{self.name} from {self.root.name}"
-msgstr "{self.name} from {self.root.name}"
-
-#: products/models.py:40
-msgid "Products"
-msgstr "محصولات"
-
-#: products/models.py:73
-#, python-brace-format
-msgid "{self.name}"
-msgstr "{self.name}"
-
-#: products/models.py:80
+#: products/models.py:46 products/models.py:114
 msgid "Name"
 msgstr "اسم"
 
-#: products/models.py:81
-#| msgid "Discount"
-msgid "Country"
-msgstr "کشور"
+#: products/models.py:50
+#, fuzzy
+#| msgid "Product"
+msgid "Product image"
+msgstr "محصول"
 
-#: products/models.py:85
+#: products/models.py:51
+msgid "Inventory"
+msgstr ""
+
+#: products/models.py:52
+msgid "Slug"
+msgstr ""
+
+#: products/models.py:54 products/models.py:119
 msgid "Brand"
 msgstr "مارک"
 
-#: products/models.py:86
-msgid "Brands"
-msgstr "مارک ها"
-
-#: products/models.py:89
-#, python-brace-format
-msgid "{self.name} from {self.country}"
-msgstr "{self.name} from {self.country}"
-
-#: products/models.py:99
+#: products/models.py:56 products/models.py:133
 msgid "Discount"
 msgstr "تخفیف"
 
-#: products/models.py:100
+#: products/models.py:57
+#, fuzzy
+#| msgid "category"
+msgid "Category"
+msgstr "دسته بندی"
+
+#: products/models.py:62
+msgid "Products"
+msgstr "محصولات"
+
+#: products/models.py:115
+msgid "Country"
+msgstr "کشور"
+
+#: products/models.py:120
+msgid "Brands"
+msgstr "مارک ها"
+
+#: products/models.py:134
 msgid "Discounts"
 msgstr "تخفیف ها"
-
-#: products/models.py:103
-#, fuzzy, python-brace-format
-#| msgid "Off Code {self.value}"
-msgid "Discount value: {self.value}"
-msgstr "مقدار کد تخفیف : {self.value}"
 
 #: venv/lib/python3.10/site-packages/django/contrib/messages/apps.py:7
 msgid "Messages"
@@ -352,8 +375,8 @@ msgstr ""
 
 #: venv/lib/python3.10/site-packages/django/core/validators.py:269
 msgid ""
-"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or "
-"hyphens."
+"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or"
+" hyphens."
 msgstr ""
 
 #: venv/lib/python3.10/site-packages/django/core/validators.py:278
@@ -539,15 +562,15 @@ msgstr ""
 #: venv/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1310
 #, python-format
 msgid ""
-"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[."
-"uuuuuu]][TZ] format."
+"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD "
+"HH:MM[:ss[.uuuuuu]][TZ] format."
 msgstr ""
 
 #: venv/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1314
 #, python-format
 msgid ""
-"“%(value)s” value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
-"[TZ]) but it is an invalid date/time."
+"“%(value)s” value has the correct format (YYYY-MM-DD "
+"HH:MM[:ss[.uuuuuu]][TZ]) but it is an invalid date/time."
 msgstr ""
 
 #: venv/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1318
@@ -566,8 +589,8 @@ msgstr ""
 #: venv/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1584
 #, python-format
 msgid ""
-"“%(value)s” value has an invalid format. It must be in [DD] [[HH:]MM:]ss[."
-"uuuuuu] format."
+"“%(value)s” value has an invalid format. It must be in [DD] "
+"[[HH:]MM:]ss[.uuuuuu] format."
 msgstr ""
 
 #: venv/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1587
@@ -726,7 +749,8 @@ msgid "Many-to-many relationship"
 msgstr ""
 
 #. Translators: If found as last label character, these punctuation
-#. characters will prevent the default label_suffix to be appended to the label
+#. characters will prevent the default label_suffix to be appended to the
+#. label
 #: venv/lib/python3.10/site-packages/django/forms/boundfield.py:165
 msgid ":?.!"
 msgstr ""
@@ -776,7 +800,8 @@ msgstr ""
 
 #: venv/lib/python3.10/site-packages/django/forms/fields.py:552
 #, python-format
-msgid "Ensure this filename has at most %(max)d character (it has %(length)d)."
+msgid ""
+"Ensure this filename has at most %(max)d character (it has %(length)d)."
 msgid_plural ""
 "Ensure this filename has at most %(max)d characters (it has %(length)d)."
 msgstr[0] ""
@@ -884,7 +909,8 @@ msgid "The inline value did not match the parent instance."
 msgstr ""
 
 #: venv/lib/python3.10/site-packages/django/forms/models.py:1214
-msgid "Select a valid choice. That choice is not one of the available choices."
+msgid ""
+"Select a valid choice. That choice is not one of the available choices."
 msgstr ""
 
 #: venv/lib/python3.10/site-packages/django/forms/models.py:1336
@@ -1344,11 +1370,11 @@ msgstr ""
 
 #: venv/lib/python3.10/site-packages/django/views/csrf.py:124
 msgid ""
-"If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or "
-"including the “Referrer-Policy: no-referrer” header, please remove them. The "
-"CSRF protection requires the “Referer” header to do strict referer checking. "
-"If you’re concerned about privacy, use alternatives like <a rel=\"noreferrer"
-"\" …> for links to third-party sites."
+"If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or"
+" including the “Referrer-Policy: no-referrer” header, please remove them. "
+"The CSRF protection requires the “Referer” header to do strict referer "
+"checking. If you’re concerned about privacy, use alternatives like <a "
+"rel=\"noreferrer\" …> for links to third-party sites."
 msgstr ""
 
 #: venv/lib/python3.10/site-packages/django/views/csrf.py:132
@@ -1399,8 +1425,8 @@ msgstr ""
 #: venv/lib/python3.10/site-packages/django/views/generic/dates.py:594
 #, python-format
 msgid ""
-"Future %(verbose_name_plural)s not available because %(class_name)s."
-"allow_future is False."
+"Future %(verbose_name_plural)s not available because "
+"%(class_name)s.allow_future is False."
 msgstr ""
 
 #: venv/lib/python3.10/site-packages/django/views/generic/dates.py:628
@@ -1456,10 +1482,10 @@ msgstr ""
 #: venv/lib/python3.10/site-packages/django/views/templates/default_urlconf.html:222
 #, python-format
 msgid ""
-"You are seeing this page because <a href=\"https://docs.djangoproject.com/en/"
-"%(version)s/ref/settings/#debug\" target=\"_blank\" rel=\"noopener"
-"\">DEBUG=True</a> is in your settings file and you have not configured any "
-"URLs."
+"You are seeing this page because <a "
+"href=\"https://docs.djangoproject.com/en/%(version)s/ref/settings/#debug\" "
+"target=\"_blank\" rel=\"noopener\">DEBUG=True</a> is in your settings file "
+"and you have not configured any URLs."
 msgstr ""
 
 #: venv/lib/python3.10/site-packages/django/views/templates/default_urlconf.html:230
@@ -1485,3 +1511,34 @@ msgstr ""
 #: venv/lib/python3.10/site-packages/django/views/templates/default_urlconf.html:249
 msgid "Connect, get help, or contribute"
 msgstr ""
+
+#~ msgid "Phone Number"
+#~ msgstr "شماره موبایل"
+
+#, python-brace-format
+#~ msgid "{self.customer.username} - {self.final_price}"
+#~ msgstr "{self.customer.username} - {self.final_price}"
+
+#, python-brace-format
+#~ msgid "{self.count} of {self.product}"
+#~ msgstr "{self.count} of {self.product}"
+
+#, python-brace-format
+#~ msgid "Off Code {self.value}"
+#~ msgstr "مقدار کد تخفیف : {self.value}"
+
+#, python-brace-format
+#~ msgid "{self.name} from {self.root.name}"
+#~ msgstr "{self.name} from {self.root.name}"
+
+#, python-brace-format
+#~ msgid "{self.name}"
+#~ msgstr "{self.name}"
+
+#, python-brace-format
+#~ msgid "{self.name} from {self.country}"
+#~ msgstr "{self.name} from {self.country}"
+
+#, fuzzy, python-brace-format
+#~ msgid "Discount value: {self.value}"
+#~ msgstr "مقدار کد تخفیف : {self.value}"

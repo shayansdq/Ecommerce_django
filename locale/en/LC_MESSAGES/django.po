@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-16 10:44+0000\n"
+"POT-Creation-Date: 2022-02-19 15:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,267 +18,297 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: core/models.py:12
-msgid "Created"
-msgstr ""
-
-#: core/models.py:13
-msgid "Last updated"
-msgstr ""
-
-#: core/models.py:14
-msgid "Deleted timestamp"
-msgstr ""
-
-#: core/models.py:17
-msgid "Deleted Datetime"
-msgstr ""
-
-#: core/models.py:18
-msgid "This is deleted datetime"
-msgstr ""
-
-#: core/models.py:22
-msgid "Deleted status"
-msgstr ""
-
-#: core/models.py:23
-msgid "This is deleted status"
-msgstr ""
-
-#: core/models.py:27
-msgid "Active status"
-msgstr ""
-
-#: core/models.py:28
-msgid "This is active status"
-msgstr ""
-
-#: core/models.py:55
-msgid "Value"
-msgstr ""
-
-#: core/models.py:56
-msgid "Price"
-msgstr ""
-
-#: core/models.py:56
-msgid "Percent"
-msgstr ""
-
-#: core/models.py:57
-msgid "Type"
-msgstr ""
-
-#: core/models.py:58
-msgid "Max price"
-msgstr ""
-
-#: core/models.py:78
-msgid "Your value number must be between 0 and 100"
-msgstr ""
-
-#: core/models.py:80
-msgid "In price type Should not have max price"
-msgstr ""
-
-#: customers/models.py:14
-msgid "Phone Number"
-msgstr ""
-
-#: customers/models.py:16
-msgid "Male"
-msgstr ""
-
-#: customers/models.py:17
-msgid "Female"
-msgstr ""
-
-#: customers/models.py:18
-msgid "Other"
-msgstr ""
-
-#: customers/models.py:19
-msgid "Gender"
-msgstr ""
-
-#: customers/models.py:22 customers/models.py:35 orders/models.py:18
+#: comments/models.py:15 customers/models.py:13 customers/models.py:29
+#: orders/models.py:19
 msgid "Customer"
 msgstr ""
 
-#: customers/models.py:23
-msgid "Customers"
-msgstr ""
-
-#: customers/models.py:30
-msgid "State"
-msgstr ""
-
-#: customers/models.py:31
-msgid "City"
-msgstr ""
-
-#: customers/models.py:32
-msgid "Zip Code"
-msgstr ""
-
-#: customers/models.py:33
-msgid "Address detail"
-msgstr ""
-
-#: customers/models.py:40
-msgid "Address"
-msgstr ""
-
-#: customers/models.py:41
-msgid "Addresses"
-msgstr ""
-
-#: orders/models.py:14
-msgid "Total Price"
-msgstr ""
-
-#: orders/models.py:15
-msgid "Final Price"
-msgstr ""
-
-#: orders/models.py:17
-msgid "Off Code"
-msgstr ""
-
-#: orders/models.py:41 orders/models.py:54
-msgid "Cart"
-msgstr ""
-
-#: orders/models.py:42
-msgid "Carts"
-msgstr ""
-
-#: orders/models.py:45
-#, python-brace-format
-msgid "{self.customer.username} - {self.final_price}"
-msgstr ""
-
-#: orders/models.py:53
-msgid "Count"
-msgstr ""
-
-#: orders/models.py:55 products/models.py:39
+#: comments/models.py:16 orders/models.py:56 products/models.py:61
 msgid "Product"
 msgstr ""
 
-#: orders/models.py:76
-msgid "Cart Item"
+#: comments/models.py:18
+msgid "Reply"
+msgstr ""
+
+#: comments/models.py:19
+msgid "Is reply"
+msgstr ""
+
+#: comments/models.py:20
+msgid "Selected if this comment is a reply message from another customer"
+msgstr ""
+
+#: comments/models.py:21
+msgid "Body"
+msgstr ""
+
+#: comments/models.py:25
+msgid "Comment"
+msgstr ""
+
+#: comments/models.py:26
+msgid "Comments"
+msgstr ""
+
+#: comments/models.py:30 comments/models.py:32
+msgid "This field should not be full if this comment isn't reply"
+msgstr ""
+
+#: comments/models.py:35
+msgid "{self.customer} - {self.body[:30]}"
+msgstr ""
+
+#: core/constants/values.py:5 products/models.py:47
+msgid "Price"
+msgstr ""
+
+#: core/constants/values.py:6
+msgid "Percent"
+msgstr ""
+
+#: core/models.py:14
+msgid "Created"
+msgstr ""
+
+#: core/models.py:15
+msgid "Last updated"
+msgstr ""
+
+#: core/models.py:16
+msgid "Deleted timestamp"
+msgstr ""
+
+#: core/models.py:19
+msgid "Deleted Datetime"
+msgstr ""
+
+#: core/models.py:20
+msgid "This is deleted datetime"
+msgstr ""
+
+#: core/models.py:24
+msgid "Deleted status"
+msgstr ""
+
+#: core/models.py:25
+msgid "This is deleted status"
+msgstr ""
+
+#: core/models.py:29
+msgid "Active status"
+msgstr ""
+
+#: core/models.py:30
+msgid "This is active status"
+msgstr ""
+
+#: core/models.py:77
+msgid "Value"
+msgstr ""
+
+#: core/models.py:79
+msgid "Type"
+msgstr ""
+
+#: core/models.py:80
+msgid "Max price"
+msgstr ""
+
+#: core/models.py:100
+msgid "Your value number must be between 0 and 100"
+msgstr ""
+
+#: core/models.py:102
+msgid "In price type Should not have max price"
+msgstr ""
+
+#: customers/constants/values.py:5
+msgid "Male"
+msgstr ""
+
+#: customers/constants/values.py:6
+msgid "Female"
+msgstr ""
+
+#: customers/constants/values.py:7
+msgid "Other"
+msgstr ""
+
+#: customers/models.py:9
+msgid "User"
+msgstr ""
+
+#: customers/models.py:10
+msgid "Gender"
+msgstr ""
+
+#: customers/models.py:14
+msgid "Customers"
+msgstr ""
+
+#: customers/models.py:24
+msgid "State"
+msgstr ""
+
+#: customers/models.py:25
+msgid "City"
+msgstr ""
+
+#: customers/models.py:26
+msgid "Zip Code"
+msgstr ""
+
+#: customers/models.py:27
+msgid "Address detail"
+msgstr ""
+
+#: customers/models.py:34 orders/models.py:20
+msgid "Address"
+msgstr ""
+
+#: customers/models.py:35
+msgid "Addresses"
+msgstr ""
+
+#: customers/views.py:37
+msgid "Contact us"
+msgstr ""
+
+#: orders/models.py:15
+msgid "Total Price"
+msgstr ""
+
+#: orders/models.py:16 products/models.py:48
+msgid "Final Price"
+msgstr ""
+
+#: orders/models.py:18
+msgid "Off Code"
+msgstr ""
+
+#: orders/models.py:42 orders/models.py:55
+msgid "Cart"
+msgstr ""
+
+#: orders/models.py:43
+msgid "Carts"
+msgstr ""
+
+#: orders/models.py:54
+msgid "Count"
 msgstr ""
 
 #: orders/models.py:77
+msgid "Cart Item"
+msgstr ""
+
+#: orders/models.py:78
 msgid "Cart Items"
 msgstr ""
 
-#: orders/models.py:80
-#, python-brace-format
-msgid "{self.count} of {self.product}"
-msgstr ""
-
-#: orders/models.py:87
+#: orders/models.py:88
 msgid "Valid from date"
 msgstr ""
 
-#: orders/models.py:87
+#: orders/models.py:88
 msgid "Start date allowed to use"
 msgstr ""
 
-#: orders/models.py:88
+#: orders/models.py:89
 msgid "Must be greater than now"
 msgstr ""
 
-#: orders/models.py:89
+#: orders/models.py:90
 msgid "Valid to date"
 msgstr ""
 
-#: orders/models.py:89
+#: orders/models.py:90
 msgid "End date allowed to use"
 msgstr ""
 
-#: orders/models.py:90
+#: orders/models.py:91
 msgid "off code"
 msgstr ""
 
-#: orders/models.py:91
+#: orders/models.py:92
 msgid "The code that the customer must enter to use the discount"
 msgstr ""
 
-#: orders/models.py:92
+#: orders/models.py:93
 msgid "Your code lengths should have exactly 10 chars"
 msgstr ""
 
-#: orders/models.py:95
+#: orders/models.py:96
 msgid "Off code"
 msgstr ""
 
-#: orders/models.py:96
+#: orders/models.py:97
 msgid "Off codes"
 msgstr ""
 
-#: orders/models.py:99
-#, python-brace-format
-msgid "Off Code {self.value}"
+#: products/models.py:17 products/models.py:53
+msgid "Unique value for product page URL, created from name."
 msgstr ""
 
-#: products/models.py:16
+#: products/models.py:21
+msgid "Comma-delimited set of SEO keywords for meta tag"
+msgstr ""
+
+#: products/models.py:23
+msgid "Content for description meta tag"
+msgstr ""
+
+#: products/models.py:28
 msgid "category"
 msgstr ""
 
-#: products/models.py:17
+#: products/models.py:29
 msgid "categories"
 msgstr ""
 
-#: products/models.py:20
-#, python-brace-format
-msgid "{self.name} from {self.root.name}"
-msgstr ""
-
-#: products/models.py:40
-msgid "Products"
-msgstr ""
-
-#: products/models.py:73
-#, python-brace-format
-msgid "{self.name}"
-msgstr ""
-
-#: products/models.py:80
+#: products/models.py:46 products/models.py:114
 msgid "Name"
 msgstr ""
 
-#: products/models.py:81
-msgid "Country"
+#: products/models.py:50
+msgid "Product image"
 msgstr ""
 
-#: products/models.py:85
+#: products/models.py:51
+msgid "Inventory"
+msgstr ""
+
+#: products/models.py:52
+msgid "Slug"
+msgstr ""
+
+#: products/models.py:54 products/models.py:119
 msgid "Brand"
 msgstr ""
 
-#: products/models.py:86
-msgid "Brands"
-msgstr ""
-
-#: products/models.py:89
-#, python-brace-format
-msgid "{self.name} from {self.country}"
-msgstr ""
-
-#: products/models.py:99
+#: products/models.py:56 products/models.py:133
 msgid "Discount"
 msgstr ""
 
-#: products/models.py:100
-msgid "Discounts"
+#: products/models.py:57
+msgid "Category"
 msgstr ""
 
-#: products/models.py:103
-#, python-brace-format
-msgid "Discount value: {self.value}"
+#: products/models.py:62
+msgid "Products"
+msgstr ""
+
+#: products/models.py:115
+msgid "Country"
+msgstr ""
+
+#: products/models.py:120
+msgid "Brands"
+msgstr ""
+
+#: products/models.py:134
+msgid "Discounts"
 msgstr ""
 
 #: venv/lib/python3.10/site-packages/django/contrib/messages/apps.py:7
