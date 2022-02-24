@@ -15,7 +15,9 @@ class Category(BaseModel):
     name = models.CharField(max_length=100, verbose_name='Name', unique=True)
     slug = models.SlugField(max_length=50, unique=True, blank=True,
                             help_text=_('Unique value for product page URL, created from name.'))
-    root = models.ForeignKey('self', on_delete=models.CASCADE, default=None, null=True, blank=True)
+    image = models.FileField(verbose_name=_('Category image'), null=True, blank=True)
+    root = models.ForeignKey('self', on_delete=models.CASCADE, default=None, null=True, blank=True,
+                             related_name='child')
     description = models.TextField()
     meta_keywords = models.CharField("Meta Keywords", max_length=255,
                                      help_text=_('Comma-delimited set of SEO keywords for meta tag'))
@@ -63,7 +65,7 @@ class Product(BaseModel):
 
     @classmethod
     def has_discount(cls):
-        return cls.objects.filter(discount__value__in=range(0, 50))
+        return cls.objects.filter(discount__value__in=range(0, 90))
 
     @classmethod
     def filter_by_category(cls, category: Category):
@@ -133,3 +135,13 @@ class Discount(BaseDiscount):
 
     def __str__(self):
         return f'Discount value: {self.value}'
+
+
+class ProductImages(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE,related_name='extra_images')
+    image = models.FileField(verbose_name=_('Image'),
+                             help_text=_('Extra image for product and show more detail'))
+
+    # def __str__(self):
+    #     for product_image in self.product.images
+    #     return f""
