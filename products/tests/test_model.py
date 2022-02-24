@@ -1,16 +1,21 @@
 from orders.models import Cart, CartItem, OffCode
-from customers.models import Customer
+from customers.models import Customer, Address
 from products.models import Product, Brand, Discount, Category
 from django.test import TestCase
 from django.utils.text import slugify
+from core.models import User
 
 
 class ProductTest(TestCase):
     def setUp(self) -> None:
-        self.customer1 = Customer.objects.create_user('shayan', 'shayan@gmail.com', 'shayan', gender=1,
-                                                      phone_number='09216791779')
+        self.user1 = User.objects.create_user(phone='09216791779', password='123123')
+        self.customer1 = Customer.objects.create(user=self.user1, gender=1)
         # self.off_code1 = OffCode.objects.create(value=10000, type='PRI', code='abcd123465')
-        self.cart1 = Cart.objects.create(customer=self.customer1)
+
+        self.address1 = Address.objects.create(state='tehran', city='tehran', zip_code='12312312',
+                                               extra_detail='khiabane felan', customer=self.customer1)
+
+        self.cart1 = Cart.objects.create(customer=self.customer1, address=self.address1)
 
         # brands
         self.brand1 = Brand.objects.create(name='LG', country='Japan')
@@ -24,11 +29,11 @@ class ProductTest(TestCase):
                                                  meta_keywords='asdas', meta_description='asda')
 
         # discounts
-        self.discount1 = Discount.objects.create(value=2000, type='PR')
-        self.discount2 = Discount.objects.create(value=35, type='PE')
+        self.discount1 = Discount.objects.create(value=2000, type=0)
+        self.discount2 = Discount.objects.create(value=35, type=1)
 
         # products
-        self.product1 = Product.objects.create(name='TV', price=10022000, description='some text', inventory=5,
+        self.product1 = Product.objects.create(name='TV', price=1002, description='some text', inventory=5,
                                                brand=self.brand1,
                                                category=self.category1, discount=self.discount1, slug='some-text')
         self.product2 = Product.objects.create(name='J5', price=200, description='some text', inventory=10,
@@ -51,7 +56,15 @@ class ProductTest(TestCase):
         self.assertEqual(str(self.product1), 'TV')
 
     def test1_total_worth_success(self):
-        self.assertEqual(self.cart1.total_worth(),10020200)
+        self.assertEqual(self.cart1.total_worth(), 10020200)
 
     def test2_final_worth_success(self):
-        self.assertEqual(self.cart1.final_worth(),10020200)
+        self.assertEqual(self.cart1.final_worth(), 10020200)
+
+    def test3_final_price_products(self):
+        print(self.product1.price)
+        print(self.product1.final_price)
+
+    def test(self):
+        p1 = Product.objects.first()
+        print(p1.extra_images.all())
