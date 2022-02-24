@@ -7,10 +7,15 @@ from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import FormView
-
+from rest_framework import generics
+from rest_framework import permissions, authentication
 from core.models import User
-from customers.forms import ContactUsForm, CustomerLoginForm, CustomerRegisterForm
+from customers.forms import ContactUsForm, CustomerLoginForm, CustomerRegisterForm, CustomerForm
 from django.utils.translation import gettext as _
+
+from customers.models import Address
+from customers.my_permissions import IsOwner, SuperUserCanSee
+from customers.serializers import AddressSerializer
 
 
 class ContactUsView2(SuccessMessageMixin, FormView):
@@ -62,7 +67,7 @@ class LoginRegisterView(View):
         login_form = self.login_form_class()
         if register_form.is_valid():
             cd = register_form.cleaned_data
-            print(cd)
+
             User.objects.create_user(phone=cd['phone'], password=cd['password1'], email=cd['email'])
             messages.success(request, 'Registered successfully!', 'success_register')
             return redirect('customers:register_login_view')
@@ -127,3 +132,53 @@ class UserPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
 
 class UserPasswordResetCompleteView(auth_views.PasswordResetCompleteView):
     template_name = 'customers/password_reset_complete.html'
+
+
+class CustomerProfileView(LoginRequiredMixin, View):
+    info_user_form_class = CustomerForm
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        user_info = {
+            'phone': user.phone,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'email': user.email
+        }
+        form = self.info_user_form_class(initial=user_info)
+        context = {
+            'form': form,
+        }
+        return render(request, 'customers/profile.html', context)
+
+    def post(self, request, *args, **kwargs):
+        form = self.info_user_form_class(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            request.user.phone = cd['phone']
+            request.user.first_name = cd['first_name']
+            request.user.last_name = cd['last_name']
+            request.user.email = cd['email']
+            request.user.save()
+            messages.success(request, 'Congrats, your profile successfully edited', 'success_login')
+            return redirect('customers:profile')
+        context = {
+            'form': form
+        }
+        return render(request, 'customers/profile.html', context)
+
+
+class AddressDetailApi(generics.RetrieveAPIView):
+    permission_classes = [
+        IsOwner,
+    ]
+    serializer_class = AddressSerializer
+    queryset = Address.objects.all()
+
+
+class AddressListApi(generics.ListAPIView):
+    permission_classes = [
+        SuperUserCanSee,
+    ]
+    serializer_class = AddressSerializer
+    queryset = Address.objects.all()
