@@ -303,7 +303,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_URL = '/customer/login/'
+LOGIN_URL = 'customers:register_login_view'
 
 AUTH_USER_MODEL = 'core.User'
 
