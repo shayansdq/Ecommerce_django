@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from comments.models import Comment
-from .models import Product, Brand, Category, Discount
+from .models import Product, Brand, Category, Discount, ProductImages
 
 
 @admin.register(Product)
@@ -65,3 +65,6 @@ class DiscountAdmin(admin.ModelAdmin):
     list_display = ('value', 'type')
     search_fields = ('value',)
     exclude = ('delete_timestamp', 'deleted_at', 'is_deleted', 'is_active')
+
+
+admin.site.register(ProductImages)
