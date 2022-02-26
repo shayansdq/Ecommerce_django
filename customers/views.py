@@ -1,3 +1,4 @@
+from unicodedata import category
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin, messages
@@ -16,6 +17,7 @@ from django.utils.translation import gettext as _
 from customers.models import Address
 from customers.my_permissions import IsOwner, SuperUserCanSee
 from customers.serializers import AddressSerializer
+from products.models import Category
 
 
 class ContactUsView2(SuccessMessageMixin, FormView):
@@ -88,6 +90,7 @@ class LoginPostView(View):
 
     def setup(self, request, *args, **kwargs):
         self.next = request.GET.get('next')
+        print(self.next)
         return super().setup(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -146,8 +149,10 @@ class CustomerProfileView(LoginRequiredMixin, View):
             'email': user.email
         }
         form = self.info_user_form_class(initial=user_info)
+        categories = Category.objects.all()
         context = {
             'form': form,
+            'categories':categories,
         }
         return render(request, 'customers/profile.html', context)
 
