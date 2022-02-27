@@ -31,12 +31,6 @@ class ProductListView(ListView):
 
         context['list_exams'] = file_exams
         return context
-    # def get(self, request, *args, **kwargs):
-    #     products = Product.objects.all()
-    #     context = {
-    #         'products': products,
-    #     }
-    #     return render(request, 'products/index.html', context)
 
 
 class ProductDetailView(DetailView):
@@ -45,21 +39,32 @@ class ProductDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ProductDetailView, self).get_context_data(**kwargs)
-        categories = Category.objects.all()
         this_product = self.object
         related_products = Product.objects.filter(category=this_product.category)
-        related_products = set(list(related_products)) - set([this_product])
+        related_products = set(list(related_products)) - {this_product}
         slider_one_images = this_product.extra_images.all()[:3]
         slider_two_images = this_product.extra_images.all()[3:6]
-
-        context['categories'] = categories
         context['slider_one_images'] = slider_one_images
         context['slider_two_images'] = slider_two_images
-        context['related_products'] = slider_two_images
-
+        context['related_products'] = related_products
         return context
 
 
-# class ProductByCategoryListView(View):
-#     def get(self, request, *args, **kwargs):
-#         pass
+class ProductByCategoryListView(ListView):
+    model = Product
+    context_object_name = 'products'
+    template_name = 'products/products_by_category.html'
+    paginate_by = 2
+
+    def get_context_data(self, **kwargs):
+        context = super(ProductByCategoryListView, self).get_context_data(**kwargs)
+        category = Category.objects.get(pk=self.kwargs['pk'])
+        products = Product.objects.filter(category=category)
+        products = list(products)
+        if category.child.all():
+            for child_category in list(category.child.all()):
+                products.extend(list(Product.objects.filter(category=child_category)))
+        context['products'] = products
+        return context
+
+
