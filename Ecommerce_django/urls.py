@@ -21,6 +21,7 @@ from django.urls import path, include
 
 urlpatterns = i18n_patterns(path('admin/', admin.site.urls),
                             path('', include('products.urls',namespace='products')),
+                            path('core/', include('core.urls',namespace='core')),
                             path('customers/', include('customers.urls',namespace='customers')),
                             path('rosetta/', include('rosetta.urls')),
                             path('api/', include('api.urls',namespace='api')),
