@@ -1,57 +1,56 @@
 <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" aria-haspopup="true" data-toggle="dropdown" aria-expanded="false">
         Categories <b class="caret"></b>
     </a>
     <ul class="dropdown-menu multi-level">
         {% for category in categories %}
             {% if not category.root and not category.child.all %}
-                <li><a href="#" class="dropdown-item " id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{category.name}}</a></li>
+                <li data-name="{{ category.id }}"><a href="{% url 'products:products_category' category.id %}" class="dropdown-item " id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">{{category.name}}</a></li>
             {% elif not category.root and category.child.all %}
-                <li class="dropdown-submenu">
-                    <a href="#" class="dropdown-toggle dropdown-item" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{category.name}}</a>
+                <li class="dropdown-submenu category">
+                    <a href="{% url 'products:products_category' category.id %}" class="dropdown-toggle dropdown-item" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">{{category.name}}</a>
                     <ul class="dropdown-menu">
                         {% for child_category in category.child.all %}
                             {% if not child_category.child.all %}
                                 <li>
-                                    <a href="#" class="dropdown-item " id="navbarDropdown"
-                                       role="button" data-toggle="dropdown" aria-haspopup="true"
-                                       aria-expanded="false">
+                                    <a href="{% url 'products:products_category' child_category.id %}" class="dropdown-item " id="navbarDropdown"
+                                       role="button">
                                         {{child_category.name}}
                                     </a>
                                 </li>
                             {% else %}
                                 <li class="dropdown-submenu">
-                                    <a href="#" class="dropdown-toggle dropdown-item" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{child_category.name}}</a>
+                                    <a href="{% url 'products:products_category' child_category.id %}" class="dropdown-toggle dropdown-item" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">{{child_category.name}}</a>
                                     <ul class="dropdown-menu">
                                         {% for child2_category in child_category.child.all %}
                                             {% if not child2_category.child.all %}
                                                 <li>
-                                                    <a href="#" class="dropdown-item " id="navbarDropdown"
-                                                       role="button" data-toggle="dropdown" aria-haspopup="true"
+                                                    <a href="{% url 'products:products_category' child2_category.id %}" class="dropdown-item " id="navbarDropdown"
+                                                       role="button" aria-haspopup="true"
                                                        aria-expanded="false">
                                                         {{child2_category.name}}
                                                     </a>
                                                 </li>
                                             {% else %}
                                                 <li class="dropdown-submenu">
-                                                    <a href="#" class="dropdown-toggle dropdown-item" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{child2_category.name}}</a>
+                                                    <a href="{% url 'products:products_category' child2_category.id %}" class="dropdown-toggle dropdown-item" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">{{child2_category.name}}</a>
                                                     <ul class="dropdown-menu">
                                                         {% for child3_category in child2_category.child.all %}
                                                             {% if not child3_category.child.all %}
                                                                 <li>
-                                                                    <a href="#" class="dropdown-item " id="navbarDropdown"
-                                                                       role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <a href="{% url 'products:products_category' child3_category.id %}" class="dropdown-item " id="navbarDropdown"
+                                                                       role="button" aria-haspopup="true" aria-expanded="false">
                                                                         {{child3_category.name}}
                                                                     </a>
                                                                 </li>
                                                             {% else %}
                                                                 <li class="dropdown-submenu">
-                                                                    <a href="#" class="dropdown-toggle dropdown-item" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{child3_category.name}}</a>
+                                                                    <a href="{% url 'products:products_category' child3_category.id %}" class="dropdown-toggle dropdown-item" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">{{child3_category.name}}</a>
                                                                     <ul class="dropdown-menu">
                                                                         {% for child4_category in child3_category.child.all %}
                                                                                 <li>
                                                                                     <a href="#" class="dropdown-item " id="navbarDropdown"
-                                                                                       role="button" data-toggle="dropdown" aria-haspopup="true"
+                                                                                       role="button" aria-haspopup="true"
                                                                                        aria-expanded="false">
                                                                                         {{child4_category.name}}
                                                                                     </a>
@@ -72,6 +71,7 @@
                         {% endfor %}
                     </ul>
                 </li>
+
             {% endif %}
         {% endfor %}
     </ul>
