@@ -20,8 +20,10 @@ class ProductListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(ProductListView, self).get_context_data(**kwargs)
         list_products = Product.objects.all()
+        print('...',Product.most_discounted_products(3))
         paginator = Paginator(list_products, self.paginate_by)
         page = self.request.GET.get('page')
+        # print(Category.popular_categories(3))
         try:
             file_exams = paginator.page(page)
         except PageNotAnInteger:
@@ -54,17 +56,28 @@ class ProductByCategoryListView(ListView):
     model = Product
     context_object_name = 'products'
     template_name = 'products/products_by_category.html'
-    paginate_by = 2
+    paginate_by = 3
 
-    def get_context_data(self, **kwargs):
-        context = super(ProductByCategoryListView, self).get_context_data(**kwargs)
+    def get_queryset(self):
+        print(super().get_queryset())
         category = Category.objects.get(pk=self.kwargs['pk'])
         products = Product.objects.filter(category=category)
         products = list(products)
         if category.child.all():
             for child_category in list(category.child.all()):
                 products.extend(list(Product.objects.filter(category=child_category)))
-        context['products'] = products
-        return context
+        return products
 
+    def get_context_data(self, **kwargs):
+        context = super(ProductByCategoryListView, self).get_context_data(**kwargs)
+        paginator = Paginator(self.get_queryset(), self.paginate_by)
+        page = self.request.GET.get('page')
+        try:
+            file_exams = paginator.page(page)
+        except PageNotAnInteger:
+            file_exams = paginator.page(1)
+        except EmptyPage:
+            file_exams = paginator.page(paginator.num_pages)
+        context['list_exams'] = file_exams
+        return context
 
