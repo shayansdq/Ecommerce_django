@@ -8,3 +8,8 @@ from django.views import View
 class AboutPageView(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'core/about.html')
+
+
+class ContactPageView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'core/contact.html')
