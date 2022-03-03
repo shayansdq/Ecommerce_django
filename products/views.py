@@ -1,4 +1,5 @@
 import requests
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -6,8 +7,7 @@ from django.views import View
 from rest_framework.response import Response
 from rest_framework import generics
 from django.views.generic import DetailView, ListView
-from .forms import PostSearchForm
-from .models import Product, Category
+from .models import Product, Category, Brand
 from .serializers import ProductSerializer
 
 
@@ -20,18 +20,15 @@ class ProductListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(ProductListView, self).get_context_data(**kwargs)
         list_products = Product.objects.all()
-        print('...',Product.most_discounted_products(3))
-        paginator = Paginator(list_products, self.paginate_by)
-        page = self.request.GET.get('page')
-        # print(Category.popular_categories(3))
-        try:
-            file_exams = paginator.page(page)
-        except PageNotAnInteger:
-            file_exams = paginator.page(1)
-        except EmptyPage:
-            file_exams = paginator.page(paginator.num_pages)
-
-        context['list_exams'] = file_exams
+        banner_products = Product.most_discounted_products(3)
+        active_carousel = banner_products.pop(0)
+        another_carousels = banner_products
+        categories = Category.popular_categories(3)
+        featured_products = Product.most_discounted_products(3)
+        context['categories_3'] = categories
+        context['products'] = featured_products
+        context['another_carousels'] = another_carousels
+        context['active_carousel'] = active_carousel
         return context
 
 
@@ -41,11 +38,16 @@ class ProductDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ProductDetailView, self).get_context_data(**kwargs)
-        this_product = self.object
+        this_product:Product = self.object
+        parent_categories = this_product.search_parent_categories()
+        this_category = parent_categories.pop()
+        another_categories = parent_categories
         related_products = Product.objects.filter(category=this_product.category)
         related_products = set(list(related_products)) - {this_product}
         slider_one_images = this_product.extra_images.all()[:3]
         slider_two_images = this_product.extra_images.all()[3:6]
+        context['this_category'] = this_category
+        context['another_categories'] = another_categories
         context['slider_one_images'] = slider_one_images
         context['slider_two_images'] = slider_two_images
         context['related_products'] = related_products
@@ -59,19 +61,15 @@ class ProductByCategoryListView(ListView):
     paginate_by = 3
 
     def get_queryset(self):
-        print(super().get_queryset())
-        category = Category.objects.get(pk=self.kwargs['pk'])
-        products = Product.objects.filter(category=category)
-        products = list(products)
-        if category.child.all():
-            for child_category in list(category.child.all()):
-                products.extend(list(Product.objects.filter(category=child_category)))
-        return products
+        self.category = Category.objects.get(pk=self.kwargs['pk'])
+        return self.category.children_products()
 
     def get_context_data(self, **kwargs):
         context = super(ProductByCategoryListView, self).get_context_data(**kwargs)
+        all_products = self.category.children_products()
         paginator = Paginator(self.get_queryset(), self.paginate_by)
         page = self.request.GET.get('page')
+        this_brands = Product.brand_of_products(all_products)
         try:
             file_exams = paginator.page(page)
         except PageNotAnInteger:
@@ -79,5 +77,6 @@ class ProductByCategoryListView(ListView):
         except EmptyPage:
             file_exams = paginator.page(paginator.num_pages)
         context['list_exams'] = file_exams
+        context['brands'] = this_brands
         return context
 
