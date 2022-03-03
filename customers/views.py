@@ -14,7 +14,7 @@ from core.models import User
 from customers.forms import ContactUsForm, CustomerLoginForm, CustomerRegisterForm, CustomerForm
 from django.utils.translation import gettext as _
 
-from customers.models import Address
+from customers.models import Address, Customer
 from customers.my_permissions import IsOwner, SuperUserCanSee
 from customers.serializers import AddressSerializer
 from products.models import Category
@@ -70,7 +70,8 @@ class LoginRegisterView(View):
         if register_form.is_valid():
             cd = register_form.cleaned_data
 
-            User.objects.create_user(phone=cd['phone'], password=cd['password1'], email=cd['email'])
+            new_user = User.objects.create_user(phone=cd['phone'], password=cd['password1'], email=cd['email'])
+            Customer.objects.create(user=new_user,gender=int(cd['gender']))
             messages.success(request, 'Registered successfully!', 'success_register')
             return redirect('customers:register_login_view')
         context = {
@@ -89,6 +90,7 @@ class LoginPostView(View):
     register_form_class = CustomerLoginForm
 
     def setup(self, request, *args, **kwargs):
+        print(request.GET)
         self.next = request.GET.get('next')
         print(self.next)
         return super().setup(request, *args, **kwargs)
@@ -104,7 +106,7 @@ class LoginPostView(View):
                 if self.next:
                     return redirect(self.next)
                 messages.success(request, f'Login Successfully,Welcome {user.phone}', 'success_login')
-                return redirect('products:products_list')
+                return redirect('products:home')
         messages.error(request, 'your username or password is wrong', 'unsuccess_login')
         return redirect('customers:register_login_view')
 
@@ -115,7 +117,7 @@ class UserLogoutView(LoginRequiredMixin, View):
     def get(self, request):
         logout(request)
         messages.success(request, 'You successfully logged out', 'success_login')
-        return redirect('products:products_list')
+        return redirect('customers:register_login_view')
 
 
 class UserPasswordResetView(auth_views.PasswordResetView):
@@ -142,6 +144,8 @@ class CustomerProfileView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         user = request.user
+        customer = Customer.objects.get(user=user)
+        carts = customer.ccarts.all()
         user_info = {
             'phone': user.phone,
             'first_name': user.first_name,
@@ -153,6 +157,8 @@ class CustomerProfileView(LoginRequiredMixin, View):
         context = {
             'form': form,
             'categories':categories,
+            'customer':customer,
+            'carts':carts,
         }
         return render(request, 'customers/profile.html', context)
 
