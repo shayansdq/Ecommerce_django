@@ -3,8 +3,62 @@
 {% load extra_tags %}
 {% block extra_head %}
     <style>
-        .slick-slider{position:relative;display:block;box-sizing:border-box;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-touch-callout:none;-khtml-user-select:none;-ms-touch-action:pan-y;touch-action:pan-y;-webkit-tap-highlight-color:transparent}.slick-list{position:relative;display:block;overflow:hidden;margin:0;padding:0}.slick-list:focus{outline:0}.slick-list.dragging{cursor:pointer;cursor:hand}.slick-slider .slick-list,.slick-slider .slick-track{-webkit-transform:translate3d(0,0,0);-moz-transform:translate3d(0,0,0);-ms-transform:translate3d(0,0,0);-o-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}.slick-track{position:relative;top:0;left:0;display:block;margin-left:auto;margin-right:auto}.slick-track:after,.slick-track:before{display:table;content:''}.slick-track:after{clear:both}.slick-loading .slick-track{visibility:hidden}.slick-slide{display:none;float:left;height:100%;min-height:1px}[dir=rtl] .slick-slide{float:right}.slick-slide img{display:block}.slick-slide.slick-loading img{display:none}.slick-slide.dragging img{pointer-events:none}.slick-initialized .slick-slide{display:block}.slick-loading .slick-slide{visibility:hidden}.slick-vertical .slick-slide{display:block;height:auto;border:1px solid transparent}.slick-arrow.slick-hidden{display:none}
+        .heart {
+            width: 70px;
+            height: 70px;
+            background: url("https://cssanimation.rocks/images/posts/steps/heart.png") no-repeat;
+            {#background-position: 0 0;#}
+            cursor: pointer;
+            transition: background-position 1s steps(28);
+            transition-duration: 0s;
+        }
+        .heart{
+            {#background-color: red;#}
+        }
+        .heart.is-active {
+            transition-duration: 1s;
+            background-position: -2800px 0;
+        }
 
+        {#.placement {#}
+        {#position: fixed;#}
+        {#    top: 50%;#}
+        {#    left: 50%;#}
+        {#    transform: translate(-50%, -50%);#}
+
+        a{
+            text-decoration: none !important;
+        }
+    </style>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <style>
+        .slick-slider{position:relative;display:block;box-sizing:border-box;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-touch-callout:none;-khtml-user-select:none;-ms-touch-action:pan-y;touch-action:pan-y;-webkit-tap-highlight-color:transparent}.slick-list{position:relative;display:block;overflow:hidden;margin:0;padding:0}.slick-list:focus{outline:0}.slick-list.dragging{cursor:pointer;cursor:hand}.slick-slider .slick-list,.slick-slider .slick-track{-webkit-transform:translate3d(0,0,0);-moz-transform:translate3d(0,0,0);-ms-transform:translate3d(0,0,0);-o-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}.slick-track{position:relative;top:0;left:0;display:block;margin-left:auto;margin-right:auto}.slick-track:after,.slick-track:before{display:table;content:''}.slick-track:after{clear:both}.slick-loading .slick-track{visibility:hidden}.slick-slide{display:none;float:left;height:100%;min-height:1px}[dir=rtl] .slick-slide{float:right}.slick-slide img{display:block}.slick-slide.slick-loading img{display:none}.slick-slide.dragging img{pointer-events:none}.slick-initialized .slick-slide{display:block}.slick-loading .slick-slide{visibility:hidden}.slick-vertical .slick-slide{display:block;height:auto;border:1px solid transparent}.slick-arrow.slick-hidden{display:none}
+        .carousel-item a img{
+            width: 128px !important;
+            height: 101px;
+            object-fit: cover;
+        }
+        .container .col-lg-5 .card img {
+            width: 443px;
+            height: 443px;
+            object-fit: contain;
+            min-width: 100%;
+        {#min-height: 100%;#}
+        }
+        .product-wap .card-body{
+            width: 260px;
+            height: 199px;
+        }
+        .container .card img {
+            width: 258px;
+            height: 258px;
+            object-fit: contain;
+            min-width: 100%;
+            min-height: 100%;
+        }
     </style>
 {% endblock %}
 {% block body_content %}
@@ -47,6 +101,11 @@
                         <!--Start Carousel Wrapper-->
                         <div id="multi-item-example" class="col-10 carousel slide carousel-multi-item" data-bs-ride="carousel">
 
+
+
+                            {% if slider_one_image %}
+
+                            {% endif %}
                             <!--Start Slides-->
                             <div class="carousel-inner product-links-wap" role="listbox">
 
@@ -114,12 +173,33 @@
                             </div>
                             <!--End Controls-->
                         </div>
+
                     </div>
+
                     <!-- col end -->
                     <div class="col-lg-7 mt-5">
                         <div class="card">
                             <div class="card-body">
-                                <h1 class="h2">{{ product.name }}</h1>
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item">
+                                            <a href="{% url 'products:home' %}">Home</a>
+                                        </li>
+
+                                        {% for category in another_categories %}
+                                            <li class="breadcrumb-item">
+                                                <a href="{% url 'products:products_category' category.id %}">{{ category.name }}</a>
+                                            </li>
+                                        {% endfor %}
+
+                                        <li class="breadcrumb-item active" aria-current="page">
+                                            <a href="{% url 'products:products_category' this_category.id %}" style="color: #5e5454">
+                                                {{ this_category.name }}
+                                            </a>
+                                        </li>
+                                    </ol>
+                                </nav>
+                                <h1 class="h2">{{ product.name | title }}</h1>
                                 {% if product.price != product.final_price %}
                                     <del class="h3 py-2" style="color: red">{{product.price }} Tomans</del>
                                     {% if product.discount.type == 1 %}
@@ -132,13 +212,17 @@
                                     <p class="h3 py-2">{{product.final_price}} Tomans</p>
                                 {% endif %}
 
-                                <p class="py-2">
-                                    <i class="fa fa-star text-warning"></i>
-                                    <i class="fa fa-star text-warning"></i>
-                                    <i class="fa fa-star text-warning"></i>
-                                    <i class="fa fa-star text-warning"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <span class="list-inline-item text-dark">Rating 4.8 | 36 Comments</span>
+                                <p class="" style="margin-bottom: -25px;margin-top: -25px">
+{#                                    <i class="fa fa-star text-warning"></i>#}
+{#                                    <i class="fa fa-star text-warning"></i>#}
+{#                                    <i class="fa fa-star text-warning"></i>#}
+{#                                    <i class="fa fa-star text-warning"></i>#}
+{#                                    <i class="fa fa-star text-secondary"></i>#}
+{#                                    <span class="list-inline-item text-dark">#}
+                                <div class="placement text-right" >
+                                    <div class="heart" title="Like"></div>
+                                </div>
+
                                 </p>
                                 <ul class="list-inline">
                                     <li class="list-inline-item">
@@ -318,6 +402,11 @@
                     }
                 }
             ]
+        });
+        $(function() {
+            $(".heart").on("click", function() {
+                $(this).toggleClass("is-active");
+            });
         });
     </script>
     <!-- End Slider Script -->
