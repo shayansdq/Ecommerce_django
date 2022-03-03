@@ -7,30 +7,41 @@
     <link rel='stylesheet'
           href='https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css'>
     <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <style>
+        [name|="phone"]{
+            pointer-events: none;
+            cursor: default;
+            opacity: 0.6;
+        }
+    </style>
 {% endblock %}
 {% block navbar %}
-        <!-- Start Top Nav -->
-        <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
-            <div class="container text-light">
-                <div class="w-100 d-flex justify-content-between">
-                    <div>
-                        <i class="fa fa-envelope mx-2"></i>
-                        <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:info@company.com">info@company.com</a>
-                        <i class="fa fa-phone mx-2"></i>
-                        <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">010-020-0340</a>
-                    </div>
-                    <div>
-                        <a class="text-light" href="https://fb.com/templatemo" target="_blank" rel="sponsored"><i class="fab fa-facebook-f fa-sm fa-fw me-2"></i></a>
-                        <a class="text-light" href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram fa-sm fa-fw me-2"></i></a>
-                        <a class="text-light" href="https://twitter.com/" target="_blank"><i class="fab fa-twitter fa-sm fa-fw me-2"></i></a>
-                        <a class="text-light" href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin fa-sm fa-fw"></i></a>
-                    </div>
+    <!-- Start Top Nav -->
+    <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
+        <div class="container text-light">
+            <div class="w-100 d-flex justify-content-between">
+                <div>
+                    <i class="fa fa-envelope mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:info@company.com">
+                        info@company.com
+                    </a>
+                    <i class="fa fa-phone mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">
+                        010-020-0340
+                    </a>
+                </div>
+                <div>
+                    <a class="text-light" href="https://fb.com/templatemo" target="_blank" rel="sponsored"><i class="fab fa-facebook-f fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://twitter.com/" target="_blank"><i class="fab fa-twitter fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin fa-sm fa-fw"></i></a>
                 </div>
             </div>
-        </nav>
-        <!-- Close Top Nav -->
+        </div>
+    </nav>
+    <!-- Close Top Nav -->
 
-    {% endblock %}
+{% endblock %}
 {% block body_content %}
 
     <!-- partial:index.partial.html -->
@@ -46,114 +57,25 @@
                 font-size: 15px;
                 letter-spacing: 3px;
                 font-weight: bold;
-              ">Pro Sidebar</span>
+              ">
+
+                <img src="{% if customer.gender == 0 %}{% static 'img/profile.png' %}{% else %}{% static 'img/woman.png' %}{% endif %}"
+                     alt="" style="width: 40px">
+
+           {{ request.user.phone }}
+        </span>
                 </div>
                 <div class="sidebar-content">
                     <nav class="menu open-current-submenu">
                         <ul>
-                            <li class="menu-item sub-menu">
-                                <a href="#">
-                <span class="menu-icon">
-                  <i class="ri-vip-diamond-fill"></i>
-                </span>
-                                    <span class="menu-title">Components</span>
-                                    <span class="menu-suffix">&#x1F525;</span>
+
+                            <li class="menu-item">
+                                <a href="{% url 'customers:profile' %}">
+                                    <span class="menu-icon">
+                                      <i class="ri-user-line"></i>
+                                    </span>
+                                    <span class="menu-title">Profile</span>
                                 </a>
-                                <div class="sub-menu-list">
-                                    <ul>
-                                        <li class="menu-item">
-                                            <a href="#">
-                                                <span class="menu-title">Grid</span>
-                                            </a>
-                                        </li>
-                                        <li class="menu-item">
-                                            <a href="#">
-                                                <span class="menu-title">Layout</span>
-                                            </a>
-                                        </li>
-                                        <li class="menu-item sub-menu">
-                                            <a href="#">
-                                                <span class="menu-title">Forms</span>
-                                            </a>
-                                            <div class="sub-menu-list">
-                                                <ul>
-                                                    <li class="menu-item">
-                                                        <a href="#">
-                                                            <span class="menu-title">Input</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item">
-                                                        <a href="#">
-                                                            <span class="menu-title">Select</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item sub-menu">
-                                                        <a href="#">
-                                                            <span class="menu-title">More</span>
-                                                        </a>
-                                                        <div class="sub-menu-list">
-                                                            <ul>
-                                                                <li class="menu-item">
-                                                                    <a href="#">
-                                                                        <span class="menu-title">CheckBox</span>
-                                                                    </a>
-                                                                </li>
-                                                                <li class="menu-item">
-                                                                    <a href="#">
-                                                                        <span class="menu-title">Radio</span>
-                                                                    </a>
-                                                                </li>
-                                                                <li class="menu-item sub-menu">
-                                                                    <a href="#">
-                                                                        <span class="menu-title">Want more ?</span>
-                                                                        <span class="menu-suffix">&#x1F914;</span>
-                                                                    </a>
-                                                                    <div class="sub-menu-list">
-                                                                        <ul>
-                                                                            <li class="menu-item">
-                                                                                <a href="#">
-                                                                                    <span class="menu-prefix">&#127881;</span>
-                                                                                    <span class="menu-title">You made it </span>
-                                                                                </a>
-                                                                            </li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="menu-item sub-menu">
-                                <a href="#">
-                <span class="menu-icon">
-                  <i class="ri-bar-chart-2-fill"></i>
-                </span>
-                                    <span class="menu-title">Charts</span>
-                                </a>
-                                <div class="sub-menu-list">
-                                    <ul>
-                                        <li class="menu-item">
-                                            <a href="#">
-                                                <span class="menu-title">Pie chart</span>
-                                            </a>
-                                        </li>
-                                        <li class="menu-item">
-                                            <a href="#">
-                                                <span class="menu-title">Line chart</span>
-                                            </a>
-                                        </li>
-                                        <li class="menu-item">
-                                            <a href="#">
-                                                <span class="menu-title">Bar chart</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
                             </li>
                             <li class="menu-item sub-menu">
                                 <a href="#">
@@ -166,17 +88,17 @@
                                     <ul>
                                         <li class="menu-item">
                                             <a href="#">
-                                                <span class="menu-title">Products</span>
+                                                <span class="menu-title">Orders now</span>
                                             </a>
                                         </li>
                                         <li class="menu-item">
                                             <a href="#">
-                                                <span class="menu-title">Orders</span>
+                                                <span class="menu-title">Previous orders</span>
                                             </a>
                                         </li>
                                         <li class="menu-item">
                                             <a href="#">
-                                                <span class="menu-title">credit card</span>
+                                                <span class="menu-title">Wishlist</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -185,75 +107,47 @@
                             <li class="menu-item sub-menu">
                                 <a href="#">
                 <span class="menu-icon">
-                  <i class="ri-global-fill"></i>
+                  <i class="ri-map-pin-line"></i>
                 </span>
-                                    <span class="menu-title">Maps</span>
+                                    <span class="menu-title">Address</span>
                                 </a>
                                 <div class="sub-menu-list">
                                     <ul>
                                         <li class="menu-item">
                                             <a href="#">
-                                                <span class="menu-title">Google maps</span>
+                                                <span class="menu-icon">
+
+                                                    <i class="ri-map-pin-user-line"></i>
+                                    </span>
+                                                <span class="menu-title">Your addresses</span>
                                             </a>
                                         </li>
                                         <li class="menu-item">
                                             <a href="#">
-                                                <span class="menu-title">Open street map</span>
+                                                <span class="menu-icon">
+
+                                                    <i class="ri-add-line"></i>
+                                    </span>
+
+                                                <span class="menu-title">Add address</span>
                                             </a>
                                         </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="menu-item sub-menu">
-                                <a href="#">
-                <span class="menu-icon">
-                  <i class="ri-brush-3-fill"></i>
-                </span>
-                                    <span class="menu-title">Theme</span>
-                                </a>
-                                <div class="sub-menu-list">
-                                    <ul>
-                                        <li class="menu-item">
-                                            <a href="#">
-                                                <span class="menu-title">Dark</span>
-                                            </a>
-                                        </li>
-                                        <li class="menu-item">
-                                            <a href="#">
-                                                <span class="menu-title">Light</span>
-                                            </a>
-                                        </li>
+
                                     </ul>
                                 </div>
                             </li>
                             <li class="menu-item">
-                                <a href="#">
+                                <a href="{% url 'products:home' %}">
                 <span class="menu-icon">
-                  <i class="ri-book-2-fill"></i>
+                  <i class="ri-arrow-left-line"></i>
                 </span>
-                                    <span class="menu-title">Documentation</span>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#">
-                <span class="menu-icon">
-                  <i class="ri-calendar-fill"></i>
-                </span>
-                                    <span class="menu-title">Calendar</span>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#">
-                <span class="menu-icon">
-                  <i class="ri-service-fill"></i>
-                </span>
-                                    <span class="menu-title">Examples</span>
+                                    <span class="menu-title">Exit</span>
                                 </a>
                             </li>
                         </ul>
                     </nav>
                 </div>
-                <div class="sidebar-footer"><span>Sidebar footer</span></div>
+                <div class="sidebar-footer"><span>Customer panel</span></div>
             </div>
         </aside>
         <div id="overlay" class="overlay"></div>
@@ -269,30 +163,72 @@
             <main class="content">
                 <div>
                     <h1>Profile</h1>
-                    <p>
-                        Welcome to your profile dear {{ request.user.phone }}
-                    </p>
-                    <p>
-                        Full Code and documentation available on  <a href="https://github.com/azouaoui-med/pro-sidebar-template" target="_blank">Github</a>
-                    </p>
-                    <form action="" method="post" class="form-group" novalidate>
-                        {% csrf_token %}
-                        {% for field in form %}
-                            <div class="form-group">
-                                {{ field.errors }}
-                                {#                                <label for="exampleInputEmail1">Email address</label>#}
-                                {{ field.label_tag }}
-                                {{ field }}
-                                {% if field.help_text %}
-                                    <small id="emailHelp" class="form-text text-muted">
-                                        {{ field.help_text | safe }}
-                                    </small>
-                                {% endif %}
+                    {#                    <p>#}
+                    {#                        Welcome to your profile dear {{ request.user.phone }}#}
+                    {#                    </p>#}
+                    <br>
+                    <div class="row">
+                        <form action="" method="post" class="form-group col-lg-6 col-sm-12" novalidate>
+                            {% csrf_token %}
+                            {% for field in form %}
+                                <div class="form-group">
+                                    {{ field.errors }}
+                                    {#                                <label for="exampleInputEmail1">Email address</label>#}
+                                    {{ field.label_tag }}
+                                    {{ field }}
+                                    {% if field.help_text %}
+                                        <small id="emailHelp" class="form-text text-muted">
+                                            {{ field.help_text | safe }}
+                                        </small>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                            <br>
+                            <input type="submit" value="Save" class="btn btn-primary">
+                        </form>
+                        <div class="accordion mt-4 col-lg-6 col-sm-12" id="accordionPanelsStayOpenExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                                        Order n: {{ carts|slice:1 }}
+                                    </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                                    <div class="accordion-body">
+                                        <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                                    </div>
+                                </div>
                             </div>
-                        {% endfor %}
+                            {% for cart in carts %}
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                                            Order n: {{ cart.id }}
+                                        </button>
+                                    </h2>
+                                    <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
+                                        <div class="accordion-body">
+                                            <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
 
-                        <input type="submit" value="Save">
-                    </form>
+
+                            {#                            <div class="accordion-item">#}
+                            {#                                <h2 class="accordion-header" id="panelsStayOpen-headingThree">#}
+                            {#                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">#}
+                            {#                                        Accordion Item #3#}
+                            {#                                    </button>#}
+                            {#                                </h2>#}
+                            {#                                <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingThree">#}
+                            {#                                    <div class="accordion-body">#}
+                            {#                                        <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.#}
+                            {#                                    </div>#}
+                            {#                                </div>#}
+                            {#                            </div>#}
+                        </div>
+                    </div>
                 </div>
             </main>
             <div class="overlay"></div>
