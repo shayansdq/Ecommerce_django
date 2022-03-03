@@ -12,12 +12,13 @@ class Cart(BaseModel):
     """
         A class used to implement carts
     """
-    total_price = models.PositiveIntegerField(default=0, verbose_name=_('Total Price'))
-    final_price = models.PositiveIntegerField(default=0, verbose_name=_('Final Price'))
+    total_price = models.PositiveIntegerField(default=0, verbose_name=_('Total Price'), null=True, blank=True,)
+    final_price = models.PositiveIntegerField(default=0, verbose_name=_('Final Price'), null=True, blank=True,)
     off_code = models.ForeignKey('OffCode', on_delete=models.CASCADE, related_name='carts', null=True, blank=True,
                                  verbose_name=_('Off Code'))
     customer = models.ForeignKey(Customer, on_delete=models.RESTRICT, related_name='ccarts', verbose_name=_('Customer'))
     address = models.ForeignKey(to=Address, on_delete=models.RESTRICT, related_name='acarts',verbose_name=_('Address'))
+    open = models.BooleanField(default=True)
 
     def total_worth(self):
         """ 
@@ -34,7 +35,11 @@ class Cart(BaseModel):
         """
         total = self.total_worth()
         self.final_price = total - self.off_code.profit_value(total) if self.off_code else total
-        return self.final_price
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        self.total_worth()
+        self.final_worth()
+        super().save(force_insert, force_update, using, update_fields)
 
     class Meta:
         index_together = [('customer', 'created'),
@@ -63,6 +68,11 @@ class CartItem(BaseModel):
         :return: all cart items that have this product
         """
         return cls.objects.filter(product=product)
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+
+        super().save(force_insert, force_update, using, update_fields)
+        self.cart.save()
 
     @classmethod
     def filter_by_product_category(cls, category: Category):
