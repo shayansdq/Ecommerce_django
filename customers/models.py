@@ -12,6 +12,9 @@ class Customer(models.Model):
     class Meta:
         verbose_name = _('Customer')
         verbose_name_plural = _('Customers')
+        permissions = [
+            ('view_profile','Can see the profile in site and change his info')
+        ]
 
     def __str__(self):
         return f"Customer: '{self.user.phone}', Gender"
