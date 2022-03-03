@@ -33,6 +33,24 @@ class Category(BaseModel):
     def __unicode__(self):
         return self.name
 
+    @classmethod
+    def popular_categories(cls, count):
+        categories = cls.objects.all()
+        list_popular_categories = list(categories)
+        # for c in list(categories):
+        #     print(c.product_set.all().count())
+        list_popular_categories.sort(reverse=True, key=lambda x: x.product_set.all().count())
+        return list_popular_categories[:count]
+
+    def children_products(self):
+        products = Product.objects.filter(category=self)
+        products = list(products)
+        if self.child.all():
+            for child_category in list(self.child.all()):
+                products.extend(list(Product.objects.filter(category=child_category)))
+        return products
+
+
     def get_absolute_url(self):
         pass
         # return reverse('home:post_detail', args=(self.id, self.slug))
@@ -92,12 +110,38 @@ class Product(BaseModel):
         self.is_active = self.inventory > 0
         return self.is_active
 
+    @staticmethod
+    def brand_of_products(products_lst: list):
+        brands = set()
+        for p in products_lst:
+            brands.add(p.brand)
+        return list(brands)
+
+
     def final_worth(self):
         """
         calculate price with discounts
         :return:
         """
         self.final_price = self.price - self.discount.profit_value(self.price) if self.discount else self.price
+
+    @classmethod
+    def most_discounted_products(cls, count: int):
+        products = cls.objects.all()
+        res_list = list(products)
+        has_discount_products = list(filter(lambda x: x.discount and x.discount.type == 1, res_list))
+        has_discount_products.sort(reverse=True, key=lambda x: x.discount.value)
+        return has_discount_products[:count]
+
+    def search_parent_categories(self):
+        list_categories = [self.category]
+        if self.category.root:
+            list_categories.append(self.category.root)
+            if self.category.root.root:
+                list_categories.append(self.category.root.root)
+                if self.category.root.root.root:
+                    list_categories.append(self.category.root.root.root)
+        return list_categories[::-1]
 
     def get_absolute_url(self):
         pass
@@ -113,6 +157,7 @@ class Brand(BaseModel):
     """
     name = models.CharField(max_length=50, verbose_name=_('Name'))
     country = models.CharField(max_length=50, verbose_name=_('Country'))
+    image = models.FileField(verbose_name=_('Category image'), null=True, blank=True)
 
     class Meta:
         ordering = ['name']
@@ -138,7 +183,7 @@ class Discount(BaseDiscount):
 
 
 class ProductImages(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE,related_name='extra_images')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='extra_images')
     image = models.FileField(verbose_name=_('Image'),
                              help_text=_('Extra image for product and show more detail'))
 
