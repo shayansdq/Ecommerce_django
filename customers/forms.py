@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from core.models import User
 from customers.constants.validators import check_phone
 from customers.constants.values import GENDER_STATUS_FORM
+from customers.models import Address
 
 
 class ContactUsForm(forms.Form):
@@ -70,3 +71,11 @@ class CustomerForm(forms.Form):
     email = forms.EmailField(max_length=100,
                              widget=forms.TextInput(attrs={'placeholder': 'Email',
                                                            'class': 'form-control'}))
+
+
+class AddressForm(forms.ModelForm):
+    class Meta:
+        model = Address
+        fields = ('state','city','zip_code','extra_detail')
+
+
