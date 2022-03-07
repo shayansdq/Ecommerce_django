@@ -205,4 +205,11 @@ $('.show-cart').on("change", ".item-count", function(event) {
     displayCart();
 });
 
+// displayCart();
+
+
 displayCart();
+
+
+
+
