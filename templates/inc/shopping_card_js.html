@@ -1,0 +1,77 @@
+<script>
+    var customerAddresses = $.ajax({
+        url:'{% url 'customers:address_list' %}',
+        type:'get',
+        async: false,
+        dataType: 'json',
+    }).responseJSON
+    var cart = $.ajax({
+        url:'{% url 'orders:api_cart_detail' %}',
+        type:'get',
+        async: false,
+        dataType: 'json',
+    }).responseJSON
+    console.log(cart)
+    $('#final-price').html(`${cart[0].final_price}`)
+    $('#off_code').html(`${cart[0].off_code_str}`)
+    $('#cart-subtotal').html(`${cart[0].total_price}`)
+    $('#id_address').html('')
+    $('#id_address').append(`<option selected>Select your address</option>`)
+    {#$('#id_address').toggleClass('form-select')#}
+    for (let address of customerAddresses){
+        $('#id_address').append(`<option value='${address.id}'>${address.str}</option>`)
+    }
+
+    $(".check-off-code").click(function () {
+        $.ajaxSetup({
+            headers: {
+                "X-CSRFToken": '{{csrf_token}}'
+            }
+        })
+        let offCode = $('#id_off_code').val()
+        let addressId = $('#id_address').val()
+        $.ajax({
+            type: "POST",
+            url: "{% url 'orders:check_off_code' %}",
+            data: {
+                "offcode":offCode,
+                "address":addressId
+            },
+            success: function (response) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'info',
+                    title: response.msg,
+                    showConfirmButton: false,
+                    timer: 2500
+                })
+                var newCart = $.ajax({
+                    url:'{% url 'orders:api_cart_detail' %}',
+                    type:'get',
+                    async: false,
+                    dataType: 'json',
+                }).responseJSON
+                console.log(newCart)
+                $('#final-price').html(`${newCart[0].final_price}`)
+                $('#off_code').html(`${newCart[0].off_code_str}`)
+                $('#cart-subtotal').html(`${newCart[0].total_price}`)
+                let addressId = $('#id_address').val()
+                $('#cart_profit').html(`${newCart[0].total_price - newCart[0].final_price}`)
+
+                if (Number(addressId) > 0){
+                    $('.submit-order').attr('class','btn btn-success text-center submit-order')
+                }else{
+                    $('.submit-order').attr('class','btn btn-success text-center submit-order disable')
+                }
+
+            },
+            error: function (msg) {
+                alert(`Failed`);
+            }
+        });
+    });
+    $('.submit').on('click',()=>{
+        shoppingCart.clearCart();
+        displayCart();
+    })
+</script>
