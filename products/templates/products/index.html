@@ -20,6 +20,7 @@
             object-fit: contain;
         }
     </style>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% endblock %}
 {% block body_content %}
 
@@ -280,6 +281,17 @@
 {% endblock %}
 {% block before_body_ends %}
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous">
+    </script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
     <script src="{% static 'js/basket.js' %}"></script>
     <!-- Start Script -->
     <script src="{% static 'js/jquery-1.11.0.min.js'%}"></script>
@@ -291,7 +303,24 @@
 
     <!-- Start Slider Script -->
     <script src="{% static 'js/slick.min.js' %}"></script>
-
+{#    <script>#}
+        {#var cartItems = $.ajax({#}
+        {#    url:'{% url 'orders:load_cart_items' %}',#}
+        {#    type:'get',#}
+        {#    async: false,#}
+        {#    dataType: 'json',#}
+        {# }).responseJSON#}
+        {#console.log(cartItems)#}
+        {#sessionStorage.setItem('shoppingCart', JSON.stringify(cartItems));#}
+        {#var cartItems = $.ajax({#}
+        {#    url:'{% url 'orders:load_cart_items' %}',#}
+        {#    type:'get',#}
+        {#    async: false,#}
+        {#    dataType: 'json',#}
+        {# }).responseJSON#}
+        {#console.log(cartItems)#}
+        {#sessionStorage.setItem('shoppingCart', JSON.stringify(cartItems));#}
+{#    </script>#}
 {% endblock %}
 
 
