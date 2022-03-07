@@ -1,0 +1,112 @@
+{% extends 'layouts/__base.html' %}
+{% load static %}
+{% block extra_head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="stylesheet" href="{% static 'css/shopping_cart.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+          integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <style>
+        .disable{
+            pointer-events: none;
+            cursor: default;
+            opacity: 0.6;
+        }
+    </style>
+{% endblock %}
+{% block body_content %}
+    <br>
+    <h1 class="text-center">Shopping Cart</h1>
+    <br><br><br>
+    <div class="container">
+        <div class="shopping-cart">
+
+            <div class="column-labels">
+                <label class="product-image">Image</label>
+                <label class="product-details">Product</label>
+                <label class="product-price">Price</label>
+                <label class="product-quantity">Quantity</label>
+                {#                <label class="product-removal">Remove</label>#}
+                <label class="product-line-price">Total</label>
+            </div>
+            {% for order_item in order_items %}
+                <div class="product">
+                    <a href="{% url 'products:product_detail' order_item.product.id %}" class="product-image">
+                        <img src="{{ order_item.product.image.url}}">
+                    </a>
+                    <div class="product-details">
+                        <div class="product-title">{{ order_item.product.name }}
+                            {% if order_item.product.price != order_item.product.final_price %}
+                                {% if order_item.product.discount.type == 1 %}
+                                    <span class="badge badge-danger">{{order_item.product.discount.value}}%</span>
+                                {% else %}
+                                    <span class="badge badge-danger">{{order_item.product.discount.value}} Tomans</span>
+                                {% endif %}
+                            {% endif %}</div>
+                        <p class="product-description">
+                            {{ order_item.product.description | truncatewords:25 }}
+                        </p>
+                    </div>
+                    <div class="product-price">{{ order_item.product.final_price }}</div>
+                    <div class="product-quantity">
+                        <input type="number" value="{{ order_item.count }}" min="1" disabled>
+                    </div>
+                    {#                    <div class="product-removal">#}
+                    {#                        <button class="remove-product">#}
+                    {#                            Disccount#}
+                    {#                        </button>#}
+                    {#                    </div>#}
+                    <div class="product-line-price">{{ order_item.price }}</div>
+                </div>
+            {% endfor %}
+
+            <div class="row">
+                <div class="totals col-lg-6 col-sm-12">
+                    <div class="totals-item">
+                        <label>Subtotal</label>
+                        <div class="totals-value" id="cart-subtotal"></div>
+                    </div>
+                    <div class="totals-item">
+                        <label>Off code</label>
+                        <div class="totals-value" id="off_code">-</div>
+                    </div>
+                    <div class="totals-item">
+                        <label>Your profit</label>
+                        <div class="totals-value" id="cart_profit"></div>
+                    </div>
+                    <div class="totals-item totals-item-total">
+                        <label>Final price</label>
+                        <div class="totals-value" id="final-price"></div>
+                    </div>
+                </div>
+                <div class="totals col-lg-6 col-sm-12">
+                    {#                    <form action="" method="post">#}
+                    {{form.as_p}}
+                    <input type="submit" class="btn btn-secondary check-off-code"
+                           value="Checkout">
+                    {#                    </form>#}
+                </div>
+            </div>
+        </div>
+
+        <a class="btn btn-success text-center submit-order disable submit"
+           href="{% url 'orders:submit_order' %}" >Submit order</a>
+    </div>
+    <br>
+{% endblock %}
+{% block before_body_ends %}
+{% include 'inc/shopping_card_js.html' %}
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+    <script src="{% static 'js/basket.js' %}"></script>
+    <!-- Start Script -->
+    <script src="{% static 'js/jquery-1.11.0.min.js'%}"></script>
+    <script src="{% static 'js/jquery-migrate-1.2.1.min.js'%}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js'%}"></script>
+    <script src="{% static 'js/templatemo.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}%}"></script>
+    <!-- End Script -->
+
+    <!-- Start Slider Script -->
+    <script src="{% static 'js/slick.min.js' %}"></script>
+    {#    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>#}
+    {#    <script  src="./script.js"></script>#}
+{% endblock %}
