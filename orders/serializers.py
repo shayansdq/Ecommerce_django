@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from orders.models import CartItem
+from orders.models import CartItem, Cart
+from products.models import Product
 
 
 class CheckValidOrderItem(serializers.Serializer):
@@ -9,12 +10,40 @@ class CheckValidOrderItem(serializers.Serializer):
     count = serializers.IntegerField()
 
     def update(self, instance, validated_data):
-        return instance
+        pass
 
-    def create(self, validated_data: dict):
-        return Car.objects.create(**validated_data)
+    def create(self, validated_data):
+        pass
+
 
 class CartItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = CartItem
-        fields = ('name', 'count', 'price')
+        fields = ('cart', 'count', 'product')
+# class CartItemSerializer(serializers.Serializer):
+#     cart = serializers.PrimaryKeyRelatedField(queryset=Cart.objects.all())
+#     count = serializers.IntegerField()
+#     product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
+#
+#     def create(self, validated_data):
+#         pass
+#
+#     def update(self, instance, validated_data):
+#         pass
+
+
+class CartSerializer(serializers.ModelSerializer):
+    off_code_str = serializers.ReadOnlyField()
+
+    class Meta:
+        model = Cart
+        fields = ('total_price', 'final_price', 'off_code_str')
+
+
+class LoadCartItem(serializers.ModelSerializer):
+    name = serializers.ReadOnlyField(source='product.name')
+    price = serializers.ReadOnlyField()
+
+    class Meta:
+        model = CartItem
+        fields = ('name', 'price', 'count')
