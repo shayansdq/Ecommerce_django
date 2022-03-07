@@ -4,7 +4,7 @@ from core.models import BaseModel, BaseDiscount
 from django.db import models
 from customers.models import Customer, Address
 from products.models import Product, Category
-from django.core.validators import MinValueValidator, MinLengthValidator
+from django.core.validators import MinValueValidator, MinLengthValidator, MaxLengthValidator
 from django.utils.text import slugify
 
 
@@ -17,7 +17,8 @@ class Cart(BaseModel):
     off_code = models.ForeignKey('OffCode', on_delete=models.CASCADE, related_name='carts', null=True, blank=True,
                                  verbose_name=_('Off Code'))
     customer = models.ForeignKey(Customer, on_delete=models.RESTRICT, related_name='ccarts', verbose_name=_('Customer'))
-    address = models.ForeignKey(to=Address, on_delete=models.RESTRICT, related_name='acarts',verbose_name=_('Address'))
+    address = models.ForeignKey(to=Address, on_delete=models.RESTRICT, related_name='acarts',verbose_name=_('Address'),
+                                null=True,blank=True)
     open = models.BooleanField(default=True)
 
     def total_worth(self):
@@ -25,7 +26,7 @@ class Cart(BaseModel):
             calculate total price of cart
         :return: total price amount (int)
         """
-        self.total_price = sum([item.product.final_price for item in self.items.all()])
+        self.total_price = sum([item.product.final_price * item.count for item in self.items.all()])
         return self.total_price
 
     def final_worth(self):
@@ -35,6 +36,10 @@ class Cart(BaseModel):
         """
         total = self.total_worth()
         self.final_price = total - self.off_code.profit_value(total) if self.off_code else total
+
+    @property
+    def off_code_str(self):
+        return str(self.off_code)
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         self.total_worth()
@@ -83,6 +88,10 @@ class CartItem(BaseModel):
         """
         return cls.objects.filter(product__category=category)
 
+    @property
+    def price(self):
+        return self.product.final_price * self.count
+
     class Meta:
         verbose_name = _('Cart Item')
         verbose_name_plural = _('Cart Items')
@@ -98,13 +107,14 @@ class OffCode(BaseDiscount):
     valid_from = models.DateTimeField(verbose_name=_('Valid from date'), help_text=_('Start date allowed to use'),
                                       validators=[MinValueValidator(timezone.now(), _('Must be greater than now'))])
     valid_to = models.DateTimeField(verbose_name=_('Valid to date'), help_text=_('End date allowed to use'))
-    code = models.CharField(max_length=10, verbose_name=_('off code'),
+    code = models.CharField(max_length=15, verbose_name=_('off code'),
                             help_text=_('The code that the customer must enter to use the discount'),
-                            validators=[MinLengthValidator(10, _('Your code lengths should have exactly 10 chars'))])
+                            validators=[MaxLengthValidator(15, _('Your code lengths should have lower than 15 chars'))])
 
     class Meta:
         verbose_name = _('Off code')
         verbose_name_plural = _('Off codes')
 
     def __str__(self):
-        return f"Off Code {self.value}"
+        sign = ' Tomans' if self.type == 0 else '%'
+        return f"{self.value}" + sign
