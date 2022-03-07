@@ -10,6 +10,8 @@ from django.views import View
 from django.views.generic import FormView
 from rest_framework import generics
 from rest_framework import permissions, authentication
+from rest_framework.permissions import IsAuthenticated
+
 from core.models import User
 from customers.forms import ContactUsForm, CustomerLoginForm, CustomerRegisterForm, CustomerForm
 from django.utils.translation import gettext as _
@@ -89,11 +91,10 @@ class LoginPostView(View):
     login_form_class = CustomerLoginForm
     register_form_class = CustomerLoginForm
 
-    def setup(self, request, *args, **kwargs):
-        print(request.GET)
-        self.next = request.GET.get('next')
-        print(self.next)
-        return super().setup(request, *args, **kwargs)
+    # def setup(self, request, *args, **kwargs):
+    #     self.next = request.POST.get('next')
+    #     print(self.next)
+    #     return super().setup(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         login_form = self.login_form_class(request.POST)
@@ -103,8 +104,8 @@ class LoginPostView(View):
             user = authenticate(request, phone=cd['phone'], password=cd['password'])
             if user:
                 login(request, user)
-                if self.next:
-                    return redirect(self.next)
+                # if self.next:
+                #     return redirect(self.next)
                 messages.success(request, f'Login Successfully,Welcome {user.phone}', 'success_login')
                 return redirect('products:home')
         messages.error(request, 'your username or password is wrong', 'unsuccess_login')
@@ -189,7 +190,13 @@ class AddressDetailApi(generics.RetrieveAPIView):
 
 class AddressListApi(generics.ListAPIView):
     permission_classes = [
-        SuperUserCanSee,
+        IsAuthenticated,
     ]
     serializer_class = AddressSerializer
     queryset = Address.objects.all()
+
+    def get_queryset(self):
+        user = self.request.user
+        this_customer = Customer.objects.get(user=user)
+        addresses = Address.objects.filter(customer=this_customer)
+        return addresses
