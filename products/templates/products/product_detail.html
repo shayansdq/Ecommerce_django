@@ -3,17 +3,43 @@
 {% load extra_tags %}
 {% block extra_head %}
     <style>
+        .large-font{
+            font-size:xxx-large;
+        }
+        .top-20{
+            position:relative;
+            top:20vh;
+        }
+        ion-icon.active{
+            animation:like 0.5s 1;
+            fill:red;
+            stroke:none;
+        }
+        ion-icon{
+            fill:transparent;
+            stroke:black;
+            stroke-width:30;
+            transition:all 0.5s;
+        }
+
+
+        @-webkit-keyframes like {
+            0%   { transform: scale(1); }
+            90%   { transform: scale(1.2); }
+            100% { transform: scale(1.1); }
+        }
         .heart {
-            width: 70px;
-            height: 70px;
+            width: 100px;
+            height: 100px;
             background: url("https://cssanimation.rocks/images/posts/steps/heart.png") no-repeat;
-            {#background-position: 0 0;#}
+        {#background-position: 0 0;#}
             cursor: pointer;
             transition: background-position 1s steps(28);
             transition-duration: 0s;
+            margin-bottom: -20px;
         }
         .heart{
-            {#background-color: red;#}
+        {#background-color: red;#}
         }
         .heart.is-active {
             transition-duration: 1s;
@@ -213,14 +239,14 @@
                                 {% endif %}
 
                                 <p class="" style="margin-bottom: -25px;margin-top: -25px">
-{#                                    <i class="fa fa-star text-warning"></i>#}
-{#                                    <i class="fa fa-star text-warning"></i>#}
-{#                                    <i class="fa fa-star text-warning"></i>#}
-{#                                    <i class="fa fa-star text-warning"></i>#}
-{#                                    <i class="fa fa-star text-secondary"></i>#}
-{#                                    <span class="list-inline-item text-dark">#}
+                                    {#                                    <i class="fa fa-star text-warning"></i>#}
+                                    {#                                    <i class="fa fa-star text-warning"></i>#}
+                                    {#                                    <i class="fa fa-star text-warning"></i>#}
+                                    {#                                    <i class="fa fa-star text-warning"></i>#}
+                                    {#                                    <i class="fa fa-star text-secondary"></i>#}
+                                    {#                                    <span class="list-inline-item text-dark">#}
                                 <div class="placement text-right" >
-                                    <div class="heart" title="Like"></div>
+                                    <div class="heart is-active" title="Like"></div>
                                 </div>
 
                                 </p>
@@ -336,28 +362,28 @@
     </section>
     <!-- End Article -->
     <!-- Modal -->
-    <div class="modal fade" id="cart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Cart</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <table class="show-cart table">
-
-                    </table>
-                    <div>Total price: $<span class="total-cart"></span></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Order now</button>
-                </div>
-            </div>
-        </div>
-    </div>
+{#    <div class="modal fade" id="cart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">#}
+{#        <div class="modal-dialog modal-lg" role="document">#}
+{#            <div class="modal-content">#}
+{#                <div class="modal-header">#}
+{#                    <h5 class="modal-title" id="exampleModalLabel">Cart</h5>#}
+{#                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+{#                        <span aria-hidden="true">&times;</span>#}
+{#                    </button>#}
+{#                </div>#}
+{#                <div class="modal-body">#}
+{#                    <table class="show-cart table">#}
+{##}
+{#                    </table>#}
+{#                    <div>Total price: $<span class="total-cart"></span></div>#}
+{#                </div>#}
+{#                <div class="modal-footer">#}
+{#                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>#}
+{#                    <button type="button" class="btn btn-primary">Order now</button>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
 {% endblock %}
 
 {% block before_body_ends %}
