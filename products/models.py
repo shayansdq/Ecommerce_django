@@ -4,7 +4,6 @@ from django.db.models import Max
 from django.utils.translation import gettext_lazy as _
 from core.models import BaseModel, BaseDiscount
 from django.urls import reverse
-
 from customers.models import Customer
 
 
