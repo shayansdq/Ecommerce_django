@@ -1,6 +1,6 @@
 from django.contrib import admin
 from core.models import User
-from .models import Customer, Address
+from .models import Customer, Address, WishList
 
 
 class AddressInline(admin.TabularInline):
@@ -20,3 +20,11 @@ class AddressAdmin(admin.ModelAdmin):
     list_display = ('state', 'city', 'customer')
     search_fields = ('state', 'city', 'customer')
     list_filter = ('last_updated',)
+
+
+@admin.register(WishList)
+class WishListAdmin(admin.ModelAdmin):
+    list_display = ('customer', 'product')
+    search_fields = ('customer', 'product')
+    list_filter = ('last_updated',)
+    exclude = ('delete_timestamp', 'deleted_at', 'is_deleted', 'is_active')
