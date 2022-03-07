@@ -5,7 +5,9 @@
                 Swal.fire({
                     icon: 'success',
                     title: '{{ msg }}',
-                    text: 'Click the button',
+                    {#text: 'Click the button',#}
+                    showConfirmButton: false,
+                    timer: 1500
                 })
             </script>
         {% elif msg.tags == 'success_login success' %}
@@ -13,7 +15,9 @@
                 Swal.fire({
                     icon: 'success',
                     title: '{{ msg }}',
-                    text: 'Click the button',
+                    {#text: 'Click the button',#}
+                    showConfirmButton: false,
+                    timer: 1500
                 })
             </script>
         {% elif msg.tags == 'unsuccess_login error' %}
@@ -21,7 +25,9 @@
                 Swal.fire({
                     icon: 'error',
                     title: '{{ msg }}',
-                    text: 'Click the button',
+                    {#text: 'Click the button',#}
+                    showConfirmButton: false,
+                    timer: 1500
                 })
             </script>
         {% elif msg.tags == 'unsuccess_register error' %}
@@ -29,7 +35,9 @@
                 Swal.fire({
                     icon: 'error',
                     title: '{{ msg }}',
-                    text: 'Click the button',
+                    {#text: 'Click the button',#}
+                    showConfirmButton: false,
+                    timer: 1500
                 })
             </script>
         {% endif %}
