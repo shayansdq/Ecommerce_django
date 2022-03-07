@@ -65,11 +65,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Order now</button>
-                {#                <button>#}
-                {#                    <span>Button</span>#}
-                {#                    <div class="liquid"></div>#}
-                {#                </button>#}
+                <a type="button" href="{% url 'orders:cart_detail' %}" class="btn btn-primary send-order">Order now</a>
+
             </div>
         </div>
     </div>
@@ -103,6 +100,36 @@
             }
         })
     })
+
+    $(".send-order").click(function () {
+        $.ajaxSetup({
+            headers: {
+                "X-CSRFToken": '{{csrf_token}}'
+            }
+        })
+        let ordersValue = cart
+        var json = JSON.stringify(ordersValue);
+        console.log(json)
+        $.ajax({
+            type: "POST",
+            url: "{% url 'orders:send_order' %}",
+            data: json,
+            dataType: "json",
+            {#contentType:'application/json',#}
+            success: function (msg) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Your order was successfully sent',
+                    showConfirmButton: false,
+                    timer: 2500
+                })
+            },
+            error: function (msg) {
+                alert(`Failed`);
+            }
+        });
+    });
 </script>
 {% block before_body_ends %}
 
