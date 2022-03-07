@@ -26,7 +26,19 @@ input {
 	top: 0;
 	left: 0;
 }
-
+select{
+	border-radius: inherit;
+	border: none;
+	background-color: #f0f0f0;
+	font-family: "Poppins", sans-serif;
+	font-weight: 500;
+	line-height: 600;
+	font-size: 1.1rem;
+	color: #aaaaaa;
+}
+select option{
+	color:#333
+}
 .signin-signup {
 	position: absolute;
 	top: 50%;
