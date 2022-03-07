@@ -4,6 +4,8 @@ from customers.models import Address
 
 
 class AddressSerializer(serializers.ModelSerializer):
+    str = serializers.ReadOnlyField()
+
     class Meta:
         model = Address
-        fields = ('state', 'city', 'zip_code', 'extra_detail')
+        fields = ('id','state', 'city', 'zip_code', 'extra_detail', 'str')
