@@ -49,6 +49,7 @@ class Cart(BaseModel):
     class Meta:
         index_together = [('customer', 'created'),
                           ('off_code', 'customer')]
+        ordering = ('-created',)
         verbose_name = _('Cart')
         verbose_name_plural = _('Carts')
 
@@ -63,7 +64,7 @@ class CartItem(BaseModel):
 
     count = models.PositiveIntegerField(default=1, verbose_name=_('Count'))
     cart = models.ForeignKey('Cart', on_delete=models.CASCADE, related_name='items', verbose_name=_('Cart'))
-    product = models.OneToOneField(Product, on_delete=models.CASCADE, verbose_name=_('Product'))
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name=_('Product'))
 
     @classmethod
     def filter_by_product(cls, product: Product):
