@@ -46,6 +46,10 @@ class Cart(BaseModel):
         self.final_worth()
         super().save(force_insert, force_update, using, update_fields)
 
+    @property
+    def profit(self):
+        return self.total_price - self.final_price
+
     class Meta:
         index_together = [('customer', 'created'),
                           ('off_code', 'customer')]
