@@ -13,7 +13,7 @@ from rest_framework import permissions, authentication
 from rest_framework.permissions import IsAuthenticated
 
 from core.models import User
-from customers.forms import ContactUsForm, CustomerLoginForm, CustomerRegisterForm, CustomerForm
+from customers.forms import ContactUsForm, CustomerLoginForm, CustomerRegisterForm, CustomerForm, AddressForm
 from django.utils.translation import gettext as _
 
 from customers.models import Address, Customer
@@ -73,7 +73,7 @@ class LoginRegisterView(View):
             cd = register_form.cleaned_data
 
             new_user = User.objects.create_user(phone=cd['phone'], password=cd['password1'], email=cd['email'])
-            Customer.objects.create(user=new_user,gender=int(cd['gender']))
+            Customer.objects.create(user=new_user, gender=int(cd['gender']))
             messages.success(request, 'Registered successfully!', 'success_register')
             return redirect('customers:register_login_view')
         context = {
@@ -157,9 +157,9 @@ class CustomerProfileView(LoginRequiredMixin, View):
         categories = Category.objects.all()
         context = {
             'form': form,
-            'categories':categories,
-            'customer':customer,
-            'carts':carts,
+            'categories': categories,
+            'customer': customer,
+            'carts': carts,
         }
         return render(request, 'customers/profile.html', context)
 
@@ -178,6 +178,23 @@ class CustomerProfileView(LoginRequiredMixin, View):
             'form': form
         }
         return render(request, 'customers/profile.html', context)
+
+
+class AddressCustomerProfileView(View):
+    form_class = AddressForm
+
+    def setup(self, request, *args, **kwargs):
+        self.customer = request.user.customer
+        super().setup(request, *args, **kwargs)
+
+    def get(self, request):
+        addresses = Address.objects.filter(customer=self.customer)
+        context = {
+            'form': self.form_class,
+            'addresses': addresses,
+            'customer': self.customer,
+        }
+        return render(request, 'customers/addresses_profile.html', context)
 
 
 class AddressDetailApi(generics.RetrieveAPIView):
