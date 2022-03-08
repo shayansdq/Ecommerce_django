@@ -77,5 +77,13 @@ class AddressForm(forms.ModelForm):
     class Meta:
         model = Address
         fields = ('state','city','zip_code','extra_detail')
-
+        widgets = {
+            'state': forms.TextInput(attrs={'placeholder': 'State','class': 'form-control'}),
+            'city': forms.TextInput(attrs={'placeholder': 'City','class': 'form-control'}),
+            'zip_code': forms.TextInput(attrs={'placeholder': 'Zip Code','class': 'form-control'}),
+            'extra_detail': forms.Textarea(attrs={'placeholder': 'Extra Detail','class': 'form-control'}),
+        }
+        help_texts = {
+            'extra_detail': 'Enter your extra detail for your address',
+        }
 
