@@ -21,7 +21,7 @@
     for (let address of customerAddresses){
         $('#id_address').append(`<option value='${address.id}'>${address.str}</option>`)
     }
-
+    $('#cart_profit').html(`${cart[0].total_price - cart[0].final_price}`)
     $(".check-off-code").click(function () {
         $.ajaxSetup({
             headers: {
