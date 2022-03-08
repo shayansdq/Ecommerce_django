@@ -17,44 +17,27 @@ import json
 
 class CreateOrderView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
-        # print('ok')
-        # if not request.user:
-        #     redirect('customers:register_login_view')
         this_customer = request.user.customer
         last_order = Cart.objects.get_or_create(open=True, customer=this_customer)
         order = last_order[0]
-        # print(order)
         if not last_order[1]:
             for cart_item in order.items.all():
                 cart_item.delete()
         for i in request.POST.keys():
             i = json.loads(i)
-            # print(i)
-            # print(i)
             info = CheckValidOrderItem(data=i, many=True)
             if info.is_valid():
                 for order_item in info.validated_data:
                     product = Product.objects.get(name=order_item['name'].replace('-', ' '))
-                    print('t',product.name)
-                    # count = order_item['count']
                     del order_item['name']
                     del order_item['price']
                     order_item['product'] = product.id
                     order_item['cart'] = order.id
-                    print('t',order_item['product'],order_item['cart'])
-                    print('o',dict(order_item))
                     cart_item = CartItemSerializer(data=dict(order_item))
-                    # print(cart_item['product'])
-                    # print(cart_item)
-                    print(cart_item.is_valid())
-                    if True or cart_item.is_valid():
-                        # print(cart_item)
-
+                    if cart_item.is_valid():
                         cart_item.save()
-                    print(cart_item.errors)
             order.save()
-            # print(info.validated_data)
-        # print(type(request.POST))
+
         return redirect('orders:cart_detail')
 
 
