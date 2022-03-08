@@ -20,6 +20,7 @@ class CartItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = CartItem
         fields = ('cart', 'count', 'product')
+
 # class CartItemSerializer(serializers.Serializer):
 #     cart = serializers.PrimaryKeyRelatedField(queryset=Cart.objects.all())
 #     count = serializers.IntegerField()
