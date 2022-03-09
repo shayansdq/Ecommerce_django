@@ -8,6 +8,24 @@
           href='https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css'>
     <link rel="stylesheet" href="{% static 'css/profile.css' %}">
     <style>
+        .accordion-button{
+            background-color: #c3c7c6;
+        }
+        input{
+            background-color: #fcfcfc;
+        }
+        textarea{
+            background-color: #fcfcfc !important;
+        }
+        small{
+            color: #333 !important;
+        }
+        .accordion-body{
+            background-color: #d5d5d5;
+        }
+        main{
+            background-image: linear-gradient(to right,#becef5,#362b2b);
+        }
         .label2{
             color: #453d9b;
             font-weight: bold;
@@ -119,7 +137,7 @@
                                 <div class="sub-menu-list">
                                     <ul>
                                         <li class="menu-item">
-                                            <a href="#">
+                                            <a href="{% url 'customers:profile_address' %}">
                                                 <span class="menu-icon">
 
                                                     <i class="ri-map-pin-user-line"></i>
@@ -127,16 +145,16 @@
                                                 <span class="menu-title">Your addresses</span>
                                             </a>
                                         </li>
-                                        <li class="menu-item">
-                                            <a href="#">
-                                                <span class="menu-icon">
-
-                                                    <i class="ri-add-line"></i>
-                                    </span>
-
-                                                <span class="menu-title">Add address</span>
-                                            </a>
-                                        </li>
+                                        {#                                        <li class="menu-item">#}
+                                        {#                                            <a href="{% url 'customers:profile_address' %}">#}
+                                        {#                                                <span class="menu-icon">#}
+                                        {##}
+                                        {#                                                    <i class="ri-add-line"></i>#}
+                                        {#                                    </span>#}
+                                        {##}
+                                        {#                                                <span class="menu-title">Add address</span>#}
+                                        {#                                            </a>#}
+                                        {#                                        </li>#}
 
                                     </ul>
                                 </div>
@@ -207,20 +225,20 @@
                                 <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                                     <div class="accordion-body">
                                         {% for cart in carts|slice:":1" %}
-<pre>
-<span class="label2">Products</span>
+                                            <pre>
+<span class="label2">Products:</span>
 {% for item in cart.items.all %}
-{{ item.product.name | title }}  | Final price: {{ item.product.final_price }} |  Count: {{ item.count }} | Total: {{ item.price }}
+    {{ item.product.name | title }}  | Final price: {{ item.product.final_price }} |  Count: {{ item.count }} | Total: {{ item.price }}
 {% endfor %}
-<span class="label2">Cart details</span>
+<span class="label2">Cart details:</span>
 
-Off code : {{ cart.off_code }}
+    Off code : {{ cart.off_code }}
 
-Your profit : {{ cart.profit }}
+    Your profit : {{ cart.profit }}
 
-Final price : {{ cart.final_price }}
+    Final price : {{ cart.final_price }}
 
-<span>Address : {{ cart.address | truncatewords:9 }}</span>
+    <span>Address : {{ cart.address | truncatewords:9 }}</span>
 </pre>
                                         {% endfor %}
                                     </div>
@@ -239,21 +257,21 @@ Final price : {{ cart.final_price }}
                                 </h2>
                                 <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
                                     <div class="accordion-body">
-{% for cart in carts|slice:"1:2" %}
-<pre>
-<span class="label2">Products</span>
+                                        {% for cart in carts|slice:"1:2" %}
+                                            <pre>
+<span class="label2">Products:</span>
 {% for item in cart.items.all %}
-{{ item.product.name | title }}  | Final price: {{ item.product.final_price }} |  Count: {{ item.count }} | Total: {{ item.price }}
+    {{ item.product.name | title }}  | Final price: {{ item.product.final_price }} |  Count: {{ item.count }} | Total: {{ item.price }}
 {% endfor %}
-<span class="label2">Cart details</span>
+<span class="label2">Cart details:</span>
 
-Off code : {{ cart.off_code }}
+    Off code : {{ cart.off_code }}
 
-Your profit : {{ cart.profit }}
+    Your profit : {{ cart.profit }}
 
-Final price : {{ cart.final_price }}
+    Final price : {{ cart.final_price }}
 
-<span>Address : {{ cart.address | truncatewords:9 }}</span>
+    <span>Address : {{ cart.address | truncatewords:9 }}</span>
 </pre>
                                         {% endfor %}
                                     </div>
@@ -272,21 +290,21 @@ Final price : {{ cart.final_price }}
                                 </h2>
                                 <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
                                     <div class="accordion-body">
-{% for cart in carts|slice:"2:3" %}
-<pre>
-<span class="label2">Products</span>
+                                        {% for cart in carts|slice:"2:3" %}
+                                            <pre>
+<span class="label2">Products:</span>
 {% for item in cart.items.all %}
-{{ item.product.name | title }}  | Final price: {{ item.product.final_price }} |  Count: {{ item.count }} | Total: {{ item.price }}
+    {{ item.product.name | title }}  | Final price: {{ item.product.final_price }} |  Count: {{ item.count }} | Total: {{ item.price }}
 {% endfor %}
-<span class="label2">Cart details</span>
+<span class="label2">Cart details:</span>
 
-Off code : {{ cart.off_code }}
+    Off code : {{ cart.off_code }}
 
-Your profit : {{ cart.profit }}
+    Your profit : {{ cart.profit }}
 
-Final price : {{ cart.final_price }}
+    Final price : {{ cart.final_price }}
 
-<span>Address : {{ cart.address | truncatewords:9 }}</span>
+    <span>Address : {{ cart.address | truncatewords:9 }}</span>
 </pre>
                                         {% endfor %}
                                     </div>
@@ -301,6 +319,9 @@ Final price : {{ cart.final_price }}
         </div>
     </div>
     <!-- partial -->
+{% endblock %}
+{% block footer %}
+
 {% endblock %}
 {% block before_body_ends %}
     <script src='https://unpkg.com/@popperjs/core@2'></script>
