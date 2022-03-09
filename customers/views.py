@@ -1,3 +1,4 @@
+import json
 from unicodedata import category
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -7,7 +8,7 @@ from django.contrib.auth import views as auth_views
 # Create your views here.
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import FormView
+from django.views.generic import FormView, DeleteView
 from rest_framework import generics
 from rest_framework import permissions, authentication
 from rest_framework.permissions import IsAuthenticated
@@ -19,6 +20,8 @@ from django.utils.translation import gettext as _
 from customers.models import Address, Customer
 from customers.my_permissions import IsOwner, SuperUserCanSee
 from customers.serializers import AddressSerializer
+from orders.models import Cart, CartItem
+from orders.serializers import CartItemSerializer, LoadCartItem
 from products.models import Category
 
 
@@ -91,22 +94,19 @@ class LoginPostView(View):
     login_form_class = CustomerLoginForm
     register_form_class = CustomerLoginForm
 
-    # def setup(self, request, *args, **kwargs):
-    #     self.next = request.POST.get('next')
-    #     print(self.next)
-    #     return super().setup(request, *args, **kwargs)
-
     def post(self, request, *args, **kwargs):
         login_form = self.login_form_class(request.POST)
-        register_form = self.register_form_class
         if login_form.is_valid():
             cd = login_form.cleaned_data
             user = authenticate(request, phone=cd['phone'], password=cd['password'])
             if user:
                 login(request, user)
-                # if self.next:
-                #     return redirect(self.next)
                 messages.success(request, f'Login Successfully,Welcome {user.phone}', 'success_login')
+                customer = user.customer
+                this_cart = Cart.objects.get(open=True, customer=customer)
+                ser_data = LoadCartItem(instance=this_cart.items.all(),many=True).data
+                request.session['loaded_items'] = ser_data
+                # request.session['loaded_items'] = 'asd'
                 return redirect('products:home')
         messages.error(request, 'your username or password is wrong', 'unsuccess_login')
         return redirect('customers:register_login_view')
@@ -144,6 +144,7 @@ class CustomerProfileView(LoginRequiredMixin, View):
     info_user_form_class = CustomerForm
 
     def get(self, request, *args, **kwargs):
+        CartItem.remove_loaded_items_key(request)
         user = request.user
         customer = Customer.objects.get(user=user)
         carts = customer.ccarts.all()
@@ -185,16 +186,39 @@ class AddressCustomerProfileView(View):
 
     def setup(self, request, *args, **kwargs):
         self.customer = request.user.customer
+        self.addresses = Address.objects.filter(customer=self.customer)
         super().setup(request, *args, **kwargs)
 
     def get(self, request):
-        addresses = Address.objects.filter(customer=self.customer)
+        CartItem.remove_loaded_items_key(request)
         context = {
             'form': self.form_class,
-            'addresses': addresses,
+            'addresses': self.addresses,
             'customer': self.customer,
         }
         return render(request, 'customers/addresses_profile.html', context)
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            address = form.save(commit=False)
+            address.customer = self.customer
+            address.save()
+            messages.success(request, 'Your address was successfully created', 'success_login')
+            return redirect('customers:profile_address')
+        else:
+            context = {
+                'form': self.form_class,
+                'addresses': self.addresses,
+                'customer': self.customer,
+            }
+            return render(request, 'customers/addresses_profile.html', context)
+
+
+class DeleteAddressView(DeleteView):
+    model = Address
+    template_name = 'customers/addresses_profile.html'
+    success_url = reverse_lazy('customers:address_profile')
 
 
 class AddressDetailApi(generics.RetrieveAPIView):
