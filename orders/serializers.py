@@ -21,17 +21,6 @@ class CartItemSerializer(serializers.ModelSerializer):
         model = CartItem
         fields = ('cart', 'count', 'product')
 
-# class CartItemSerializer(serializers.Serializer):
-#     cart = serializers.PrimaryKeyRelatedField(queryset=Cart.objects.all())
-#     count = serializers.IntegerField()
-#     product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
-#
-#     def create(self, validated_data):
-#         pass
-#
-#     def update(self, instance, validated_data):
-#         pass
-
 
 class CartSerializer(serializers.ModelSerializer):
     off_code_str = serializers.ReadOnlyField()
