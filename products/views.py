@@ -7,6 +7,8 @@ from django.views import View
 from rest_framework.response import Response
 from rest_framework import generics
 from django.views.generic import DetailView, ListView
+
+from orders.models import CartItem
 from .models import Product, Category, Brand
 from .serializers import ProductSerializer
 
@@ -36,6 +38,10 @@ class ProductDetailView(DetailView):
     model = Product
     template_name = 'products/product_detail.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        CartItem.remove_loaded_items_key(request)
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super(ProductDetailView, self).get_context_data(**kwargs)
         this_product:Product = self.object
@@ -59,6 +65,10 @@ class ProductByCategoryListView(ListView):
     context_object_name = 'products'
     template_name = 'products/products_by_category.html'
     paginate_by = 3
+
+    def dispatch(self, request, *args, **kwargs):
+        CartItem.remove_loaded_items_key(request)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         self.category = Category.objects.get(pk=self.kwargs['pk'])
