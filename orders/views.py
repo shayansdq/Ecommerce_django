@@ -4,6 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.views import View
 # Create your views here.
+from django.views.generic import CreateView, TemplateView
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
@@ -15,54 +16,28 @@ from products.models import Product
 import json
 
 
-class CreateOrderView(LoginRequiredMixin, View):
-    def post(self, request, *args, **kwargs):
-        this_customer = request.user.customer
-        last_order = Cart.objects.get_or_create(open=True, customer=this_customer)
-        order = last_order[0]
-        if not last_order[1]:
-            for cart_item in order.items.all():
-                cart_item.delete()
-        for i in request.POST.keys():
-            i = json.loads(i)
-            info = CheckValidOrderItem(data=i, many=True)
-            if info.is_valid():
-                for order_item in info.validated_data:
-                    product = Product.objects.get(name=order_item['name'].replace('-', ' '))
-                    del order_item['name']
-                    del order_item['price']
-                    order_item['product'] = product.id
-                    order_item['cart'] = order.id
-                    cart_item = CartItemSerializer(data=dict(order_item))
-                    if cart_item.is_valid():
-                        cart_item.save()
-            order.save()
+class CreateOrderView(LoginRequiredMixin, CreateView):
 
+    def post(self, request, *args, **kwargs):
+        CartItem.create_cart_item(request,CheckValidOrderItem,CartItemSerializer)
         return redirect('orders:cart_detail')
 
 
-class ShoppingCartView(LoginRequiredMixin, View):
-    form_class = SubmitOrderForm
+class ShoppingCartView(LoginRequiredMixin, TemplateView):
 
-    # def setup(self, request, *args, **kwargs):
-    #     if not request.user:
-    #         redirect('customers:register_login_view')
-    #     self.user = request.user
-    #     self.customer = Customer.objects.get(user=self.user)
-    #     super().setup(request, *args, **kwargs)
+    template_name = 'orders/shopping_cart.html'
 
-    def get(self, request):
-        order = Cart.objects.get(open=True, customer=request.user.customer)
+    def get_context_data(self, **kwargs):
+        context = super(ShoppingCartView, self).get_context_data()
+        order = Cart.objects.get(open=True, customer=self.request.user.customer)
         order_items = order.items.all()
-        context = {
-            'cart': order,
-            'order_items': order_items,
-            'form': self.form_class,
-        }
-        return render(request, 'orders/shopping_cart.html', context)
+        context['cart'] = order
+        context['order_items'] = order_items
+        context['form'] = SubmitOrderForm
+        return context
 
 
-class CheckOutCart(View):
+class CheckOutCart(LoginRequiredMixin, View):
     def post(self, request):
         data = request.POST
         off_code = data.get('offcode')
@@ -95,7 +70,7 @@ class CheckOutCart(View):
 class SubmitOrder(LoginRequiredMixin, View):
     def get(self, request):
         customer = request.user.customer
-        cart = Cart.objects.get(open=True,customer=customer)
+        cart = Cart.objects.get(open=True, customer=customer)
         cart.open = False
         cart.save()
         messages.success(request, 'Your order was successfully sent', 'success_login')
