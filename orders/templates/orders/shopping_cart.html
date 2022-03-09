@@ -81,6 +81,7 @@
                 <div class="totals col-lg-6 col-sm-12">
                     {#                    <form action="" method="post">#}
                     {{form.as_p}}
+                    <a href="{% url 'customers:profile_address' %}">Don't have address?</a><br>
                     <input type="submit" class="btn btn-secondary check-off-code"
                            value="Checkout">
                     {#                    </form>#}
@@ -89,7 +90,7 @@
         </div>
 
         <a class="btn btn-success text-center submit-order disable submit"
-           href="{% url 'orders:submit_order' %}" >Submit order</a>
+           href="{% url 'orders:submit_order' %}">Submit order</a>
     </div>
     <br>
 {% endblock %}
