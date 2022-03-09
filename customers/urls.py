@@ -14,6 +14,7 @@ urlpatterns = [
     path('confirm/complete', views.UserPasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('profile/', views.CustomerProfileView.as_view(), name='profile'),
     path('profile/address', views.AddressCustomerProfileView.as_view(), name='profile_address'),
+    path('profile/delete-address/<int:pk>', views.DeleteAddressView.as_view(), name='delete_address'),
     # path('address/<int:pk>', views.AddressDetailApi.as_view(), name='address_detail'),
     path('addresses/', views.AddressListApi.as_view(), name='address_list'),
 
