@@ -1,24 +1,29 @@
+import json
+
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from core.models import BaseModel, BaseDiscount
 from django.db import models
 from customers.models import Customer, Address
+# from orders.serializers import CheckValidOrderItem, CartItemSerializer
 from products.models import Product, Category
 from django.core.validators import MinValueValidator, MinLengthValidator, MaxLengthValidator
 from django.utils.text import slugify
+
+from django.apps import apps
 
 
 class Cart(BaseModel):
     """
         A class used to implement carts
     """
-    total_price = models.PositiveIntegerField(default=0, verbose_name=_('Total Price'), null=True, blank=True,)
-    final_price = models.PositiveIntegerField(default=0, verbose_name=_('Final Price'), null=True, blank=True,)
+    total_price = models.PositiveIntegerField(default=0, verbose_name=_('Total Price'), null=True, blank=True, )
+    final_price = models.PositiveIntegerField(default=0, verbose_name=_('Final Price'), null=True, blank=True, )
     off_code = models.ForeignKey('OffCode', on_delete=models.CASCADE, related_name='carts', null=True, blank=True,
                                  verbose_name=_('Off Code'))
     customer = models.ForeignKey(Customer, on_delete=models.RESTRICT, related_name='ccarts', verbose_name=_('Customer'))
-    address = models.ForeignKey(to=Address, on_delete=models.RESTRICT, related_name='acarts',verbose_name=_('Address'),
-                                null=True,blank=True)
+    address = models.ForeignKey(to=Address, on_delete=models.RESTRICT, related_name='acarts', verbose_name=_('Address'),
+                                null=True, blank=True)
     open = models.BooleanField(default=True)
 
     def total_worth(self):
@@ -83,6 +88,35 @@ class CartItem(BaseModel):
 
         super().save(force_insert, force_update, using, update_fields)
         self.cart.save()
+
+    @staticmethod
+    def create_cart_item(request, CheckValidOrderItem, CartItemSerializer):
+
+        this_customer = request.user.customer
+        last_order = Cart.objects.get_or_create(open=True, customer=this_customer)
+        order = last_order[0]
+        if not last_order[1]:
+            for cart_item in order.items.all():
+                cart_item.delete()
+        for i in request.POST.keys():
+            i = json.loads(i)
+            info = eval('CheckValidOrderItem(data=i, many=True)')
+            if info.is_valid():
+                for order_item in info.validated_data:
+                    product = Product.objects.get(name=order_item['name'].replace('-', ' '))
+                    del order_item['name']
+                    del order_item['price']
+                    order_item['product'] = product.id
+                    order_item['cart'] = order.id
+                    cart_item = eval('CartItemSerializer(data=dict(order_item))')
+                    if cart_item.is_valid():
+                        cart_item.save()
+            order.save()
+
+    @staticmethod
+    def remove_loaded_items_key(request):
+        if 'loaded_items' in request.session:
+            request.session.pop('loaded_items')
 
     @classmethod
     def filter_by_product_category(cls, category: Category):
