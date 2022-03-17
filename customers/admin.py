@@ -1,6 +1,6 @@
 from django.contrib import admin
 from core.models import User
-from .models import Customer, Address, WishList
+from .models import Customer, Address, WishList, OtpCode
 
 
 class AddressInline(admin.TabularInline):
@@ -28,3 +28,10 @@ class WishListAdmin(admin.ModelAdmin):
     search_fields = ('customer', 'product')
     list_filter = ('last_updated',)
     exclude = ('delete_timestamp', 'deleted_at', 'is_deleted', 'is_active')
+
+
+@admin.register(OtpCode)
+class OtpCodeAdmin(admin.ModelAdmin):
+    list_display = ('phone', 'code', 'created')
+    search_fields = ('phone',)
+    list_filter = ('created',)
