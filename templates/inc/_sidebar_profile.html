@@ -1,0 +1,106 @@
+{% load static %}
+<aside id="sidebar" class="sidebar break-point-lg has-bg-image">
+    <div class="image-wrapper">
+        <img src="https://user-images.githubusercontent.com/25878302/144499035-2911184c-76d3-4611-86e7-bc4e8ff84ff5.jpg" alt="sidebar background" />
+    </div>
+    <div class="sidebar-layout">
+        <div class="sidebar-header">
+        <span style="
+                text-transform: uppercase;
+                font-size: 15px;
+                letter-spacing: 3px;
+                font-weight: bold;
+              ">
+
+                <img src="{% if customer.gender == 0 %}{% static 'img/profile.png' %}{% else %}{% static 'img/woman.png' %}{% endif %}"
+                     alt="" style="width: 40px">
+
+           {{ request.user.phone }}
+        </span>
+        </div>
+        <div class="sidebar-content">
+            <nav class="menu open-current-submenu">
+                <ul>
+
+                    <li class="menu-item">
+                        <a href="{% url 'customers:profile' %}">
+                                    <span class="menu-icon">
+                                      <i class="ri-user-line"></i>
+                                    </span>
+                            <span class="menu-title">Profile</span>
+                        </a>
+                    </li>
+                    <li class="menu-item sub-menu">
+                        <a href="#">
+                <span class="menu-icon">
+                  <i class="ri-shopping-cart-fill"></i>
+                </span>
+                            <span class="menu-title">E-commerce</span>
+                        </a>
+                        <div class="sub-menu-list">
+                            <ul>
+                                <li class="menu-item">
+                                    <a href="#">
+                                        <span class="menu-title">Orders now</span>
+                                    </a>
+                                </li>
+                                <li class="menu-item">
+                                    <a href="#">
+                                        <span class="menu-title">Previous orders</span>
+                                    </a>
+                                </li>
+                                <li class="menu-item">
+                                    <a href="{% url 'customers:wishlist' %}">
+                                        <span class="menu-title">Wishlist</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="menu-item sub-menu">
+                        <a href="#">
+                <span class="menu-icon">
+                  <i class="ri-map-pin-line"></i>
+                </span>
+                            <span class="menu-title">Address</span>
+                        </a>
+                        <div class="sub-menu-list">
+                            <ul>
+                                <li class="menu-item">
+                                    <a href="{% url 'customers:profile_address' %}">
+                                                <span class="menu-icon">
+
+                                                    <i class="ri-map-pin-user-line"></i>
+                                    </span>
+                                        <span class="menu-title">Your addresses</span>
+                                    </a>
+                                </li>
+                                {#                                        <li class="menu-item">#}
+                                {#                                            <a href="{% url 'customers:profile_address' %}">#}
+                                {#                                                <span class="menu-icon">#}
+                                {##}
+                                {#                                                    <i class="ri-add-line"></i>#}
+                                {#                                    </span>#}
+                                {##}
+                                {#                                                <span class="menu-title">Add address</span>#}
+                                {#                                            </a>#}
+                                {#                                        </li>#}
+
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{% url 'products:home' %}">
+                <span class="menu-icon">
+                  <i class="ri-arrow-left-line"></i>
+                </span>
+                            <span class="menu-title">Exit</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="sidebar-footer"><span>Customer panel</span></div>
+    </div>
+</aside>
+<div id="overlay" class="overlay"></div>
