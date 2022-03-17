@@ -1,0 +1,28 @@
+.accordion-button{
+    background-color: #c3c7c6;
+}
+input{
+    background-color: #fcfcfc;
+}
+textarea{
+    background-color: #fcfcfc !important;
+}
+small{
+    color: #333 !important;
+}
+.accordion-body{
+    background-color: #d5d5d5;
+}
+main{
+    background-image: linear-gradient(to right,#becef5,#362b2b);
+}
+.label2{
+    color: #453d9b;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+[name|="phone"]{
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.6;
+}
