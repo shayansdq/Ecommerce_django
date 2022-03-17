@@ -60,6 +60,10 @@ class CustomerRegisterForm(forms.Form):
             raise ValidationError('Passwords is not match')
 
 
+class VerifyCodeForm(forms.Form):
+    code = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
+
+
 class CustomerForm(forms.Form):
     phone = forms.CharField(max_length=100,
                             widget=forms.TextInput(attrs={'placeholder': 'Phone',
@@ -76,14 +80,13 @@ class CustomerForm(forms.Form):
 class AddressForm(forms.ModelForm):
     class Meta:
         model = Address
-        fields = ('state','city','zip_code','extra_detail')
+        fields = ('state', 'city', 'zip_code', 'extra_detail')
         widgets = {
-            'state': forms.TextInput(attrs={'placeholder': 'State','class': 'form-control'}),
-            'city': forms.TextInput(attrs={'placeholder': 'City','class': 'form-control'}),
-            'zip_code': forms.TextInput(attrs={'placeholder': 'Zip Code','class': 'form-control'}),
-            'extra_detail': forms.Textarea(attrs={'placeholder': 'Extra Detail','class': 'form-control'}),
+            'state': forms.TextInput(attrs={'placeholder': 'State', 'class': 'form-control'}),
+            'city': forms.TextInput(attrs={'placeholder': 'City', 'class': 'form-control'}),
+            'zip_code': forms.TextInput(attrs={'placeholder': 'Zip Code', 'class': 'form-control'}),
+            'extra_detail': forms.Textarea(attrs={'placeholder': 'Extra Detail', 'class': 'form-control'}),
         }
         help_texts = {
             'extra_detail': 'Enter your extra detail for your address',
         }
-
