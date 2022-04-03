@@ -26,4 +26,5 @@ urlpatterns = i18n_patterns(path('admin/', admin.site.urls),
                             path('rosetta/', include('rosetta.urls')),
                             path('api/', include('api.urls',namespace='api')),
                             path('orders/', include('orders.urls',namespace='orders')),
+                            path('comments/', include('comments.urls',namespace='comments')),
                             ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
