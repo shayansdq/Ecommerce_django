@@ -67,6 +67,11 @@ body, ul, li, p, a, label, input, div {
   background-color: #69bb7e;
   color: #fff;
 }
+.titles-site{
+  font-weight: bold !important;
+  color: #424874;
+  margin-top: -2rem;
+}
 /* Nav */
 #templatemo_nav_top { min-height: 40px;}
 #templatemo_nav_top * { font-size: .9em !important;}
@@ -174,7 +179,7 @@ body, ul, li, p, a, label, input, div {
 /*// Medium devices (tablets, 768px and up)*/
 @media (min-width: 768px) {
   #templatemo_main_nav .navbar-nav {max-width: 450px;}
- }
+}
 
 /* Large devices (desktops, 992px and up)*/
 @media (min-width: 992px) {
