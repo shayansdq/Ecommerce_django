@@ -2,90 +2,19 @@
 {% load static %}
 {% load extra_tags %}
 {% block extra_head %}
-    <style>
-        .large-font{
-            font-size:xxx-large;
-        }
-        .top-20{
-            position:relative;
-            top:20vh;
-        }
-        ion-icon.active{
-            animation:like 0.5s 1;
-            fill:red;
-            stroke:none;
-        }
-        ion-icon{
-            fill:transparent;
-            stroke:black;
-            stroke-width:30;
-            transition:all 0.5s;
-        }
-
-
-        @-webkit-keyframes like {
-            0%   { transform: scale(1); }
-            90%   { transform: scale(1.2); }
-            100% { transform: scale(1.1); }
-        }
-        .heart {
-            width: 100px;
-            height: 100px;
-            background: url("https://cssanimation.rocks/images/posts/steps/heart.png") no-repeat;
-        {#background-position: 0 0;#}
-            cursor: pointer;
-            transition: background-position 1s steps(28);
-            transition-duration: 0s;
-            margin-bottom: -20px;
-        }
-        .heart{
-        {#background-color: red;#}
-        }
-        .heart.is-active {
-            transition-duration: 1s;
-            background-position: -2800px 0;
-        }
-
-        {#.placement {#}
-        {#position: fixed;#}
-        {#    top: 50%;#}
-        {#    left: 50%;#}
-        {#    transform: translate(-50%, -50%);#}
-
-        a{
-            text-decoration: none !important;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous">
     <style>
-        .slick-slider{position:relative;display:block;box-sizing:border-box;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-touch-callout:none;-khtml-user-select:none;-ms-touch-action:pan-y;touch-action:pan-y;-webkit-tap-highlight-color:transparent}.slick-list{position:relative;display:block;overflow:hidden;margin:0;padding:0}.slick-list:focus{outline:0}.slick-list.dragging{cursor:pointer;cursor:hand}.slick-slider .slick-list,.slick-slider .slick-track{-webkit-transform:translate3d(0,0,0);-moz-transform:translate3d(0,0,0);-ms-transform:translate3d(0,0,0);-o-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}.slick-track{position:relative;top:0;left:0;display:block;margin-left:auto;margin-right:auto}.slick-track:after,.slick-track:before{display:table;content:''}.slick-track:after{clear:both}.slick-loading .slick-track{visibility:hidden}.slick-slide{display:none;float:left;height:100%;min-height:1px}[dir=rtl] .slick-slide{float:right}.slick-slide img{display:block}.slick-slide.slick-loading img{display:none}.slick-slide.dragging img{pointer-events:none}.slick-initialized .slick-slide{display:block}.slick-loading .slick-slide{visibility:hidden}.slick-vertical .slick-slide{display:block;height:auto;border:1px solid transparent}.slick-arrow.slick-hidden{display:none}
-        .carousel-item a img{
-            width: 128px !important;
-            height: 101px;
-            object-fit: cover;
-        }
-        .container .col-lg-5 .card img {
-            width: 443px;
-            height: 443px;
-            object-fit: contain;
-            min-width: 100%;
-        {#min-height: 100%;#}
-        }
-        .product-wap .card-body{
-            width: 260px;
-            height: 199px;
-        }
-        .container .card img {
-            width: 258px;
-            height: 258px;
-            object-fit: contain;
-            min-width: 100%;
-            min-height: 100%;
+        .wishlist-sit {
+            top: 29px;
+            right: 11px;
+            
         }
     </style>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% endblock %}
 {% block body_content %}
     <!-- Modal -->
@@ -108,7 +37,7 @@
 
 
     <!-- Open Content -->
-    <section class="bg-light">
+    <section class="" style="background-color: #d6e8f769;">
         <div class="container pb-5">
             <div class="row">
                 <div class="col-lg-5 mt-5">
@@ -207,7 +136,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <nav aria-label="breadcrumb">
-                                    <ol class="breadcrumb">
+                                    <ol class="breadcrumb" style="background-color: #ebeefc;">
                                         <li class="breadcrumb-item">
                                             <a href="{% url 'products:home' %}">Home</a>
                                         </li>
@@ -245,10 +174,34 @@
                                     {#                                    <i class="fa fa-star text-warning"></i>#}
                                     {#                                    <i class="fa fa-star text-secondary"></i>#}
                                     {#                                    <span class="list-inline-item text-dark">#}
-                                <div class="placement text-right" >
-                                    <div class="heart is-active" title="Like"></div>
-                                </div>
+                                    {% if not request.user.is_authenticated %}
+                                        <div class="placement text-right" >
+                                            <div class="heart" title="Like"></div>
+                                        </div>
+                                    {% else %}
+                                        {% if is_like %}
+                                            <div class="d-flex align-items-end">
+                                                <div class="placement text-right" >
+                                                    <div class="heart is-active position-relative" title="Like">
+                                                        <span class="position-absolute translate-middle
+                                                        badge rounded-pill bg-light text-dark wishlist-sit">-</span>
+                                                    </div>
 
+                                                </div>
+                                                <small id="text-wishlist" class="font-italic">is in your list</small>
+                                            </div>
+                                        {% else %}
+                                            <div class="d-flex align-items-end">
+                                                <div class="placement text-right" >
+                                                    <div class="heart position-relative" title="Like">
+                                                        <span class="position-absolute translate-middle
+                                                        badge rounded-pill bg-light text-dark wishlist-sit">+</span>
+                                                    </div>
+                                                </div>
+                                                <small id="text-wishlist" class="font-italic">is not in your list</small>
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
                                 </p>
                                 <ul class="list-inline">
                                     <li class="list-inline-item">
@@ -265,7 +218,7 @@
                                 {#                            <form>#}
                                 <div class="row pb-3">
                                     <div class="col d-grid">
-                                        <button class="btn btn-success btn-lg add-to-cart"
+                                        <button class="btn btn-lg add-to-cart" style="background-color: #84a8df;"
                                                 data-name="{{ product.name | replacer:'-' }}" data-price="{{ product.final_price }}"
                                                 name="submit">Add To Cart</button>
                                     </div>
@@ -277,9 +230,11 @@
                     </div>
                 </div>
             </div>
+        </div>
     </section>
     <!-- Close Content -->
     <!-- Start Article -->
+
     <section class="py-5">
         <div class="container">
             <div class="row text-left p-2 pb-3">
@@ -295,7 +250,6 @@
                                 <img class="card-img rounded-0 img-fluid" src="{{ related_product.image.url }}">
                                 <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                                     <ul class="list-unstyled">
-                                        {#                                        <li><a class="btn btn-success text-white" href="shop-single.html"><i class="far fa-heart"></i></a></li>#}
                                         <li>
                                             <a class="btn btn-success text-white mt-2" href="{% url 'products:product_detail' related_product.id %}">
                                                 <i class="far fa-eye">
@@ -360,33 +314,80 @@
             </div>
         </div>
     </section>
+    <section class="py-5 cm-section">
+        <div class="container">
+            <div class="row p-2 pb-3" style="background-color: #94a8be !important;">
+                {% if comments %}
+                    <p class="my-3">{{ comments | length }} Comments</p>
+                {% endif %}
+                {% if request.user.is_authenticated %}
+                    <button class="btn btn-success submit-cm">Submit comment</button>
+                    <form action="{% url 'comments:save_comment'  %}" method="post" class="cm-form">
+                        {% csrf_token %}
+                        {{ cm_form.body }}
+                        <br>
+                        <input type="submit" value="Send" class="btn btn-primary">
+                    </form><br>
+                {% else %}
+                    <p class="alert alert-danger">Only logged-in users can comment.</p>
+                {% endif %}
+
+
+
+                {% for comment in comments %}
+                    <div class="card text-white my-2" style="background-color: #858f9a!important;">
+                        <p class="card-header">{{ comment.customer.user.phone }} | {{ comment.created | timesince }}</p>
+                        <p class="card-body">{{ comment.body }}</p>
+
+                        {% if request.user.is_authenticated %}
+                            <button class="btn btn-secondary reply">Reply</button>
+                            <form action="{% url 'comments:add_reply' comment.id %}" method="post" class="reply-form">
+                                {% csrf_token %}
+                                {{ reply_cm_form.body }}
+                                <input type="submit" class="btn btn-primary my-2" value="Send">
+                            </form>
+                        {% endif %}
+
+                        {% with replies=comment.rcomments.all %}
+                            {% for reply in replies %}
+                                <div class="card text-white my-2 bg-dark p-3 m-2">
+                                    <p class="card-header">{{ reply.customer.user.phone }} | {{ reply.created | timesince }}</p>
+                                    <p class="card-body">{{ reply.body }}</p>
+
+                                    {% if request.user.is_authenticated %}
+                                        <button class="btn btn-secondary reply">Reply</button>
+                                        <form action="{% url 'comments:add_reply' reply.id %}" method="post"
+                                              class="reply-form">
+                                            {% csrf_token %}
+                                            {{ reply_cm_form.body }}
+                                            <input type="submit" class="btn btn-primary my-2" value="Send">
+                                        </form>
+                                    {% endif %}
+
+                                    {% with replies2=reply.rcomments.all %}
+                                        {% for reply2 in replies2 %}
+                                            <div class="card text-white my-2 bg-black">
+                                                <p class="card-header">{{ reply2.customer.user.phone }} | {{ reply2.created | timesince }}</p>
+                                                <p class="card-body">{{ reply2.body }}</p>
+                                            </div>
+                                        {% endfor %}
+                                    {% endwith %}
+                                </div>
+                            {% endfor %}
+                        {% endwith %}
+                    </div><br>
+                {% empty %}
+                    <p>No comments yet ...</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
     <!-- End Article -->
-    <!-- Modal -->
-{#    <div class="modal fade" id="cart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">#}
-{#        <div class="modal-dialog modal-lg" role="document">#}
-{#            <div class="modal-content">#}
-{#                <div class="modal-header">#}
-{#                    <h5 class="modal-title" id="exampleModalLabel">Cart</h5>#}
-{#                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
-{#                        <span aria-hidden="true">&times;</span>#}
-{#                    </button>#}
-{#                </div>#}
-{#                <div class="modal-body">#}
-{#                    <table class="show-cart table">#}
-{##}
-{#                    </table>#}
-{#                    <div>Total price: $<span class="total-cart"></span></div>#}
-{#                </div>#}
-{#                <div class="modal-footer">#}
-{#                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>#}
-{#                    <button type="button" class="btn btn-primary">Order now</button>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
+
 {% endblock %}
 
 {% block before_body_ends %}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
     <script src="{% static 'js/basket.js' %}"></script>
     <!-- Start Script -->
@@ -399,42 +400,7 @@
 
     <!-- Start Slider Script -->
     <script src="{% static 'js/slick.min.js' %}"></script>
-    <script>
-        $('#carousel-related-product').slick({
-            infinite: true,
-            arrows: false,
-            slidesToShow: 4,
-            slidesToScroll: 3,
-            dots: true,
-            responsive: [{
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3
-                }
-            },
-                {
-                    breakpoint: 600,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 3
-                    }
-                },
-                {
-                    breakpoint: 480,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 3
-                    }
-                }
-            ]
-        });
-        $(function() {
-            $(".heart").on("click", function() {
-                $(this).toggleClass("is-active");
-            });
-        });
-    </script>
+    {% include 'inc/product_detail_js.html' %}
     <!-- End Slider Script -->
 
 {% endblock %}
