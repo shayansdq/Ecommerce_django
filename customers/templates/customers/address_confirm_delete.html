@@ -69,7 +69,7 @@
                                     <span class="menu-icon">
                                       <i class="ri-user-line"></i>
                                     </span>
-                                    <span class="menu-title">Profile</span>
+                                    <span class="menu-title">{% trans 'Profile' %}</span>
                                 </a>
                             </li>
                             <li class="menu-item sub-menu">
@@ -77,23 +77,23 @@
                 <span class="menu-icon">
                   <i class="ri-shopping-cart-fill"></i>
                 </span>
-                                    <span class="menu-title">E-commerce</span>
+                                    <span class="menu-title">{% trans 'E-commerce' %}</span>
                                 </a>
                                 <div class="sub-menu-list">
                                     <ul>
                                         <li class="menu-item">
                                             <a href="#">
-                                                <span class="menu-title">Orders now</span>
+                                                <span class="menu-title">{% trans 'Orders now' %}</span>
                                             </a>
                                         </li>
                                         <li class="menu-item">
                                             <a href="#">
-                                                <span class="menu-title">Previous orders</span>
+                                                <span class="menu-title">{% trans 'Previous orders' %}</span>
                                             </a>
                                         </li>
                                         <li class="menu-item">
                                             <a href="#">
-                                                <span class="menu-title">Wishlist</span>
+                                                <span class="menu-title">{% trans 'Wishlist' %}</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -104,7 +104,7 @@
                 <span class="menu-icon">
                   <i class="ri-map-pin-line"></i>
                 </span>
-                                    <span class="menu-title">Address</span>
+                                    <span class="menu-title">{% trans 'Address' %}</span>
                                 </a>
                                 <div class="sub-menu-list">
                                     <ul>
@@ -114,20 +114,9 @@
 
                                                     <i class="ri-map-pin-user-line"></i>
                                     </span>
-                                                <span class="menu-title">Your addresses</span>
+                                                <span class="menu-title">{% trans 'Your addresses' %}</span>
                                             </a>
                                         </li>
-                                        {#                                        <li class="menu-item">#}
-                                        {#                                            <a href="{% url 'customers:profile_address' %}">#}
-                                        {#                                                <span class="menu-icon">#}
-                                        {##}
-                                        {#                                                    <i class="ri-add-line"></i>#}
-                                        {#                                    </span>#}
-                                        {##}
-                                        {#                                                <span class="menu-title">Add address</span>#}
-                                        {#                                            </a>#}
-                                        {#                                        </li>#}
-
                                     </ul>
                                 </div>
                             </li>
@@ -136,13 +125,13 @@
                 <span class="menu-icon">
                   <i class="ri-arrow-left-line"></i>
                 </span>
-                                    <span class="menu-title">Exit</span>
+                                    <span class="menu-title">{% trans 'Exit' %}</span>
                                 </a>
                             </li>
                         </ul>
                     </nav>
                 </div>
-                <div class="sidebar-footer"><span>Customer panel</span></div>
+                <div class="sidebar-footer"><span>{% trans 'Customer panel' %}</span></div>
             </div>
         </aside>
         <div id="overlay" class="overlay"></div>
@@ -158,7 +147,7 @@
 
             <main class="content">
                 <form method="post">{% csrf_token %}
-                    <p>Are you sure you want to delete "{{ object }}"?</p>
+                    <p>{% trans 'Are you sure you want to delete' %} "{{ object }}"?</p>
                     {{ form }}
                     <input type="submit" class="btn btn-primary" value="Confirm">
                 </form>
