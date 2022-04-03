@@ -22,7 +22,7 @@ class Cart(BaseModel):
     off_code = models.ForeignKey('OffCode', on_delete=models.CASCADE, related_name='carts', null=True, blank=True,
                                  verbose_name=_('Off Code'))
     customer = models.ForeignKey(Customer, on_delete=models.RESTRICT, related_name='ccarts', verbose_name=_('Customer'))
-    address = models.ForeignKey(to=Address, on_delete=models.RESTRICT, related_name='acarts', verbose_name=_('Address'),
+    address = models.ForeignKey(to=Address, on_delete=models.SET_NULL, related_name='acarts', verbose_name=_('Address'),
                                 null=True, blank=True)
     open = models.BooleanField(default=True)
 
@@ -103,6 +103,7 @@ class CartItem(BaseModel):
             info = eval('CheckValidOrderItem(data=i, many=True)')
             if info.is_valid():
                 for order_item in info.validated_data:
+                    print(order_item['name'].replace('-', ' '))
                     product = Product.objects.get(name=order_item['name'].replace('-', ' '))
                     del order_item['name']
                     del order_item['price']
