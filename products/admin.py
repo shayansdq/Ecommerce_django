@@ -6,7 +6,7 @@ from .models import Product, Brand, Category, Discount, ProductImages
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'category')
+    list_display = ('id','name', 'price', 'category')
     search_fields = ('name', 'category', 'brand')
     list_display_links = ('name',)
     list_per_page = 20
