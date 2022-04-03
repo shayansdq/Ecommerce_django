@@ -143,48 +143,6 @@
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous">
 </script>
-<script>
 
-    $('.load-card').on('click',()=>{
-        {#$(".send-order").click(function () {#}
-        {#    $.ajaxSetup({#}
-        {#        headers: {#}
-        {#            "X-CSRFToken": '{{csrf_token}}'#}
-        {#        }#}
-        {#    })#}
-        {#    let ordersValue = cart#}
-        {#    var json = JSON.stringify(ordersValue);#}
-        {#    console.log(json)#}
-        {#    $.ajax({#}
-        {#        type: "POST",#}
-        {#        url: "{% url 'orders:send_order' %}",#}
-        {#        data: json,#}
-        {#        dataType: "json",#}
-                {#contentType:'application/json',#}
-        {#        success: function (msg) {#}
-        {#            Swal.fire({#}
-        {#                position: 'center',#}
-        {#                icon: 'success',#}
-        {#                title: 'Your order was successfully sent',#}
-        {#                showConfirmButton: false,#}
-        {#                timer: 2500#}
-        {#            })#}
-        {#        },#}
-        {#        error: function (msg) {#}
-        {#            alert(`Failed`);#}
-        {#        }#}
-        {#    });#}
-        {# });#}
-        {#console.log('salam')#}
-        {#var cartItems = $.ajax({#}
-        {#    url:'{% url 'orders:load_cart_items' %}',#}
-        {#    type:'get',#}
-        {#    async: false,#}
-        {#    dataType: 'json',#}
-        {# }).responseJSON#}
-        {#console.log(cartItems)#}
-        {#sessionStorage.setItem('shoppingCart', JSON.stringify(cartItems));#}
-    })
-</script>
 </body>
 </html>
