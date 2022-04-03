@@ -6,6 +6,7 @@ from django.views import View
 # Create your views here.
 from django.views.generic import CreateView, TemplateView
 from rest_framework import generics
+from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 from customers.models import Customer, Address
@@ -19,12 +20,12 @@ import json
 class CreateOrderView(LoginRequiredMixin, CreateView):
 
     def post(self, request, *args, **kwargs):
-        CartItem.create_cart_item(request,CheckValidOrderItem,CartItemSerializer)
+        CartItem.remove_loaded_items_key(request)
+        CartItem.create_cart_item(request, CheckValidOrderItem, CartItemSerializer)
         return redirect('orders:cart_detail')
 
 
 class ShoppingCartView(LoginRequiredMixin, TemplateView):
-
     template_name = 'orders/shopping_cart.html'
 
     def get_context_data(self, **kwargs):
@@ -87,6 +88,15 @@ class CartDetailApi(generics.ListAPIView):
     def get_queryset(self):
         this_customer = self.request.user.customer
         return Cart.objects.filter(open=True, customer=this_customer)
+
+
+class LoadCartItemsFromCart(generics.ListCreateAPIView):
+    permission_classes = [
+        IsAuthenticated
+    ]
+    authentication_classes = [
+        BasicAuthentication
+    ]
 
 
 class LoadCartItemApi(generics.ListAPIView):
