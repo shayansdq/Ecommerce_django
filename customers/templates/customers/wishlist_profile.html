@@ -1,0 +1,140 @@
+{% extends 'layouts/__base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %}
+    {% trans 'Wishlist' %}
+{% endblock %}
+{% block extra_head %}
+
+    <link rel='stylesheet'
+          href='https://unpkg.com/css-pro-layout@1.1.0/dist/css/css-pro-layout.css'>
+    <link rel='stylesheet'
+          href='https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css'>
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% endblock %}
+{% block navbar %}
+    <!-- Start Top Nav -->
+    <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
+        <div class="container text-light">
+            <div class="w-100 d-flex justify-content-between">
+                <div>
+                    <i class="fa fa-envelope mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:info@company.com">
+                        info@company.com
+                    </a>
+                    <i class="fa fa-phone mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">
+                        010-020-0340
+                    </a>
+                </div>
+                <div>
+                    <a class="text-light" href="https://fb.com/templatemo" target="_blank" rel="sponsored"><i class="fab fa-facebook-f fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://twitter.com/" target="_blank"><i class="fab fa-twitter fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin fa-sm fa-fw"></i></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Close Top Nav -->
+
+{% endblock %}
+{% block body_content %}
+    {% include 'inc/messages.html' %}
+    <!-- partial:index.partial.html -->
+    <div class="layout has-sidebar fixed-sidebar fixed-header">
+        {% include 'inc/_sidebar_profile.html' %}
+        <div class="layout">
+            <header class="header" style="position:absolute;width: 100vw;">
+                <a id="btn-collapse" href="#">
+                    <i class="ri-menu-line ri-xl"></i>
+                </a>
+                <a id="btn-toggle" href="#" class="sidebar-toggler break-point-lg">
+                    <i class="ri-menu-line ri-xl"></i>
+                </a>
+            </header>
+
+            <main class="content">
+                <div class="container">
+                    <div class="row">
+                        <h2 class="titles-site text-center m-4">{% trans 'Your Wishlist' %}</h2>
+                        {% for product in wishlist %}
+                            <div class="p-2 pb-3 col-lg-3 col-md-4 dol-sm-6">
+                                <div class="product-wap card rounded-0">
+                                    <div class="card rounded-0">
+                                        <img class="card-img rounded-0 img-fluid" src="{{ product.image.url }}">
+                                        <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                            <ul class="list-unstyled">
+                                                <li>
+                                                    <a class="btn btn-success text-white mt-2" href="{% url 'products:product_detail' product.id %}">
+                                                        <i class="far fa-eye">
+                                                        </i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <a href="{% url 'products:product_detail' product.id %}" class="h3 text-decoration-none">
+                                            {{ product.name }}
+                                        </a>
+                                        <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                                            <li class="pt-2">
+                                                <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
+                                            </li>
+                                        </ul>
+                                        <ul class="list-unstyled d-flex justify-content-center mb-1">
+                                            <li>
+                                                <i class="text-warning fa fa-star"></i>
+                                                <i class="text-warning fa fa-star"></i>
+                                                <i class="text-warning fa fa-star"></i>
+                                                <i class="text-warning fa fa-star"></i>
+                                                <i class="text-muted fa fa-star"></i>
+                                            </li>
+                                        </ul>
+                                        {% if product.price != product.final_price %}
+
+                                            <del class="text-center mb-0" style="color: red;">
+                                                {{product.price}}
+                                            </del> {% trans 'Tomans' %}
+                                            {% if product.discount.type == 1 %}
+                                                <span class="badge badge-danger">{{product.discount.value}}%</span>
+                                            {% else %}
+                                                <span class="badge badge-danger">{{product.discount.value}}
+                                                    {% trans 'Tomans' %}</span>
+                                            {% endif %}
+                                            <p class="mb-0">
+                                                {{product.final_price}} {% trans 'Tomans' %}
+                                            </p>
+                                        {% else %}
+                                            <p class="mb-0">
+                                                {{product.final_price}} {% trans 'Tomans' %}
+                                            </p>
+                                        {% endif %}
+
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </main>
+            <div class="overlay"></div>
+        </div>
+    </div>
+    <!-- partial -->
+{% endblock %}
+{% block footer %}
+
+{% endblock %}
+{% block before_body_ends %}
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src='https://unpkg.com/@popperjs/core@2'></script>
+    <script  src="{% static 'js/profile.js' %}"></script>
+{% endblock %}
