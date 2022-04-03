@@ -6,6 +6,7 @@ app_name = 'customers'
 urlpatterns = [
     path('contact/', views.ContactUsView.as_view(), name='contact_view'),
     path('login-register/', views.LoginRegisterView.as_view(), name='register_login_view'),
+    path('verify_code/', views.UserRegisterVerifyCodeView.as_view(), name='verify_code'),
     path('login/', views.LoginPostView.as_view(), name='do_login'),
     path('logout/', views.UserLogoutView.as_view(), name='logout'),
     path('reset/', views.UserPasswordResetView.as_view(), name='reset_password'),
@@ -17,5 +18,6 @@ urlpatterns = [
     path('profile/delete-address/<int:pk>', views.DeleteAddressView.as_view(), name='delete_address'),
     # path('address/<int:pk>', views.AddressDetailApi.as_view(), name='address_detail'),
     path('addresses/', views.AddressListApi.as_view(), name='address_list'),
+    path('wishlist/', views.WishListView.as_view(), name='wishlist'),
 
 ]
