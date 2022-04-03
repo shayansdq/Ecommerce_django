@@ -46,12 +46,20 @@ class Address(BaseModel):
         return self.__str__()
 
 
-
-
 class WishList(BaseModel):
-    customer = models.ForeignKey('Customer', on_delete=models.CASCADE, related_name='whishlist',
+    customer = models.ForeignKey('Customer', on_delete=models.CASCADE, related_name='wishlist',
                                  verbose_name=_('Customer'))
     product = models.ForeignKey('products.Product', on_delete=models.CASCADE, verbose_name=_('Product'))
 
     def __str__(self):
         return f"{self.customer} like {self.product.name}"
+
+
+class OtpCode(models.Model):
+    phone = models.CharField(max_length=13)
+    code = models.PositiveSmallIntegerField()
+    created = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.phone} - {self.code} - {self.created}"
+
