@@ -26,6 +26,19 @@ input {
 	top: 0;
 	left: 0;
 }
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+.left-panel{
+	margin-right: 11rem;
+}
+/* Firefox */
+input[type=number] {
+	-moz-appearance: textfield;
+}
 select{
 	border-radius: inherit;
 	border: none;
