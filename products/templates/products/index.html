@@ -1,6 +1,9 @@
 {% extends 'layouts/__base.html' %}
 {% load static %}
 {% load i18n %}
+{% block title %}
+{% trans 'Home' %}
+{% endblock %}
 {% block extra_head %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
           integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn"
@@ -30,12 +33,12 @@
     <!-- Start Banner Hero -->
     <div id="template-mo-zay-hero-carousel" class="carousel slide" data-bs-ride="carousel">
         <ol class="carousel-indicators">
-            <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="0" class="active"></li>
-            <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="1"></li>
-            <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="2"></li>
+            <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="0" class="active" style="background-color: #424874"></li>
+            <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="1" style="background-color: #424874"></li>
+            <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="2" style="background-color: #424874"></li>
         </ol>
-        <div class="carousel-inner">
-            <div class="carousel-item active">
+        <div class="carousel-inner" style="background-color: #eef6fc;">
+            <div class="carousel-item active" style="background-color: #eef6fc;">
                 <div class="container">
                     <div class="row p-5">
                         <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
@@ -43,16 +46,16 @@
                         </div>
                         <div class="col-lg-6 mb-0 d-flex align-items-center">
                             <div class="text-align-left align-self-center">
-                                <h1 class="h1 text-success"><b>{{ active_carousel.brand.name }}</b>  {{ active_carousel.category.name }}</h1>
+                                <h1 class="h1" style="color: #424874"><b>{{ active_carousel.brand.name }}</b>  {{ active_carousel.category.name }}</h1>
                                 <h3 class="h2">{{ active_carousel.name }} </h3>
                                 <span class="badge badge-danger">{{active_carousel.discount.value}}%</span>
                                 <p>
                                     {{ active_carousel.description | truncatewords:25 }}
                                     <br>
-                                <h6 style="display: inline">To buy this product click</h6>
-                                <a rel="sponsored" class="text-success"
+                                <h6 style="display: inline">{% trans 'To buy this product click' %}</h6>
+                                <a rel="sponsored" style="color: #424874"
                                    href="{% url 'products:product_detail' active_carousel.id %}">
-                                    here
+                                    {% trans 'here' %}
                                 </a>
                                 </p>
                             </div>
@@ -61,7 +64,7 @@
                 </div>
             </div>
             {% for carousel in another_carousels %}
-                <div class="carousel-item">
+                <div class="carousel-item" style="background-color: #eef6fc;">
                     <div class="container">
                         <div class="row p-5">
                             <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
@@ -69,16 +72,16 @@
                             </div>
                             <div class="col-lg-6 mb-0 d-flex align-items-center">
                                 <div class="text-align-left">
-                                    <h1 class="h1 text-success"><b>{{ carousel.brand.name }}</b>  {{ carousel.category.name }}</h1>
+                                    <h1 class="h1" style="color: #424874"><b>{{ carousel.brand.name }}</b>  {{ carousel.category.name }}</h1>
                                     <h3 class="h2">{{ carousel.name }} </h3>
                                     <span class="badge badge-danger">{{carousel.discount.value}}%</span>
                                     <p>
                                         {{ carousel.description | truncatewords:25 }}
                                         <br>
-                                    <h6 style="display: inline">To buy this product click</h6>
-                                    <a rel="sponsored" class="text-success"
+                                    <h6 style="display: inline">{% trans 'To buy this product click' %}</h6>
+                                    <a rel="sponsored" style="color: #424874"
                                        href="{% url 'products:product_detail' carousel.id %}">
-                                        here
+                                        {% trans 'here' %}
                                     </a>
                                     </p>
                                 </div>
@@ -90,10 +93,10 @@
 
         </div>
         <a class="carousel-control-prev text-decoration-none w-auto ps-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="prev">
-            <i class="fas fa-chevron-left"></i>
+            <i class="fas fa-chevron-left" style="color: #424874 !important;"></i>
         </a>
         <a class="carousel-control-next text-decoration-none w-auto pe-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="next">
-            <i class="fas fa-chevron-right"></i>
+            <i class="fas fa-chevron-right" style="color: #424874 !important;"></i>
         </a>
     </div>
     <!-- End Banner Hero -->
@@ -102,10 +105,10 @@
     <section class="container py-5">
         <div class="row text-center pt-3">
             <div class="col-lg-6 m-auto">
-                <h1 class="h1">Most popular categories {{ request.session.loaded_items }}</h1>
+                <h1 class="h1" style="font-weight: bold !important;color: #424874;margin-top: -2rem;">{% trans 'Most popular categories' %}</h1>
+                <hr style="color: #38509f">
                 <p>
-                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-                    deserunt mollit anim id est laborum.
+                    {% trans 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' %}
                 </p>
             </div>
         </div>
@@ -118,7 +121,7 @@
                     </a>
                     <h5 class="text-center mt-3 mb-3">{{ category.name }}</h5>
                     <p class="text-center">
-                        <a class="btn btn-success" href="{% url 'products:products_category' category.id %}">Go Shop</a>
+                        <a class="btn" href="{% url 'products:products_category' category.id %}" style="background-color: #4975b9;color:white ">{% trans 'Go Shop' %}</a>
                     </p>
                 </div>
             {% endfor %}
@@ -129,14 +132,14 @@
 
 
     <!-- Start Featured Product -->
-    <section class="bg-light">
+    <section style="background-color: #eef6fc;">
         <div class="container py-5">
             <div class="row text-center py-3">
                 <div class="col-lg-6 m-auto">
-                    <h1 class="h1">Most discounted products</h1>
+                    <h1 class="h1" style="font-weight: bold !important;color: #424874;margin-top: -2rem;">{% trans 'Most discounted products' %}</h1>
+                    <hr style="color: #38509f">
                     <p>
-                        Reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                        Excepteur sint occaecat cupidatat non proident.
+                        {% trans 'Reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.Excepteur sint occaecat cupidatat non proident.' %}
                     </p>
                 </div>
             </div>
@@ -158,8 +161,8 @@
                                         <i class="text-muted fa fa-star"></i>
                                     </li>
                                     {% if product.price != product.final_price %}
-                                        <del class="text-muted text-right" style="color: red;">{{product.price}}T</del>
-                                        <li class="text-muted text-right">{{ product.final_price }}T</li>
+                                        <del class="text-muted text-right" style="color: red;">{{product.price}}{% trans 'T' %}</del>
+                                        <li class="text-muted text-right">{{ product.final_price }}{% trans 'T' %}</li>
                                     {% else %}
                                         <li class="text-muted text-right">{{ product.final_price }}</li>
                                     {% endif %}
@@ -168,14 +171,14 @@
                                     {% if product.discount.type == 1 %}
                                         <span class="badge badge-danger">{{product.discount.value}}%</span>
                                     {% else %}
-                                        <span class="badge badge-danger">{{product.discount.value}} Tomans</span>
+                                        <span class="badge badge-danger">{{product.discount.value}} {% trans 'Tomans' %}</span>
                                     {% endif %}
                                 </p>
                                 <a href="shop-single.html" class="h2 text-decoration-none text-dark">{{ product.name}}</a>
                                 <p class="card-text">
                                     {{ product.description | truncatewords:5 }}
                                 </p>
-                                <p class="text-muted">Reviews (24)</p>
+                                <p class="text-muted">{% trans 'Comments' %} (24)</p>
                             </div>
                         </div>
                     </div>
@@ -203,11 +206,11 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
     <script src="{% static 'js/basket.js' %}"></script>
     <!-- Start Script -->
-    <script src="{% static 'js/jquery-1.11.0.min.js'%}"></script>
-    <script src="{% static 'js/jquery-migrate-1.2.1.min.js'%}"></script>
-    <script src="{% static 'js/bootstrap.bundle.min.js'%}"></script>
+{#    <script src="{% static 'js/jquery-1.11.0.min.js'%}"></script>#}
+{#    <script src="{% static 'js/jquery-migrate-1.2.1.min.js'%}"></script>#}
+{#    <script src="{% static 'js/bootstrap.bundle.min.js'%}"></script>#}
     <script src="{% static 'js/templatemo.js' %}"></script>
-    <script src="{% static 'js/custom.js' %}%}"></script>
+{#    <script src="{% static 'js/custom.js' %}%}"></script>#}
     <!-- End Script -->
 
     <!-- Start Slider Script -->
