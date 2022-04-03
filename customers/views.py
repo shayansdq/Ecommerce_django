@@ -3,26 +3,31 @@ from unicodedata import category
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin, messages
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import views as auth_views
 # Create your views here.
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import FormView, DeleteView
+from django.views.generic import FormView, DeleteView, CreateView
 from rest_framework import generics
 from rest_framework import permissions, authentication
 from rest_framework.permissions import IsAuthenticated
 
 from core.models import User
-from customers.forms import ContactUsForm, CustomerLoginForm, CustomerRegisterForm, CustomerForm, AddressForm
+from customers.forms import ContactUsForm, CustomerLoginForm, CustomerRegisterForm, CustomerForm, AddressForm, \
+    VerifyCodeForm
 from django.utils.translation import gettext as _
 
-from customers.models import Address, Customer
+from customers.models import Address, Customer, OtpCode, WishList
 from customers.my_permissions import IsOwner, SuperUserCanSee
 from customers.serializers import AddressSerializer
 from orders.models import Cart, CartItem
 from orders.serializers import CartItemSerializer, LoadCartItem
-from products.models import Category
+from products.models import Category, Product
+import random
+
+from utils import send_otp_code, send_register_email
 
 
 class ContactUsView2(SuccessMessageMixin, FormView):
@@ -73,21 +78,65 @@ class LoginRegisterView(View):
         register_form = self.register_form_class(request.POST)
         login_form = self.login_form_class()
         if register_form.is_valid():
+            random_code = random.randint(1000, 9999)
             cd = register_form.cleaned_data
-
-            new_user = User.objects.create_user(phone=cd['phone'], password=cd['password1'], email=cd['email'])
-            Customer.objects.create(user=new_user, gender=int(cd['gender']))
-            messages.success(request, 'Registered successfully!', 'success_register')
-            return redirect('customers:register_login_view')
+            # send_otp_code(cd['phone'], random_code)
+            OtpCode.objects.create(phone=cd['phone'], code=random_code)
+            request.session['user_registration_info'] = {
+                'phone': cd['phone'],
+                'password': cd['password1'],
+                'email': cd['email'],
+                'gender': cd['gender']
+            }
+            # new_user = User.objects.create_user(phone=cd['phone'], password=cd['password1'], email=cd['email'])
+            # Customer.objects.create(user=new_user, gender=int(cd['gender']))
+            messages.success(request, 'We Sent You a Code', 'success_register')
+            return redirect('customers:verify_code')
         context = {
             'login_form': login_form,
             'register_form': register_form,
         }
         # Handle Invalid form
 
-        print(register_form.errors)
+        # print(register_form.errors)
         messages.error(request, 'Registered unsuccessfully !', 'unsuccess_register')
         return render(request, self.template_name, context)
+
+
+class UserRegisterVerifyCodeView(View):
+    form_class = VerifyCodeForm
+
+    def get(self, request):
+        form = self.form_class
+        context = {
+            'form': form,
+        }
+        return render(request, 'customers/verify_code.html', context)
+
+    def post(self, request):
+        user_session = request.session['user_registration_info']
+        code_instance = OtpCode.objects.get(phone=user_session['phone'])
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            if cd['code'] == code_instance.code:
+                new_user: User = User.objects.create_user(phone=user_session['phone'],
+                                                          password=user_session['password'],
+                                                          email=user_session['email'])
+                new_customer = Customer.objects.create(user=new_user, gender=int(user_session['gender']))
+                code_instance.delete()
+                send_register_email(new_customer)
+                user = authenticate(request, phone=new_user.phone, password=user_session['password'])
+                login(request, user)
+                messages.success(request, 'You registered successfully', 'success_register')
+                return redirect('products:home')
+            else:
+                messages.error(request, 'This code is wrong', 'unsuccess_register')
+                return redirect('customers:verify_code')
+        context = {
+            'form': form
+        }
+        return redirect('customers:verify_code')
 
 
 class LoginPostView(View):
@@ -103,9 +152,12 @@ class LoginPostView(View):
                 login(request, user)
                 messages.success(request, f'Login Successfully,Welcome {user.phone}', 'success_login')
                 customer = user.customer
-                this_cart = Cart.objects.get(open=True, customer=customer)
-                ser_data = LoadCartItem(instance=this_cart.items.all(),many=True).data
-                request.session['loaded_items'] = ser_data
+                if Cart.objects.filter(open=True, customer=customer).exists():
+                    this_cart = Cart.objects.get(open=True, customer=customer)
+                    ser_data = LoadCartItem(instance=this_cart.items.all(), many=True).data
+                    request.session['loaded_items'] = ser_data
+                    print(request.session.keys())
+                    print('s', ser_data)
                 # request.session['loaded_items'] = 'asd'
                 return redirect('products:home')
         messages.error(request, 'your username or password is wrong', 'unsuccess_login')
@@ -217,8 +269,40 @@ class AddressCustomerProfileView(View):
 
 class DeleteAddressView(DeleteView):
     model = Address
-    template_name = 'customers/addresses_profile.html'
-    success_url = reverse_lazy('customers:address_profile')
+    # template_name = 'customers/address_check_delete.html'
+    success_url = reverse_lazy('customers:profile_address')
+
+
+class WishListView(View):
+    def setup(self, request, *args, **kwargs):
+        self.data = request.POST
+        self.customer: Customer = request.user.customer if request.user.is_authenticated else None
+        super(WishListView, self).setup(request, *args, **kwargs)
+
+    def get(self, request):
+        wishlist = list(map(lambda x: x.product, list(self.customer.wishlist.all())))
+        context = {
+            'wishlist': wishlist,
+            'customer': self.request.user.customer
+        }
+        return render(request, 'customers/wishlist_profile.html', context)
+
+    def post(self, request):
+        self.do = self.data.get('do')
+        self.product = Product.objects.get(pk=self.data.get('product_id'))
+        if not self.customer:
+            return JsonResponse({'msg': 'You have to login first'})
+        elif self.do == 'like':
+            WishList.objects.create(product=self.product, customer=self.customer)
+            return JsonResponse({'msg': 'Added to your list'})
+        else:
+            WishList.objects.get(product=self.product, customer=self.customer).delete()
+            return JsonResponse({'msg': 'Removed from your list'})
+        return JsonResponse({'msg': 'Added to your list'})
+        #     WishList.objects.get(product=self.product, customer=self.customer)
+        #     pass
+        # else
+        # print(, '-ss-', data.get('product_id'))
 
 
 class AddressDetailApi(generics.RetrieveAPIView):
