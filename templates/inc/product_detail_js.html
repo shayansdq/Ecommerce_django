@@ -1,0 +1,109 @@
+<script>
+    $('#carousel-related-product').slick({
+        infinite: true,
+        arrows: false,
+        slidesToShow: 4,
+        slidesToScroll: 3,
+        dots: true,
+        responsive: [{
+            breakpoint: 1024,
+            settings: {
+                slidesToShow: 3,
+                slidesToScroll: 3
+            }
+        },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 3
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 3
+                }
+            }
+        ]
+    });
+    $(function() {
+        $(".heart").on("click", function() {
+            if ($(this).hasClass("is-active")) {
+                $.ajax({
+                    url: "{% url 'customers:wishlist' %}",
+                    headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                    data: {
+                        'do': 'dislike',
+                        'product_id': '{{ product.id }}',
+                    },
+                    type: "POST",
+                    dataType: 'json',
+                    success: function (msg) {
+
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'info',
+                            title: msg.msg,
+                            {#text: 'Click the button',#}
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+
+                        $('#text-wishlist').html('is not in your list')
+                        $('.wishlist-sit').html('+')
+                    }
+                });
+            } else {
+                $.ajax({
+                    url: "{% url 'customers:wishlist' %}",
+                    headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                    data: {
+                        'do': 'like',
+                        'product_id': '{{ product.id }}',
+                    },
+                    type: "POST",
+                    dataType: 'json',
+                    success: function (msg) {
+                        if (msg.msg === 'You have to login first'){
+                            Swal.fire({
+                                icon: 'info',
+                                title: msg.msg,
+                                {#text: 'Click the button',#}
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                        } else {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: msg.msg,
+                                {#text: 'Click the button',#}
+                                showConfirmButton: false,
+                                timer: 2000
+                            })
+                        }
+
+                        $('#text-wishlist').html('is in your list')
+                        $('.wishlist-sit').html('-')
+                    },
+                    error: function (msg) {
+                        console.log(msg)
+                    }
+                });
+            }
+            if ('{{ request.user.is_authenticated }}' === 'True'){
+                $(this).toggleClass("is-active");
+            }
+
+        });
+    });
+    $('.submit-cm').click(function (){
+        $('.cm-form').slideToggle(600)
+        console.log('salam')
+    })
+    $('.reply').click(function (){
+        $(this).next().slideToggle(600)
+    })
+</script>
