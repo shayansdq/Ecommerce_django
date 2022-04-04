@@ -9,7 +9,7 @@ from django.contrib.auth import views as auth_views
 # Create your views here.
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import FormView, DeleteView, CreateView
+from django.views.generic import FormView, DeleteView, CreateView, ListView
 from rest_framework import generics
 from rest_framework import permissions, authentication
 from rest_framework.permissions import IsAuthenticated
@@ -125,7 +125,7 @@ class UserRegisterVerifyCodeView(View):
                                                           email=user_session['email'])
                 new_customer = Customer.objects.create(user=new_user, gender=int(user_session['gender']))
                 code_instance.delete()
-                send_register_email(new_customer)
+                send_register_email(new_customer, cd['code'])
                 user = authenticate(request, phone=new_user.phone, password=user_session['password'])
                 login(request, user)
                 messages.success(request, 'You registered successfully', 'success_register')
@@ -303,6 +303,14 @@ class WishListView(View):
         #     pass
         # else
         # print(, '-ss-', data.get('product_id'))
+
+
+class CustomerOrdersList(ListView):
+    template_name = 'customers/orders_list.html'
+    context_object_name = 'orders'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        self.req
 
 
 class AddressDetailApi(generics.RetrieveAPIView):
