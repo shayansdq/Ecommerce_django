@@ -18,9 +18,10 @@ def send_otp_code(phone, code):
         print(e)
 
 
-def send_register_email(customer):
+def send_register_email(customer, code):
     subject = 'Welcome to ShopiHi World'
-    message = f'Hi dear\nWelcome to our shop.\nYou registered successfully with Phone: {customer.user.phone}'
+    message = f'Hi dear\nWelcome to our shop.\nYou registered successfully with Phone: {customer.user.phone}\n' \
+              f'Your code: {code}\n\nBest regards.'
     email_from = settings.EMAIL_HOST_USER
     recipient_list = [customer.user.email, ]
     send_mail(subject, message, email_from, recipient_list)
