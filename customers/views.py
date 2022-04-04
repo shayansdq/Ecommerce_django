@@ -82,7 +82,7 @@ class LoginRegisterView(View):
             cd = register_form.cleaned_data
             # send_otp_code(cd['phone'], random_code)
             OtpCode.objects.create(phone=cd['phone'], code=random_code)
-            send_register_email(cd['email'], random_code)
+            send_register_email(cd['email'], cd['phone'],random_code)
             request.session['user_registration_info'] = {
                 'phone': cd['phone'],
                 'password': cd['password1'],
