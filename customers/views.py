@@ -82,6 +82,7 @@ class LoginRegisterView(View):
             cd = register_form.cleaned_data
             # send_otp_code(cd['phone'], random_code)
             OtpCode.objects.create(phone=cd['phone'], code=random_code)
+            send_register_email(cd['email'], random_code)
             request.session['user_registration_info'] = {
                 'phone': cd['phone'],
                 'password': cd['password1'],
@@ -125,7 +126,7 @@ class UserRegisterVerifyCodeView(View):
                                                           email=user_session['email'])
                 new_customer = Customer.objects.create(user=new_user, gender=int(user_session['gender']))
                 code_instance.delete()
-                send_register_email(new_customer, cd['code'])
+
                 user = authenticate(request, phone=new_user.phone, password=user_session['password'])
                 login(request, user)
                 messages.success(request, 'You registered successfully', 'success_register')
