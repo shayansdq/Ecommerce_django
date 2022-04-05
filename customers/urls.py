@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-
+from . import api_views
 app_name = 'customers'
 
 urlpatterns = [
@@ -17,7 +17,7 @@ urlpatterns = [
     path('profile/address', views.AddressCustomerProfileView.as_view(), name='profile_address'),
     path('profile/delete-address/<int:pk>', views.DeleteAddressView.as_view(), name='delete_address'),
     # path('address/<int:pk>', views.AddressDetailApi.as_view(), name='address_detail'),
-    path('addresses/', views.AddressListApi.as_view(), name='address_list'),
+    path('addresses/', api_views.AddressListApi.as_view(), name='address_list'),
     path('wishlist/', views.WishListView.as_view(), name='wishlist'),
 
 ]

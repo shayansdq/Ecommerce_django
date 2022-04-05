@@ -126,7 +126,6 @@ class UserRegisterVerifyCodeView(View):
                                                           email=user_session['email'])
                 new_customer = Customer.objects.create(user=new_user, gender=int(user_session['gender']))
                 code_instance.delete()
-
                 user = authenticate(request, phone=new_user.phone, password=user_session['password'])
                 login(request, user)
                 messages.success(request, 'You registered successfully', 'success_register')
@@ -312,25 +311,3 @@ class CustomerOrdersList(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         self.req
-
-
-class AddressDetailApi(generics.RetrieveAPIView):
-    permission_classes = [
-        IsOwner,
-    ]
-    serializer_class = AddressSerializer
-    queryset = Address.objects.all()
-
-
-class AddressListApi(generics.ListAPIView):
-    permission_classes = [
-        IsAuthenticated,
-    ]
-    serializer_class = AddressSerializer
-    queryset = Address.objects.all()
-
-    def get_queryset(self):
-        user = self.request.user
-        this_customer = Customer.objects.get(user=user)
-        addresses = Address.objects.filter(customer=this_customer)
-        return addresses
