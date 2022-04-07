@@ -178,7 +178,7 @@
                                 <p class="card-text">
                                     {{ product.description | truncatewords:5 }}
                                 </p>
-                                <p class="text-muted">{% trans 'Comments' %} (24)</p>
+                                <p class="text-muted">{% trans 'Comments' %} {{ product.pcomments.all.count }}</p>
                             </div>
                         </div>
                     </div>
