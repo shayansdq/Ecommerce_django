@@ -18,13 +18,13 @@ class CartDetailApi(generics.ListAPIView):
         return Cart.objects.filter(open=True, customer=this_customer)
 
 
-class LoadCartItemsFromCart(generics.ListCreateAPIView):
-    permission_classes = [
-        IsAuthenticated
-    ]
-    authentication_classes = [
-        BasicAuthentication
-    ]
+# class LoadCartItemsFromCart(generics.ListCreateAPIView):
+#     permission_classes = [
+#         IsAuthenticated
+#     ]
+#     authentication_classes = [
+#         BasicAuthentication
+#     ]
 
 
 class LoadCartItemApi(generics.ListAPIView):
