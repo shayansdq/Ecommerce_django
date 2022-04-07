@@ -9,7 +9,7 @@ from django.contrib.auth import views as auth_views
 # Create your views here.
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import FormView, DeleteView, CreateView, ListView
+from django.views.generic import FormView, DeleteView, CreateView, ListView, DetailView
 from rest_framework import generics
 from rest_framework import permissions, authentication
 from rest_framework.permissions import IsAuthenticated
@@ -82,7 +82,7 @@ class LoginRegisterView(View):
             cd = register_form.cleaned_data
             # send_otp_code(cd['phone'], random_code)
             OtpCode.objects.create(phone=cd['phone'], code=random_code)
-            send_register_email(cd['email'], cd['phone'],random_code)
+            send_register_email(cd['email'], cd['phone'], random_code)
             request.session['user_registration_info'] = {
                 'phone': cd['phone'],
                 'password': cd['password1'],
@@ -305,9 +305,33 @@ class WishListView(View):
         # print(, '-ss-', data.get('product_id'))
 
 
-class CustomerOrdersList(ListView):
+class CustomerOrdersList(LoginRequiredMixin, ListView):
     template_name = 'customers/orders_list.html'
     context_object_name = 'orders'
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        self.req
+    def dispatch(self, request, *args, **kwargs):
+        CartItem.remove_loaded_items_key(request)
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        self.customer = self.request.user.customer
+        self.orders = Cart.objects.filter(customer=self.customer)
+        return self.orders
+
+
+class CurrentOrdersHistory(LoginRequiredMixin, ListView):
+    template_name = 'customers/current_orders_history.html'
+    context_object_name = 'order'
+
+    # def dispatch(self, request, *args, **kwargs):
+    #     CartItem.remove_loaded_items_key(request)
+    #     return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        self.customer = self.request.user.customer
+        if Cart.objects.filter(open=True).exists():
+            self.order = Cart.objects.get(open=True)
+            print(self.order)
+        else:
+            self.order = None
+        return self.order
