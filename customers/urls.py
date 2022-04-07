@@ -19,5 +19,7 @@ urlpatterns = [
     # path('address/<int:pk>', views.AddressDetailApi.as_view(), name='address_detail'),
     path('addresses/', api_views.AddressListApi.as_view(), name='address_list'),
     path('wishlist/', views.WishListView.as_view(), name='wishlist'),
+    path('orders_list/', views.CustomerOrdersList.as_view(), name='orders_list'),
+    path('current_orders/', views.CurrentOrdersHistory.as_view(), name='current_orders'),
 
 ]
