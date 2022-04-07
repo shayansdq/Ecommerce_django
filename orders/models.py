@@ -84,6 +84,10 @@ class CartItem(BaseModel):
         """
         return cls.objects.filter(product=product)
 
+    @property
+    def status(self):
+        return 'PENDING' if self.cart.open else 'SUCCESS'
+
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
 
         super().save(force_insert, force_update, using, update_fields)
