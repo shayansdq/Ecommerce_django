@@ -9,7 +9,7 @@ class CartItemInline(admin.TabularInline):
 
 @admin.register(Cart)
 class CartAdmin(admin.ModelAdmin):
-    list_display = ('customer', 'final_price',)
+    list_display = ('id','customer', 'final_price','open')
     search_fields = ('customer',)
     list_filter = ('created',)
     raw_id_fields = ('customer', 'off_code')
