@@ -22,10 +22,6 @@ class ProductListView(ListView):
     paginate_by = 3
     template_name = 'products/index.html'
 
-    # def dispatch(self, request, *args, **kwargs):
-    #
-    #     return super().dispatch(request, *args, **kwargs)
-
     def get_context_data(self, **kwargs):
         context = super(ProductListView, self).get_context_data(**kwargs)
         list_products = Product.objects.all()
